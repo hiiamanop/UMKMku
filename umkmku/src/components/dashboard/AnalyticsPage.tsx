@@ -174,8 +174,8 @@ export function AnalyticsPage({
                     tick={{ fontSize: 12 }}
                   />
                   <Tooltip
-                    labelFormatter={(date) => formatDate(date)}
-                    formatter={(value: number) => formatRupiah(value)}
+                    labelFormatter={(date: any) => formatDate(date)}
+                    formatter={(value: any) => [formatRupiah(value as number), 'Revenue']}
                     contentStyle={{
                       backgroundColor: '#fff',
                       border: '1px solid #ccc',

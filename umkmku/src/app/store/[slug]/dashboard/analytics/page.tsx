@@ -1,6 +1,6 @@
 import { AnalyticsPage } from '@/components/dashboard/AnalyticsPage'
 import { getAnalyticsMetrics } from '@/lib/analytics/queries'
-import { createServerClient } from '@/lib/supabase/server'
+import { createClient } from '@/lib/supabase/server'
 
 interface Props {
   params: Promise<{ slug: string }>
@@ -10,7 +10,7 @@ export default async function AnalyticsPageRoute({ params }: Props) {
   const { slug } = await params
 
   // Get tenant ID from slug
-  const supabase = await createServerClient()
+  const supabase = await createClient()
   const { data: tenant } = await supabase
     .from('tenants')
     .select('id')

@@ -1,9 +1,9 @@
 'use server'
 
-import { createServerClient } from '@/lib/supabase/server'
+import { createClient } from '@/lib/supabase/server'
 import type { Order } from '@/lib/supabase/types'
 
-interface AnalyticsMetrics {
+export interface AnalyticsMetrics {
   totalRevenue: number
   totalOrders: number
   topProducts: Array<{
@@ -30,7 +30,7 @@ interface AnalyticsMetrics {
 export async function getAnalyticsMetrics(
   tenantId: string
 ): Promise<AnalyticsMetrics | null> {
-  const supabase = await createServerClient()
+  const supabase = await createClient()
 
   try {
     // Get 30-day cutoff date
