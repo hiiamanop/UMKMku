@@ -1,34 +1,23 @@
+'use client'
+
 import Image from 'next/image'
+import { Heart } from 'lucide-react'
+import { useState } from 'react'
 import type { Product } from '@/lib/supabase/types'
 
 interface Props {
   product: Product
 }
 
-const CONCERN_LABELS: Record<string, string> = {
-  acne: 'Anti Jerawat',
-  brightening: 'Mencerahkan',
-  'anti-aging': 'Anti Aging',
-  hydrating: 'Melembapkan',
-  pores: 'Mengecilkan Pori',
-  soothing: 'Menenangkan',
-  firming: 'Mengencangkan',
-}
-
-const SKIN_TYPE_LABELS: Record<string, string> = {
-  oily: 'Berminyak',
-  combination: 'Kombinasi',
-  dry: 'Kering',
-  sensitive: 'Sensitif',
-  all: 'Semua Jenis Kulit',
-}
-
 export function ProductCard({ product }: Props) {
-  const hasMarketplaceLink = product.tokopedia_url || product.shopee_url
+  const [wished, setWished] = useState(false)
+
+  const marketplaceUrl = product.tokopedia_url || product.shopee_url
 
   return (
-    <div className="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
-      <div className="relative aspect-square bg-gray-50">
+    <div className="group bg-white rounded-lg border border-[#e8e8e8] overflow-hidden hover:shadow-[0_4px_15px_rgba(0,0,0,0.05)] transition-shadow">
+      {/* Image */}
+      <div className="relative aspect-square bg-[#f3f3f3] overflow-hidden">
         {product.image_url ? (
           <Image
             src={product.image_url}
@@ -37,77 +26,53 @@ export function ProductCard({ product }: Props) {
             className="object-cover"
           />
         ) : (
-          <div className="absolute inset-0 flex items-center justify-center">
-            <span className="text-gray-300 text-4xl">🧴</span>
+          <div className="absolute inset-0 flex items-center justify-center text-[#e4bdc2] text-5xl select-none">
+            🧴
           </div>
+        )}
+
+        {/* Wishlist icon */}
+        <button
+          onClick={() => setWished((v) => !v)}
+          aria-label="Wishlist"
+          className="absolute top-3 right-3 w-8 h-8 flex items-center justify-center bg-white rounded-full shadow-sm opacity-0 group-hover:opacity-100 transition-opacity"
+        >
+          <Heart
+            size={16}
+            className={wished ? 'fill-[#e91e63] text-[#e91e63]' : 'text-[#5b3f43]'}
+          />
+        </button>
+
+        {/* Quick Add — appears on hover */}
+        {marketplaceUrl && (
+          <a
+            href={marketplaceUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="absolute bottom-0 inset-x-0 py-2 bg-[#1a1c1c] text-white text-[12px] font-bold uppercase tracking-wide text-center translate-y-full group-hover:translate-y-0 transition-transform"
+          >
+            Quick Add
+          </a>
         )}
       </div>
 
-      <div className="p-4 space-y-3">
-        <div>
-          <h3 className="font-semibold text-gray-900">{product.name}</h3>
-          {product.usage_step && (
-            <p className="text-xs text-[var(--color-accent)] uppercase tracking-wide mt-0.5">
-              {product.usage_step}
-            </p>
-          )}
-        </div>
-
+      {/* Content */}
+      <div className="p-3">
+        <p className="text-[14px] font-400 text-[#1a1c1c] line-clamp-2 mb-1">
+          {product.name}
+        </p>
         {product.description && (
-          <p className="text-sm text-gray-500 line-clamp-2">{product.description}</p>
-        )}
-
-        {product.concerns.length > 0 && (
-          <div className="flex flex-wrap gap-1">
-            {product.concerns.slice(0, 2).map((concern) => (
-              <span
-                key={concern}
-                className="text-xs px-2 py-0.5 bg-[var(--color-secondary)] text-[var(--color-primary)] rounded-full"
-              >
-                {CONCERN_LABELS[concern] ?? concern}
-              </span>
-            ))}
-          </div>
-        )}
-
-        {product.skin_types.length > 0 && !product.skin_types.includes('all') && (
-          <p className="text-xs text-gray-400">
-            Untuk kulit: {product.skin_types.map(t => SKIN_TYPE_LABELS[t] ?? t).join(', ')}
+          <p className="text-[12px] text-[#5b3f43] line-clamp-2 mb-2">
+            {product.description}
           </p>
         )}
-
-        <div className="flex items-center justify-between pt-2 border-t border-gray-50">
+        <div className="flex items-center gap-2">
           {product.price ? (
-            <span className="font-bold text-[var(--color-primary)]">
+            <span className="text-price">
               Rp {product.price.toLocaleString('id-ID')}
             </span>
           ) : (
-            <span className="text-sm text-gray-400">Hubungi untuk harga</span>
-          )}
-
-          {hasMarketplaceLink && (
-            <div className="flex gap-2">
-              {product.tokopedia_url && (
-                <a
-                  href={product.tokopedia_url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-xs px-3 py-1.5 bg-green-600 text-white rounded-full hover:bg-green-700 transition-colors"
-                >
-                  Tokopedia
-                </a>
-              )}
-              {product.shopee_url && (
-                <a
-                  href={product.shopee_url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-xs px-3 py-1.5 bg-orange-500 text-white rounded-full hover:bg-orange-600 transition-colors"
-                >
-                  Shopee
-                </a>
-              )}
-            </div>
+            <span className="text-[12px] text-[#8f6f73]">Hubungi untuk harga</span>
           )}
         </div>
       </div>

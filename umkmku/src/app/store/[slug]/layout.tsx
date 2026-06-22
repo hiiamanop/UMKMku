@@ -1,5 +1,6 @@
 import { notFound } from 'next/navigation'
 import { getTenantBySlug } from '@/lib/tenant'
+import { StoreNavbar } from '@/components/store/store-navbar'
 
 interface Props {
   children: React.ReactNode
@@ -22,6 +23,7 @@ export default async function StoreLayout({ children, params }: Props) {
         '--color-accent': tenant.accent_color,
       } as React.CSSProperties}
     >
+      <StoreNavbar tenant={tenant} />
       {children}
     </div>
   )

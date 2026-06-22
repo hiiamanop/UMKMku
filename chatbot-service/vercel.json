@@ -1,0 +1,22 @@
+{
+  "version": 2,
+  "name": "umkmku-chatbot-service",
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "public": false,
+  "env": {
+    "AI_PROVIDER": "@umkmku_ai_provider",
+    "OLLAMA_BASE_URL": "@umkmku_ollama_base_url",
+    "OLLAMA_MODEL": "@umkmku_ollama_model",
+    "ANTHROPIC_API_KEY": "@umkmku_anthropic_api_key",
+    "ANTHROPIC_MODEL": "@umkmku_anthropic_model",
+    "SUPABASE_URL": "@umkmku_supabase_url",
+    "SUPABASE_ANON_KEY": "@umkmku_supabase_anon_key",
+    "PORT": "3001"
+  },
+  "functions": {
+    "api/**/*.ts": {
+      "runtime": "nodejs20.x"
+    }
+  }
+}

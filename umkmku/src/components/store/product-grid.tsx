@@ -6,23 +6,24 @@ interface Props {
 }
 
 export function ProductGrid({ products }: Props) {
-  if (products.length === 0) {
-    return (
-      <section id="products" className="max-w-5xl mx-auto px-6 py-16">
-        <p className="text-center text-gray-400">Produk segera hadir.</p>
-      </section>
-    )
-  }
-
   return (
-    <section id="products" className="max-w-5xl mx-auto px-6 py-16">
-      <h2 className="text-2xl font-bold text-[var(--color-primary)] mb-8">
-        Produk Kami
-      </h2>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {products.map((product) => (
-          <ProductCard key={product.id} product={product} />
-        ))}
+    <section id="products" className="bg-[#f9f9f9] py-16 md:py-20">
+      <div className="max-w-[1200px] mx-auto px-4 md:px-6">
+        {/* Section header */}
+        <div className="mb-10">
+          <p className="text-label-bold text-[#8f6f73] mb-2">OUR COLLECTION</p>
+          <h2 className="text-headline-lg text-[#1a1c1c]">Produk Pilihan</h2>
+        </div>
+
+        {products.length === 0 ? (
+          <p className="text-[#5b3f43] text-center py-16">Produk segera hadir.</p>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+            {products.map((product) => (
+              <ProductCard key={product.id} product={product} />
+            ))}
+          </div>
+        )}
       </div>
     </section>
   )

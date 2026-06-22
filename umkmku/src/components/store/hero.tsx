@@ -1,4 +1,5 @@
 import Image from 'next/image'
+import { ArrowRight } from 'lucide-react'
 import type { Tenant } from '@/lib/supabase/types'
 
 interface Props {
@@ -7,56 +8,55 @@ interface Props {
 
 export function Hero({ tenant }: Props) {
   return (
-    <section className="relative min-h-[70vh] flex items-center bg-[var(--color-secondary)]">
+    <section className="relative min-h-[80vh] flex items-center bg-[#f9f9f9] overflow-hidden">
+      {/* Background image */}
       {tenant.hero_image_url && (
         <Image
           src={tenant.hero_image_url}
-          alt={`${tenant.brand_name} hero image`}
+          alt={`${tenant.brand_name} hero`}
           fill
-          className="object-cover opacity-20"
+          className="object-cover opacity-15"
           priority
         />
       )}
 
-      <div className="relative z-10 max-w-5xl mx-auto px-6 py-20">
-        <div className="max-w-lg">
-          {tenant.logo_url ? (
-            <Image
-              src={tenant.logo_url}
-              alt={`${tenant.brand_name} logo`}
-              width={120}
-              height={40}
-              className="mb-6 object-contain"
-            />
-          ) : (
-            <p className="text-sm font-medium tracking-widest uppercase text-[var(--color-accent)] mb-3">
-              {tenant.brand_name}
-            </p>
-          )}
+      {/* Decorative soft gradient overlay */}
+      <div className="absolute inset-0 bg-gradient-to-r from-[#f9f9f9] via-[#f9f9f9]/80 to-transparent" />
 
-          <h1 className="text-4xl md:text-5xl font-bold text-[var(--color-primary)] leading-tight mb-4">
+      <div className="relative z-10 max-w-[1200px] mx-auto px-4 md:px-6 py-20 w-full">
+        <div className="max-w-xl">
+          {/* Brand label */}
+          <p className="text-label-bold text-[#8f6f73] mb-4 tracking-widest">
+            {tenant.brand_name}
+          </p>
+
+          {/* Main headline */}
+          <h1 className="text-display text-[#1a1c1c] mb-6">
             {tenant.tagline ?? tenant.brand_name}
           </h1>
 
+          {/* Description */}
           {tenant.description && (
-            <p className="text-gray-600 text-lg leading-relaxed mb-8">
+            <p className="text-body-lg text-[#5b3f43] mb-10 leading-relaxed max-w-md">
               {tenant.description}
             </p>
           )}
 
+          {/* CTAs */}
           <div className="flex flex-wrap gap-3">
             <a
               href="#products"
-              className="px-6 py-3 bg-[var(--color-primary)] text-white rounded-full font-medium hover:opacity-90 transition-opacity"
+              className="inline-flex items-center gap-2 px-8 py-4 bg-[#e91e63] text-white rounded-lg font-bold text-[14px] uppercase tracking-wide hover:bg-[#b80049] transition-colors"
             >
-              Lihat Produk
+              BUY NOW
+              <ArrowRight size={16} />
             </a>
             {tenant.whatsapp_number && (
               <a
                 href={`https://wa.me/${tenant.whatsapp_number.replace(/[^0-9]/g, '')}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="px-6 py-3 border-2 border-[var(--color-primary)] text-[var(--color-primary)] rounded-full font-medium hover:bg-[var(--color-primary)] hover:text-white transition-colors"
+                className="inline-flex items-center gap-2 px-8 py-4 border border-[#e2e2e2] text-[#1a1c1c] rounded-lg font-bold text-[14px] uppercase tracking-wide hover:border-[#1a1c1c] transition-colors"
               >
                 Hubungi Kami
               </a>
