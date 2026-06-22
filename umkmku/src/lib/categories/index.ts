@@ -39,7 +39,7 @@ const categoryPromptMap = {
 export function validateCategoryData(
   category: CategoryType,
   data: unknown
-): z.SafeParseReturnType<unknown, CategoryData> {
+): any {
   const schema = categorySchemaMap[category]
   if (!schema) {
     return {
