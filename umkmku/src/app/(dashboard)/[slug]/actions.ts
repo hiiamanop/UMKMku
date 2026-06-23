@@ -52,12 +52,41 @@ export async function updateAppearance(slug: string, formData: FormData) {
 
   const supabase = createServiceClient()
 
-  const { error } = await supabase
+  // Get tenant id for storage path
+  const { data: tenant } = await supabase
     .from('tenants')
-    .update({ primary_color, secondary_color, accent_color })
+    .select('id')
     .eq('slug', slug)
+    .single()
 
-  if (error) return { error: 'Gagal menyimpan warna' }
+  if (!tenant) return { error: 'Toko tidak ditemukan' }
+
+  const updates: Record<string, string> = { primary_color: primary_color!, secondary_color: secondary_color!, accent_color: accent_color! }
+
+  // Handle hero image upload
+  const heroFile = formData.get('hero_image') as File | null
+  if (heroFile && heroFile.size > 0) {
+    if (!['image/jpeg', 'image/png', 'image/webp'].includes(heroFile.type)) {
+      return { error: 'Format gambar harus JPG, PNG, atau WebP' }
+    }
+    if (heroFile.size > 5 * 1024 * 1024) return { error: 'Ukuran gambar maksimal 5MB' }
+
+    const ext = heroFile.name.split('.').pop()
+    const fileName = `${tenant.id}/hero.${ext}`
+
+    const { error: uploadError } = await supabase.storage
+      .from('product-images')
+      .upload(fileName, heroFile, { upsert: true })
+
+    if (uploadError) return { error: 'Gagal upload gambar hero' }
+
+    const { data: urlData } = supabase.storage.from('product-images').getPublicUrl(fileName)
+    updates.hero_image_url = urlData.publicUrl
+  }
+
+  const { error } = await supabase.from('tenants').update(updates).eq('slug', slug)
+
+  if (error) return { error: 'Gagal menyimpan perubahan' }
 
   revalidatePath(`/store/${slug}`)
   revalidatePath(`/${slug}`)

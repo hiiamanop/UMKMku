@@ -1,8 +1,11 @@
 import { notFound } from 'next/navigation'
 import { getTenantBySlug } from '@/lib/tenant'
 import { Hero } from '@/components/store/hero'
-import { ProductGrid } from '@/components/store/product-grid'
 import { AboutSection } from '@/components/store/about-section'
+import { CtaBanner } from '@/components/store/cta-banner'
+import { ProductGrid } from '@/components/store/product-grid'
+import { IngredientsSection } from '@/components/store/ingredients-section'
+import { TestimonialsSection } from '@/components/store/testimonials-section'
 import { StoreFooter } from '@/components/store/store-footer'
 import { ChatbotWidgetLoader } from '@/components/store/chatbot-widget-loader'
 
@@ -20,9 +23,12 @@ export default async function StorePage({ params }: Props) {
 
   return (
     <>
-      <Hero tenant={tenant} />
-      <ProductGrid products={products} />
+      <Hero tenant={tenant} featuredProduct={products[0] ?? null} />
       <AboutSection tenant={tenant} />
+      <CtaBanner tenant={tenant} />
+      <ProductGrid products={products} />
+      <IngredientsSection products={products} />
+      <TestimonialsSection tenant={tenant} />
       <StoreFooter tenant={tenant} />
       <ChatbotWidgetLoader tenant={tenant} products={products} />
     </>

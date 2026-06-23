@@ -1,7 +1,7 @@
 'use client'
 
 import Image from 'next/image'
-import { Heart } from 'lucide-react'
+import { Heart, ShoppingCart } from 'lucide-react'
 import { useState } from 'react'
 import type { Product } from '@/lib/supabase/types'
 
@@ -11,70 +11,70 @@ interface Props {
 
 export function ProductCard({ product }: Props) {
   const [wished, setWished] = useState(false)
-
   const marketplaceUrl = product.tokopedia_url || product.shopee_url
 
   return (
-    <div className="group bg-white rounded-lg border border-[#e8e8e8] overflow-hidden hover:shadow-[0_4px_15px_rgba(0,0,0,0.05)] transition-shadow">
+    <div className="group cursor-pointer">
       {/* Image */}
-      <div className="relative aspect-square bg-[#f3f3f3] overflow-hidden">
+      <div className="relative aspect-square overflow-hidden bg-[var(--color-secondary)] mb-4">
         {product.image_url ? (
           <Image
             src={product.image_url}
             alt={product.name}
             fill
-            className="object-cover"
+            className="object-cover group-hover:scale-105 transition-transform duration-700"
           />
         ) : (
-          <div className="absolute inset-0 flex items-center justify-center text-[#e4bdc2] text-5xl select-none">
-            🧴
-          </div>
+          <div className="absolute inset-0 flex items-center justify-center text-5xl select-none opacity-30">🧴</div>
         )}
 
         {/* Wishlist icon */}
         <button
           onClick={() => setWished((v) => !v)}
           aria-label="Wishlist"
-          className="absolute top-3 right-3 w-8 h-8 flex items-center justify-center bg-white rounded-full shadow-sm opacity-0 group-hover:opacity-100 transition-opacity"
+          className="absolute top-3 right-3 bg-white/80 p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
         >
           <Heart
             size={16}
-            className={wished ? 'fill-[#e91e63] text-[#e91e63]' : 'text-[#5b3f43]'}
+            className={wished ? 'fill-[var(--color-primary)] text-[var(--color-primary)]' : 'text-[var(--color-accent)]'}
           />
         </button>
+      </div>
 
-        {/* Quick Add — appears on hover */}
-        {marketplaceUrl && (
+      {/* Info row */}
+      <div className="flex justify-between items-start">
+        <div>
+          <h4 className="text-headline-md italic text-[var(--color-accent)] mb-1 leading-snug">
+            {product.name}
+          </h4>
+          {product.price ? (
+            <p className="text-label-caps text-[var(--color-accent)]/60">
+              IDR {product.price.toLocaleString('id-ID')}
+            </p>
+          ) : (
+            <p className="text-label-caps text-[var(--color-accent)]/40">Hubungi untuk harga</p>
+          )}
+        </div>
+
+        {/* Square add-to-cart button */}
+        {marketplaceUrl ? (
           <a
             href={marketplaceUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="absolute bottom-0 inset-x-0 py-2 bg-[#1a1c1c] text-white text-[12px] font-bold uppercase tracking-wide text-center translate-y-full group-hover:translate-y-0 transition-transform"
+            aria-label="Beli"
+            className="w-10 h-10 border border-black/20 flex items-center justify-center hover:bg-[var(--color-primary)] hover:text-white hover:border-[var(--color-primary)] transition-colors shrink-0"
           >
-            Quick Add
+            <ShoppingCart size={16} />
           </a>
+        ) : (
+          <button
+            aria-label="Beli"
+            className="w-10 h-10 border border-black/20 flex items-center justify-center hover:bg-[var(--color-primary)] hover:text-white hover:border-[var(--color-primary)] transition-colors shrink-0"
+          >
+            <ShoppingCart size={16} />
+          </button>
         )}
-      </div>
-
-      {/* Content */}
-      <div className="p-3">
-        <p className="text-[14px] font-400 text-[#1a1c1c] line-clamp-2 mb-1">
-          {product.name}
-        </p>
-        {product.description && (
-          <p className="text-[12px] text-[#5b3f43] line-clamp-2 mb-2">
-            {product.description}
-          </p>
-        )}
-        <div className="flex items-center gap-2">
-          {product.price ? (
-            <span className="text-price">
-              Rp {product.price.toLocaleString('id-ID')}
-            </span>
-          ) : (
-            <span className="text-[12px] text-[#8f6f73]">Hubungi untuk harga</span>
-          )}
-        </div>
       </div>
     </div>
   )

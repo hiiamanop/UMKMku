@@ -1,6 +1,7 @@
 'use client'
 
-import { useActionState } from 'react'
+import { useActionState, useState } from 'react'
+import Image from 'next/image'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import type { Tenant } from '@/lib/supabase/types'
@@ -11,6 +12,7 @@ interface Props {
 }
 
 export function AppearanceForm({ tenant }: Props) {
+  const [heroPreview, setHeroPreview] = useState<string | null>(null)
   const [state, action, pending] = useActionState(
     async (_: unknown, formData: FormData) => {
       return updateAppearance(tenant.slug, formData)
@@ -22,7 +24,7 @@ export function AppearanceForm({ tenant }: Props) {
     <div className="bg-white rounded-xl p-6 space-y-6">
       <h2 className="font-semibold text-lg">Tampilan & Warna</h2>
 
-      <form action={action} className="space-y-4">
+      <form action={action} encType="multipart/form-data" className="space-y-6">
         <div className="grid grid-cols-3 gap-4">
           <div className="space-y-1">
             <label className="text-sm font-medium">Warna Utama</label>
@@ -93,11 +95,45 @@ export function AppearanceForm({ tenant }: Props) {
           Preview: Begini tampilan warna di toko kamu
         </div>
 
+        {/* Hero image upload */}
+        <div className="space-y-2">
+          <label className="text-sm font-medium">Gambar Hero (background halaman utama)</label>
+          <div className="flex gap-4 items-start">
+            <div className="w-40 h-24 rounded-lg overflow-hidden bg-gray-100 border shrink-0 relative">
+              {(heroPreview ?? tenant.hero_image_url) ? (
+                <Image
+                  src={heroPreview ?? tenant.hero_image_url!}
+                  alt="Hero preview"
+                  fill
+                  className="object-cover"
+                />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center text-gray-400 text-xs text-center px-2">
+                  Belum ada gambar
+                </div>
+              )}
+            </div>
+            <div className="flex-1 space-y-1">
+              <input
+                type="file"
+                name="hero_image"
+                accept="image/jpeg,image/png,image/webp"
+                className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-gray-100 file:text-gray-700 hover:file:bg-gray-200"
+                onChange={(e) => {
+                  const file = e.target.files?.[0]
+                  if (file) setHeroPreview(URL.createObjectURL(file))
+                }}
+              />
+              <p className="text-xs text-gray-400">JPG, PNG, WebP — maks 5MB. Rekomendasi: 1920×1080px</p>
+            </div>
+          </div>
+        </div>
+
         {state?.error && <p className="text-red-600 text-sm">{state.error}</p>}
-        {state?.success && <p className="text-green-600 text-sm">Warna disimpan!</p>}
+        {state?.success && <p className="text-green-600 text-sm">Perubahan disimpan!</p>}
 
         <Button type="submit" disabled={pending}>
-          {pending ? 'Menyimpan...' : 'Simpan Warna'}
+          {pending ? 'Menyimpan...' : 'Simpan'}
         </Button>
       </form>
     </div>

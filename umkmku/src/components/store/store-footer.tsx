@@ -6,89 +6,110 @@ interface Props {
   tenant: Tenant
 }
 
+const NAV_BLOCKS = ['Shop', 'About Us', 'Ingredients', 'Sustainability', 'Contact', 'Blog']
+
 export function StoreFooter({ tenant }: Props) {
   return (
-    <footer className="bg-[#1a1c1c] text-white">
-      <div className="max-w-[1200px] mx-auto px-4 md:px-6 py-12 md:py-16">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-12">
-          {/* Brand */}
-          <div className="col-span-2 md:col-span-1">
-            <p className="font-bold text-lg mb-3">{tenant.brand_name}</p>
-            {tenant.tagline && (
-              <p className="text-[14px] text-[#e2e2e2] leading-relaxed">{tenant.tagline}</p>
-            )}
-          </div>
+    <footer className="w-full px-6 md:px-16 py-14 flex flex-col gap-12 bg-[var(--color-accent)] text-white">
+      {/* Nav blocks row */}
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4">
+        {NAV_BLOCKS.map((label) => (
+          <a
+            key={label}
+            href="#"
+            className="border border-white/20 px-5 py-5 flex justify-between items-center group hover:bg-[var(--color-primary)] hover:border-[var(--color-primary)] transition-all"
+          >
+            <span className="text-label-caps text-white text-[11px]">{label.toUpperCase()}</span>
+            <span className="text-white text-xs group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform">↗</span>
+          </a>
+        ))}
+      </div>
 
-          {/* Explore */}
-          <div>
-            <p className="text-label-bold text-[#8f6f73] mb-4">EXPLORE</p>
-            <ul className="space-y-2">
-              {['Shop', 'Ingredients', 'Sustainability', 'About'].map((item) => (
-                <li key={item}>
-                  <a href="#" className="text-[14px] text-[#e2e2e2] hover:text-white transition-colors">
-                    {item}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Support */}
-          <div>
-            <p className="text-label-bold text-[#8f6f73] mb-4">SUPPORT</p>
-            <ul className="space-y-2">
-              {([
-                tenant.whatsapp_number ? { label: 'WhatsApp', href: `https://wa.me/${tenant.whatsapp_number.replace(/[^0-9]/g, '')}` } : null,
-                tenant.instagram_url ? { label: 'Instagram', href: tenant.instagram_url } : null,
-              ].filter((x): x is { label: string; href: string } => x !== null)).map((link) => (
-                <li key={link.label}>
-                  <a
-                    href={link.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-[14px] text-[#e2e2e2] hover:text-white transition-colors"
-                  >
-                    {link.label}
-                  </a>
-                </li>
-              ))}
-              <li>
-                <a href="#" className="text-[14px] text-[#e2e2e2] hover:text-white transition-colors">FAQ</a>
-              </li>
-            </ul>
-          </div>
-
-          {/* Newsletter */}
-          <div>
-            <p className="text-label-bold text-[#8f6f73] mb-4">NEWSLETTER</p>
-            <p className="text-[14px] text-[#e2e2e2] mb-3">Dapatkan update produk terbaru.</p>
-            <form className="flex" onSubmit={(e) => e.preventDefault()}>
-              <input
-                type="email"
-                placeholder="Email kamu"
-                className="flex-1 px-3 py-2 bg-white/10 border border-white/20 rounded-l-lg text-[14px] text-white placeholder:text-[#8f6f73] outline-none focus:border-[#e91e63]"
-              />
-              <button
-                type="submit"
-                className="px-4 py-2 bg-[#e91e63] rounded-r-lg text-white text-[12px] font-bold hover:bg-[#b80049] transition-colors"
-              >
-                OK
-              </button>
-            </form>
-          </div>
+      {/* Info row */}
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-10 border-t border-white/10 pt-10">
+        {/* Info links */}
+        <div className="flex flex-col gap-3">
+          <span className="text-label-caps text-white/40 mb-1">INFORMATION</span>
+          {['Terms & Conditions', 'Kebijakan Pengiriman', 'Return & Exchange', 'Ulasan Kami'].map((item) => (
+            <a key={item} href="#" className="text-[13px] text-white/80 hover:text-white transition-colors">
+              {item}
+            </a>
+          ))}
         </div>
 
-        {/* Bottom bar */}
-        <div className="border-t border-white/10 pt-6 flex flex-col md:flex-row justify-between items-center gap-2">
-          <p className="text-[12px] text-[#8f6f73]">
-            © {new Date().getFullYear()} {tenant.brand_name}. All rights reserved.
-          </p>
-          <p className="text-[12px] text-[#8f6f73]">
-            Powered by{' '}
-            <a href="https://umkmku.com" className="text-[#e91e63] hover:underline">
-              UMKMku.com
+        {/* Brand name center image */}
+        <div className="md:col-span-2 relative h-48 overflow-hidden flex items-center justify-center bg-white/5">
+          <span className="text-headline-lg italic text-white/60">{tenant.brand_name}</span>
+        </div>
+
+        {/* Contact + social */}
+        <div className="flex flex-col gap-8">
+          <div>
+            <span className="text-label-caps text-white/40 mb-3 block">HUBUNGI KAMI</span>
+            {tenant.whatsapp_number && (
+              <a
+                href={`https://wa.me/${tenant.whatsapp_number.replace(/[^0-9]/g, '')}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[13px] text-white/80 hover:text-white block mb-1"
+              >
+                WhatsApp: {tenant.whatsapp_number}
+              </a>
+            )}
+            {tenant.instagram_url && (
+              <a
+                href={tenant.instagram_url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[13px] text-white/80 hover:text-white block"
+              >
+                Instagram
+              </a>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* Bottom bar */}
+      <div className="flex flex-col md:flex-row justify-between items-center border-t border-white/10 pt-7 gap-5">
+        <p className="text-label-caps text-[10px] text-white/30">
+          © {new Date().getFullYear()} {tenant.brand_name.toUpperCase()}. ALL RIGHTS RESERVED.
+        </p>
+        <div className="flex gap-6">
+          <a href="#" className="text-label-caps text-[10px] text-white/30 hover:text-white transition-colors">PRIVACY POLICY</a>
+          <a href="#" className="text-label-caps text-[10px] text-white/30 hover:text-white transition-colors">TERMS OF USE</a>
+        </div>
+        <div className="flex gap-3">
+          {tenant.whatsapp_number && (
+            <a
+              href={`https://wa.me/${tenant.whatsapp_number.replace(/[^0-9]/g, '')}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-4 py-2 border border-white/20 text-[10px] text-white hover:bg-white hover:text-[var(--color-accent)] transition-colors"
+            >
+              WHATSAPP
             </a>
-          </p>
+          )}
+          {tenant.instagram_url && (
+            <a
+              href={tenant.instagram_url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-4 py-2 border border-white/20 text-[10px] text-white hover:bg-white hover:text-[var(--color-accent)] transition-colors"
+            >
+              INSTAGRAM
+            </a>
+          )}
+          {tenant.tokopedia_url && (
+            <a
+              href={tenant.tokopedia_url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-4 py-2 border border-white/20 text-[10px] text-white hover:bg-white hover:text-[var(--color-accent)] transition-colors"
+            >
+              TOKOPEDIA
+            </a>
+          )}
         </div>
       </div>
     </footer>
