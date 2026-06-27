@@ -79,10 +79,11 @@ export function AppearanceForm({ tenant }: { tenant: Tenant }) {
       </FormSection>
 
       <div className="flex items-center gap-4 pt-2">
-        <Button type="submit" disabled={pending}
-          className="bg-[var(--color-primary)] text-white hover:opacity-90 transition-opacity rounded-none text-label-caps tracking-widest px-8 py-3 h-auto">
+        <button type="submit" disabled={pending}
+          style={{ backgroundColor: 'var(--color-primary)', color: 'white' }}
+          className="hover:opacity-90 transition-opacity rounded-none text-label-caps tracking-widest px-8 py-3 disabled:opacity-50 disabled:cursor-not-allowed">
           {pending ? 'Menyimpan...' : 'Simpan Tampilan'}
-        </Button>
+        </button>
         <StatusMessage state={state} />
       </div>
     </form>

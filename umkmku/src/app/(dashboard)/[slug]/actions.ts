@@ -1,6 +1,11 @@
 'use server'
 
 import { revalidatePath } from 'next/cache'
+
+function invalidateTenant(slug: string) {
+  revalidatePath(`/store/${slug}`, 'page')
+  revalidatePath(`/${slug}`, 'page')
+}
 import { createServiceClient } from '@/lib/supabase/server'
 
 export async function updateBrand(slug: string, formData: FormData) {
@@ -18,23 +23,40 @@ export async function updateBrand(slug: string, formData: FormData) {
 
   const supabase = createServiceClient()
 
-  const { error } = await supabase
-    .from('tenants')
-    .update({
-      brand_name,
-      tagline,
-      description,
-      whatsapp_number,
-      instagram_url,
-      tokopedia_url,
-      shopee_url,
-    })
-    .eq('slug', slug)
+  const updates: Record<string, string | null> = {
+    brand_name: brand_name!,
+    tagline,
+    description,
+    whatsapp_number,
+    instagram_url,
+    tokopedia_url,
+    shopee_url,
+  }
+
+  // QRIS upload
+  const qrisFile = formData.get('qris_image') as File | null
+  if (qrisFile && qrisFile.size > 0) {
+    if (!['image/jpeg', 'image/png', 'image/webp'].includes(qrisFile.type))
+      return { error: 'Format QRIS harus JPG, PNG, atau WebP' }
+    if (qrisFile.size > 2 * 1024 * 1024)
+      return { error: 'Ukuran QRIS maksimal 2MB' }
+
+    const { data: tenant } = await supabase.from('tenants').select('id').eq('slug', slug).single()
+    if (!tenant) return { error: 'Toko tidak ditemukan' }
+
+    const ext = qrisFile.name.split('.').pop()
+    const fileName = `${tenant.id}/qris-${Date.now()}.${ext}`
+    const { error: uploadErr } = await supabase.storage.from('product-images').upload(fileName, qrisFile, { upsert: true })
+    if (uploadErr) return { error: 'Gagal upload gambar QRIS' }
+    const { data: urlData } = supabase.storage.from('product-images').getPublicUrl(fileName)
+    updates.qris_image_url = urlData.publicUrl
+  }
+
+  const { error } = await supabase.from('tenants').update(updates).eq('slug', slug)
 
   if (error) return { error: 'Gagal menyimpan perubahan' }
 
-  revalidatePath(`/store/${slug}`)
-  revalidatePath(`/${slug}`)
+  invalidateTenant(slug)
   return { success: true }
 }
 
@@ -83,11 +105,11 @@ export async function updateAppearance(slug: string, formData: FormData) {
   }
 
   const imageFields = [
-    { field: 'hero_image',    key: 'hero',          col: 'hero_image_url' },
-    { field: 'about_image_1', key: 'about-1',       col: 'about_image_1_url' },
-    { field: 'about_image_2', key: 'about-2',       col: 'about_image_2_url' },
-    { field: 'cta_image',     key: 'cta',           col: 'cta_image_url' },
-    { field: 'footer_image',  key: 'footer',        col: 'footer_image_url' },
+    { field: 'hero_image',       key: 'hero',          col: 'hero_image_url' },
+    { field: 'about_image_1',    key: 'about-1',       col: 'about_image_1_url' },
+    { field: 'about_image_2',    key: 'about-2',       col: 'about_image_2_url' },
+    { field: 'cta_image',        key: 'cta',           col: 'cta_image_url' },
+    { field: 'footer_image',     key: 'footer',        col: 'footer_image_url' },
   ]
 
   for (const { field, key, col } of imageFields) {
@@ -100,8 +122,7 @@ export async function updateAppearance(slug: string, formData: FormData) {
 
   if (error) return { error: 'Gagal menyimpan perubahan' }
 
-  revalidatePath(`/store/${slug}`)
-  revalidatePath(`/${slug}`)
+  invalidateTenant(slug)
   return { success: true }
 }
 
@@ -146,8 +167,7 @@ export async function saveTestimonial(slug: string, formData: FormData) {
     if (error) return { error: 'Gagal menambah testimonial' }
   }
 
-  revalidatePath(`/store/${slug}`)
-  revalidatePath(`/${slug}`)
+  invalidateTenant(slug)
   return { success: true }
 }
 
@@ -157,7 +177,7 @@ export async function deleteTestimonial(slug: string, id: string) {
   if (!tenant) return { error: 'Toko tidak ditemukan' }
   const { error } = await supabase.from('testimonials').delete().eq('id', id).eq('tenant_id', tenant.id)
   if (error) return { error: 'Gagal menghapus testimonial' }
-  revalidatePath(`/store/${slug}`)
+  invalidateTenant(slug)
   return { success: true }
 }
 
@@ -205,7 +225,7 @@ export async function updateAboutPage(slug: string, formData: FormData) {
 
   const { error } = await supabase.from('tenants').update(updates).eq('slug', slug)
   if (error) return { error: 'Gagal menyimpan' }
-  revalidatePath(`/store/${slug}`)
+  invalidateTenant(slug)
   return { success: true }
 }
 
@@ -235,7 +255,7 @@ export async function updateIngredientsPage(slug: string, formData: FormData) {
 
   const { error } = await supabase.from('tenants').update(updates).eq('slug', slug)
   if (error) return { error: 'Gagal menyimpan' }
-  revalidatePath(`/store/${slug}`)
+  invalidateTenant(slug)
   return { success: true }
 }
 
@@ -268,7 +288,7 @@ export async function updateSustainabilityPage(slug: string, formData: FormData)
 
   const { error } = await supabase.from('tenants').update(updates).eq('slug', slug)
   if (error) return { error: 'Gagal menyimpan' }
-  revalidatePath(`/store/${slug}`)
+  invalidateTenant(slug)
   return { success: true }
 }
 
@@ -289,7 +309,6 @@ export async function updateChatbot(slug: string, formData: FormData) {
 
   if (error) return { error: 'Gagal menyimpan pengaturan chatbot' }
 
-  revalidatePath(`/store/${slug}`)
-  revalidatePath(`/${slug}`)
+  invalidateTenant(slug)
   return { success: true }
 }

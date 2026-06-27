@@ -16,6 +16,7 @@ const hankenGrotesk = Hanken_Grotesk({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000'),
   title: "UMKMku",
   description: "Brand infrastructure untuk UMKM lokal Indonesia",
 };

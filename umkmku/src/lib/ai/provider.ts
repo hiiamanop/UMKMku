@@ -1,20 +1,17 @@
 import { createOpenAICompatible } from '@ai-sdk/openai-compatible'
-import { createAnthropic } from '@ai-sdk/anthropic'
 import type { LanguageModel } from 'ai'
 
+// Hanya untuk onboarding via AI SDK (Ollama dev).
+// Production pakai geminiChat() dari gemini.ts langsung.
 export function getAIModel(): LanguageModel {
-  const provider = process.env.AI_PROVIDER ?? 'ollama'
-
-  if (provider === 'ollama') {
-    const ollama = createOpenAICompatible({
-      name: 'ollama',
-      baseURL: process.env.OLLAMA_BASE_URL ?? 'http://localhost:11434/v1',
-    })
-    return ollama(process.env.OLLAMA_MODEL ?? 'gemma4:12b')
-  }
-
-  const anthropic = createAnthropic({
-    apiKey: process.env.ANTHROPIC_API_KEY,
+  const ollama = createOpenAICompatible({
+    name: 'ollama',
+    baseURL: process.env.OLLAMA_BASE_URL ?? 'http://localhost:11434/v1',
   })
-  return anthropic(process.env.ANTHROPIC_MODEL ?? 'claude-sonnet-4-6')
+  return ollama(process.env.OLLAMA_MODEL ?? 'gemma4:12b')
+}
+
+// true = skip AI SDK, langsung geminiChat
+export function useGeminiDirect(): boolean {
+  return (process.env.AI_PROVIDER ?? 'ollama') === 'gemini'
 }

@@ -1,7 +1,9 @@
 'use server'
 
 import { createClient } from '@/lib/supabase/server'
-import type { Order } from '@/lib/supabase/types'
+// ponytail: Order type changed, using any for legacy analytics
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type Order = any
 
 export interface AnalyticsMetrics {
   totalRevenue: number

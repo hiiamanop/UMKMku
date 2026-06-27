@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { generateText } from 'ai'
-import { getAIModel } from '@/lib/ai/provider'
+import { getAIModel, useGeminiDirect } from '@/lib/ai/provider'
 import { generateSlug, getOnboardingSystemPrompt } from '@/lib/ai/onboarding'
+import { geminiChat } from '@/lib/ai/gemini'
 import { createServiceClient } from '@/lib/supabase/server'
 import { validateCategoryData, type CategoryType } from '@/lib/categories'
 import type { SupabaseClient } from '@supabase/supabase-js'
@@ -13,6 +14,7 @@ export async function POST(request: NextRequest) {
     const body = await request.json()
     const category: CategoryType = body.category?.trim().toLowerCase()
     const description: string = body.description?.trim()
+    const invoiceId: string | null = body.invoiceId ?? null
 
     // Validate category
     if (!category || !VALID_CATEGORIES.includes(category)) {
@@ -36,13 +38,21 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Extract config dari AI menggunakan onboarding prompt (untuk brand + products extract)
+    // Extract config dari AI
+    // Production (AI_PROVIDER=gemini): langsung Gemini 2.0 Flash
+    // Dev (AI_PROVIDER=ollama): coba Ollama dulu, fallback ke Gemini
     const onboardingPrompt = getOnboardingSystemPrompt(category)
-    const { text } = await generateText({
-      model: getAIModel(),
-      system: onboardingPrompt,
-      prompt: description,
-    })
+    let text: string
+    if (useGeminiDirect()) {
+      text = await geminiChat([{ role: 'user', content: description }], onboardingPrompt)
+    } else {
+      try {
+        const result = await generateText({ model: getAIModel(), system: onboardingPrompt, prompt: description })
+        text = result.text
+      } catch {
+        text = await geminiChat([{ role: 'user', content: description }], onboardingPrompt)
+      }
+    }
 
     // Parse JSON dari response (handle ```json blocks)
     const jsonMatch = text.match(/```json\s*([\s\S]*?)\s*```/) || text.match(/(\{[\s\S]*\})/s)
@@ -137,6 +147,48 @@ export async function POST(request: NextRequest) {
       if (productsError) {
         console.error('Products insert error:', productsError)
       }
+    }
+
+    // Tentukan plan dari invoice (jika paid) atau default free trial
+    let subPlanId = 'free'
+    let subStatus: 'trial' | 'active' = 'trial'
+    let periodEnd: string | undefined
+
+    if (invoiceId) {
+      const { data: inv } = await supabase
+        .from('subscription_invoices')
+        .select('plan_id, status')
+        .eq('id', invoiceId)
+        .single()
+
+      if (inv?.status === 'paid') {
+        subPlanId = inv.plan_id
+        subStatus = 'active'
+        periodEnd = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString()
+        // Link invoice ke tenant
+        await supabase
+          .from('subscription_invoices')
+          .update({ tenant_id: tenant.id, onboarding_completed_at: new Date().toISOString() })
+          .eq('id', invoiceId)
+      }
+    }
+
+    const trialEndsAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString()
+    const { data: newSub } = await supabase
+      .from('tenant_subscriptions')
+      .insert({
+        tenant_id: tenant.id,
+        plan_id: subPlanId,
+        status: subStatus,
+        trial_ends_at: subStatus === 'trial' ? trialEndsAt : null,
+        current_period_start: subStatus === 'active' ? new Date().toISOString() : null,
+        current_period_end: subStatus === 'active' ? periodEnd : null,
+      })
+      .select('id')
+      .single()
+
+    if (newSub) {
+      await supabase.from('tenants').update({ subscription_id: newSub.id }).eq('id', tenant.id)
     }
 
     const rootDomain = process.env.NEXT_PUBLIC_ROOT_DOMAIN ?? 'localhost:3000'

@@ -17,19 +17,30 @@ const INGREDIENT_ICONS: Record<string, string> = {
   'chamomile': '✾',
 }
 
-const COLS = 5
+function IngredientItem({ name }: { name: string }) {
+  const key = name.toLowerCase().replace(/\s+/g, '-')
+  const icon = INGREDIENT_ICONS[key] ?? '◉'
+  return (
+    <div className="flex flex-col items-center w-24 group cursor-default">
+      <div className="w-16 h-16 rounded-full bg-white flex items-center justify-center mb-3 shadow-sm group-hover:shadow-md transition-shadow">
+        <span className="text-xl text-[var(--color-primary)]">{icon}</span>
+      </div>
+      <span className="text-label-caps text-[10px] tracking-widest text-[var(--color-accent)]/70 text-center leading-tight">
+        {name.toUpperCase()}
+      </span>
+    </div>
+  )
+}
 
 export function IngredientsSection({ products }: Props) {
-  const allIngredients = products.flatMap((p) => p.ingredients ?? [])
-  const unique = [...new Set(allIngredients)].slice(0, 10)
+  const unique = [...new Set(products.flatMap((p) => p.ingredients ?? []))].slice(0, 12)
 
-  // Trim so last row has ≥ 3 items
-  const remainder = unique.length % COLS
-  const trimmed = remainder === 0 || remainder >= 3
-    ? unique
-    : unique.slice(0, unique.length - remainder)
+  if (unique.length === 0) return null
 
-  if (trimmed.length === 0) return null
+  // Row 1: first 7; Row 2: next items, only shown if at least 5
+  const topRow = unique.slice(0, 7)
+  const remaining = unique.slice(7)
+  const bottomRow = remaining.length >= 5 ? remaining : []
 
   return (
     <section className="py-20 md:py-28 bg-[var(--color-secondary)] text-center">
@@ -45,23 +56,17 @@ export function IngredientsSection({ products }: Props) {
         </p>
       </div>
 
-      <div className="max-w-4xl mx-auto px-6">
-        <div className="flex flex-wrap justify-center gap-x-12 gap-y-8">
-          {trimmed.map((ing) => {
-            const key = ing.toLowerCase().replace(/\s+/g, '-')
-            const icon = INGREDIENT_ICONS[key] ?? '◉'
-            return (
-              <div key={ing} className="flex flex-col items-center w-24 group cursor-default">
-                <div className="w-16 h-16 rounded-full bg-white flex items-center justify-center mb-3 shadow-sm group-hover:shadow-md transition-shadow">
-                  <span className="text-xl text-[var(--color-primary)]">{icon}</span>
-                </div>
-                <span className="text-label-caps text-[10px] tracking-widest text-[var(--color-accent)]/70 text-center leading-tight">
-                  {ing.toUpperCase()}
-                </span>
-              </div>
-            )
-          })}
+      <div className="max-w-5xl mx-auto px-6 flex flex-col items-center gap-8">
+        <div className="grid gap-x-8 gap-y-8 justify-items-center"
+          style={{ gridTemplateColumns: `repeat(${topRow.length}, minmax(0, 1fr))` }}>
+          {topRow.map((ing) => <IngredientItem key={ing} name={ing} />)}
         </div>
+        {bottomRow.length > 0 && (
+          <div className="grid gap-x-8 gap-y-8 justify-items-center"
+            style={{ gridTemplateColumns: `repeat(${bottomRow.length}, minmax(0, 1fr))` }}>
+            {bottomRow.map((ing) => <IngredientItem key={ing} name={ing} />)}
+          </div>
+        )}
       </div>
     </section>
   )

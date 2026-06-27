@@ -5,22 +5,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { Minus, Plus, Trash2, ShieldCheck, TreePine, Package } from 'lucide-react'
 import type { Tenant, Product } from '@/lib/supabase/types'
-
-// ── Demo data (phase 2: ganti dengan cart context / localStorage) ──
-const DEMO_ITEMS: CartItem[] = [
-  { id: 'd1', name: 'Wild Nettle & Kelp Elixir', badge: 'KEMASAN VEGAN', size: '50ml / 1.7 fl. oz', price: 385000, quantity: 1, image_url: null },
-  { id: 'd2', name: 'Juniper Berry Resurfacing Balm', badge: 'CRUELTY-FREE', size: '100g / 3.5 oz', price: 550000, quantity: 1, image_url: null },
-]
-
-interface CartItem {
-  id: string
-  name: string
-  badge?: string
-  size?: string
-  price: number
-  quantity: number
-  image_url: string | null
-}
+import { useCart } from '@/lib/cart-context'
 
 interface Props {
   tenant: Tenant
@@ -31,19 +16,14 @@ interface Props {
 function fmt(n: number) { return 'Rp ' + n.toLocaleString('id-ID') }
 
 export function CartClient({ tenant, crossSell, slug }: Props) {
-  const [items, setItems] = useState<CartItem[]>(DEMO_ITEMS)
+  const { items, removeItem, updateQty, addItem, totalPrice } = useCart()
   const [promo, setPromo] = useState('')
   const [promoApplied, setPromoApplied] = useState(false)
 
-  const subtotal = items.reduce((s, i) => s + i.price * i.quantity, 0)
+  const subtotal = totalPrice
   const discount = promoApplied ? Math.round(subtotal * 0.1) : 0
   const ecoTax = Math.round(subtotal * 0.02)
   const total = subtotal - discount + ecoTax
-
-  const updateQty = (id: string, delta: number) =>
-    setItems(prev => prev.map(i => i.id === id ? { ...i, quantity: i.quantity + delta } : i).filter(i => i.quantity > 0))
-
-  const remove = (id: string) => setItems(prev => prev.filter(i => i.id !== id))
 
   return (
     <div className="min-h-screen bg-[var(--color-secondary)]">
@@ -74,11 +54,11 @@ export function CartClient({ tenant, crossSell, slug }: Props) {
             <div className="lg:col-span-2">
               <div className="bg-white border border-black/8 divide-y divide-black/5">
                 {items.map(item => (
-                  <div key={item.id} className="flex gap-6 p-6">
+                  <div key={item.productId} className="flex gap-6 p-6">
                     {/* Image */}
                     <div className="w-28 h-28 bg-[var(--color-secondary)] shrink-0 relative overflow-hidden">
-                      {item.image_url
-                        ? <Image src={item.image_url} alt={item.name} fill sizes="112px" className="object-cover" />
+                      {item.imageUrl
+                        ? <Image src={item.imageUrl} alt={item.name} fill sizes="112px" className="object-cover" />
                         : <div className="w-full h-full flex items-center justify-center text-[var(--color-accent)]/20 text-[10px] text-center font-sans">No image</div>
                       }
                     </div>
@@ -86,27 +66,21 @@ export function CartClient({ tenant, crossSell, slug }: Props) {
                     {/* Info */}
                     <div className="flex-1 min-w-0">
                       <p className="text-headline-md italic mb-1">{item.name}</p>
-                      {item.size && <p className="text-body-md text-[var(--color-accent)]/50 text-sm mb-2">{item.size}</p>}
-                      {item.badge && (
-                        <span className="text-label-caps text-[9px] border border-[var(--color-accent)]/20 px-2 py-0.5 text-[var(--color-accent)]/50 inline-block mb-4">
-                          {item.badge}
-                        </span>
-                      )}
 
                       {/* Qty controls */}
-                      <div className="flex items-center gap-5">
+                      <div className="flex items-center gap-5 mt-4">
                         <div className="flex items-center gap-3 border border-black/15">
-                          <button onClick={() => updateQty(item.id, -1)}
+                          <button onClick={() => updateQty(item.productId, item.quantity - 1)}
                             className="w-9 h-9 flex items-center justify-center hover:bg-[var(--color-secondary)] transition-colors">
                             <Minus size={12} />
                           </button>
                           <span className="text-body-md font-medium w-5 text-center">{item.quantity}</span>
-                          <button onClick={() => updateQty(item.id, 1)}
+                          <button onClick={() => updateQty(item.productId, item.quantity + 1)}
                             className="w-9 h-9 flex items-center justify-center hover:bg-[var(--color-secondary)] transition-colors">
                             <Plus size={12} />
                           </button>
                         </div>
-                        <button onClick={() => remove(item.id)}
+                        <button onClick={() => removeItem(item.productId)}
                           className="text-[var(--color-accent)]/30 hover:text-red-400 transition-colors">
                           <Trash2 size={15} />
                         </button>
@@ -243,11 +217,7 @@ export function CartClient({ tenant, crossSell, slug }: Props) {
                   </Link>
                   <div className="px-4 pb-4">
                     <button
-                      onClick={() => setItems(prev => {
-                        const exists = prev.find(i => i.id === p.id)
-                        if (exists) return prev.map(i => i.id === p.id ? { ...i, quantity: i.quantity + 1 } : i)
-                        return [...prev, { id: p.id, name: p.name, price: p.price ?? 0, quantity: 1, image_url: p.image_url }]
-                      })}
+                      onClick={() => addItem({ productId: p.id, name: p.name, price: p.price ?? 0, imageUrl: p.image_url })}
                       className="w-full text-label-caps text-[10px] border border-[var(--color-primary)] text-[var(--color-primary)] py-2.5 hover:bg-[var(--color-primary)] hover:text-white transition-colors">
                       TAMBAH KE KERANJANG
                     </button>

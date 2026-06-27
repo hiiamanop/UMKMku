@@ -40,6 +40,21 @@ function ProductRow({ slug, product }: { slug: string; product: Product }) {
           </p>
         </div>
 
+        {/* Stock badge */}
+        <div className="shrink-0 text-right">
+          {product.is_preorder ? (
+            <span className="text-label-caps text-[9px] px-2 py-0.5 rounded-full bg-pink-100 text-pink-600">Pre-Order</span>
+          ) : product.stock_quantity === null ? (
+            <span className="text-label-caps text-[9px] text-[var(--color-accent)]/30">∞</span>
+          ) : product.stock_quantity <= 0 ? (
+            <span className="text-label-caps text-[9px] px-2 py-0.5 rounded-full bg-red-100 text-red-500">Habis</span>
+          ) : product.stock_quantity <= 5 ? (
+            <span className="text-label-caps text-[9px] px-2 py-0.5 rounded-full bg-amber-100 text-amber-600">{product.stock_quantity} sisa</span>
+          ) : (
+            <span className="text-label-caps text-[9px] text-[var(--color-accent)]/40">{product.stock_quantity} stok</span>
+          )}
+        </div>
+
         {/* Expand */}
         {open
           ? <ChevronUp size={16} className="text-[var(--color-accent)]/40 shrink-0" />

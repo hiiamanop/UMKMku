@@ -7,6 +7,7 @@ import { Textarea } from '@/components/ui/textarea'
 import type { Tenant } from '@/lib/supabase/types'
 import { updateBrand } from '../actions'
 import { FormSection, FieldLabel, StatusMessage } from './form-section'
+import { ImageUploader } from './image-uploader'
 
 export function BrandForm({ tenant }: { tenant: Tenant }) {
   const [state, action, pending] = useActionState(
@@ -67,9 +68,21 @@ export function BrandForm({ tenant }: { tenant: Tenant }) {
         </div>
       </FormSection>
 
+      <FormSection title="Pembayaran">
+        <div className="max-w-xs">
+          <ImageUploader
+            name="qris_image"
+            label="QRIS Statis"
+            hint="Upload gambar QRIS statis brandmu. Akan ditampilkan otomatis di chat pembayaran setelah customer membuat pesanan."
+            currentUrl={tenant.qris_image_url}
+            aspectClass="aspect-square"
+          />
+        </div>
+      </FormSection>
+
       <div className="flex items-center gap-4 pt-2">
         <Button type="submit" disabled={pending}
-          className="bg-[var(--color-primary)] text-white hover:opacity-90 transition-opacity rounded-none text-label-caps tracking-widest px-8 py-3 h-auto">
+          className="bg-[var(--color-primary)] !text-white hover:bg-[var(--color-primary)] hover:opacity-90 transition-opacity rounded-none text-label-caps tracking-widest px-8 py-3 h-auto">
           {pending ? 'Menyimpan...' : 'Simpan Perubahan'}
         </Button>
         <StatusMessage state={state} />

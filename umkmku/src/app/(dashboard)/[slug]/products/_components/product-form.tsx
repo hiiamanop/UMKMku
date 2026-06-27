@@ -62,10 +62,32 @@ export function ProductForm({ slug, product, onSuccess }: Props) {
             className={`min-h-[80px] ${inputCls}`} />
         </div>
 
+        <div className="col-span-2">
+          <FieldLabel hint="Tampil di halaman detail produk bagian 'Cara Penggunaan'">Cara Penggunaan</FieldLabel>
+          <Textarea name="how_to_use" defaultValue={product?.how_to_use ?? ''}
+            className={`min-h-[100px] ${inputCls}`}
+            placeholder="Contoh: Oleskan secukupnya pada wajah yang sudah bersih. Gunakan pagi dan malam hari." />
+        </div>
+
         <div>
           <FieldLabel>Harga (IDR)</FieldLabel>
           <Input name="price" type="number" defaultValue={product?.price ?? ''}
             placeholder="150000" className={inputCls} />
+        </div>
+
+        <div>
+          <FieldLabel hint="Kosongkan jika stok tidak terbatas">Jumlah Stok</FieldLabel>
+          <Input name="stock_quantity" type="number" min="0"
+            defaultValue={product?.stock_quantity ?? ''}
+            placeholder="Kosong = tidak terbatas" className={inputCls} />
+        </div>
+
+        <div className="col-span-2 flex items-center gap-3">
+          <input type="checkbox" name="is_preorder" value="true" id="is_preorder"
+            defaultChecked={product?.is_preorder ?? false} className={checkboxCls} />
+          <label htmlFor="is_preorder" className="text-xs cursor-pointer">
+            Pre-Order — bisa dipesan meski stok 0
+          </label>
         </div>
 
         <div>
@@ -131,7 +153,7 @@ export function ProductForm({ slug, product, onSuccess }: Props) {
 
       <div className="flex items-center gap-4 pt-1">
         <Button type="submit" disabled={pending}
-          className="bg-[var(--color-primary)] text-white hover:opacity-90 transition-opacity rounded-none text-label-caps tracking-widest px-6 py-2.5 h-auto text-[10px]">
+          className="bg-[var(--color-primary)] !text-white hover:bg-[var(--color-primary)] hover:opacity-90 transition-opacity rounded-none text-label-caps tracking-widest px-6 py-2.5 h-auto text-[10px]">
           {pending ? 'Menyimpan...' : product ? 'Update Produk' : 'Tambah Produk'}
         </Button>
         <StatusMessage state={state} />

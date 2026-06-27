@@ -1,32 +1,12 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useTransition, useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { User, Heart, ShoppingBag, Settings, Leaf, Package } from 'lucide-react'
-import type { Tenant, Product } from '@/lib/supabase/types'
-
-// ── Hardcoded demo data (phase 2: replace with real auth + DB) ──
-const DEMO_USER = {
-  name: 'Elara Vance',
-  email: 'elara@example.com',
-  memberSince: '2022',
-  points: 1240,
-  tier: 'Purity Tier',
-  skin: { type: 'Kombinasi', concern: 'Hidrasi', sensitivity: 'Sedang' },
-}
-
-const DEMO_ORDERS = [
-  { id: '#NE-2024-001', date: '12 Jun 2025', items: 'Botanical Face Oil, Morning Dew Mist', total: 'Rp 384.000', status: 'Terkirim' },
-  { id: '#NE-2024-002', date: '28 Mei 2025', items: 'Velvet Clay Mask', total: 'Rp 192.000', status: 'Terkirim' },
-  { id: '#NE-2024-003', date: '3 Apr 2025', items: 'Eternal Bloom Oil, Velvet Clay Mask', total: 'Rp 310.000', status: 'Terkirim' },
-]
-
-const DEMO_WISHLIST = [
-  { name: 'Botanical Face Oil', price: 'Rp 198.000' },
-  { name: 'Morning Dew Mist', price: 'Rp 145.000' },
-  { name: 'Velvet Clay Mask', price: 'Rp 192.000' },
-]
+import { useSearchParams } from 'next/navigation'
+import { User, Heart, ShoppingBag, Settings, Leaf, Package, LogOut, Check } from 'lucide-react'
+import type { Tenant, Product, UserProfile } from '@/lib/supabase/types'
+import { saveProfile, saveSkinProfile, logout } from './actions'
 
 const TABS = [
   { id: 'profile', label: 'Detail Profil', icon: User },
@@ -36,19 +16,75 @@ const TABS = [
   { id: 'settings', label: 'Pengaturan Akun', icon: Settings },
 ]
 
+const SKIN_TYPES = ['oily', 'dry', 'combination', 'sensitive', 'normal']
+const SKIN_CONCERNS = ['acne', 'brightening', 'anti-aging', 'hydrating', 'pores']
+const fmt = (s: string) => s.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase())
+
+const STATUS_STYLES: Record<string, string> = {
+  pending_payment: 'bg-yellow-50 text-yellow-700',
+  payment_submitted: 'bg-blue-50 text-blue-700',
+  payment_verified: 'bg-green-50 text-green-700',
+  shipped: 'bg-purple-50 text-purple-700',
+  delivered: 'bg-[var(--color-primary)]/10 text-[var(--color-primary)]',
+  cancelled: 'bg-red-50 text-red-500',
+}
+const STATUS_LABEL: Record<string, string> = {
+  pending_payment: 'Menunggu Bayar',
+  payment_submitted: 'Bukti Dikirim',
+  payment_verified: 'Pembayaran OK',
+  shipped: 'Dalam Pengiriman',
+  delivered: 'Terkirim',
+  cancelled: 'Dibatalkan',
+}
+
+function fmtPrice(n: number | null) {
+  if (!n) return '-'
+  return 'Rp ' + n.toLocaleString('id-ID')
+}
+function fmtDate(s: string) {
+  return new Date(s).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })
+}
+
 interface Props {
   tenant: Tenant
-  products: Product[]
+  user: { id: string; email: string }
+  profile: UserProfile | null
+  orders: any[]
+  ordersPage: number
+  ordersTotal: number
+  ordersPageSize: number
+  wishlistProducts: Product[]
+  wishlistPage: number
+  wishlistTotal: number
+  wishlistPageSize: number
+  featuredProducts: Product[]
   slug: string
 }
 
-function formatPrice(p: number | null) {
-  if (!p) return '-'
-  return 'Rp ' + p.toLocaleString('id-ID')
-}
+export function ProfileClient({ tenant, user, profile, orders, ordersPage, ordersTotal, ordersPageSize, wishlistProducts, wishlistPage, wishlistTotal, wishlistPageSize, featuredProducts, slug }: Props) {
+  const searchParams = useSearchParams()
+  const [activeTab, setActiveTab] = useState(() => {
+    if (searchParams.get('page')) return 'orders'
+    if (searchParams.get('wpage')) return 'wishlist'
+    return 'profile'
+  })
+  const [isPending, startTransition] = useTransition()
+  const [saved, setSaved] = useState<string | null>(null)
 
-export function ProfileClient({ tenant, products, slug }: Props) {
-  const [activeTab, setActiveTab] = useState('profile')
+  const firstName = profile?.full_name?.split(' ')[0] ?? user.email.split('@')[0]
+  const initial = (profile?.full_name ?? user.email).charAt(0).toUpperCase()
+  const memberYear = new Date().getFullYear()
+
+  function withSave(key: string, fn: () => Promise<any>) {
+    startTransition(async () => {
+      await fn()
+      setSaved(key)
+      setTimeout(() => setSaved(null), 2000)
+    })
+  }
+
+  const inputCls = 'w-full bg-[var(--color-secondary)] border border-black/15 px-4 py-3 text-body-md focus:outline-none focus:border-[var(--color-primary)] transition-colors'
+  const labelCls = 'text-label-caps text-[10px] text-[var(--color-accent)]/40 block mb-2'
 
   return (
     <div className="min-h-screen bg-[var(--color-secondary)]">
@@ -58,11 +94,9 @@ export function ProfileClient({ tenant, products, slug }: Props) {
         <div className="max-w-[1280px] mx-auto">
           <p className="text-label-caps text-white/50 mb-3">AKUN SAYA</p>
           <h1 className="text-display text-white mb-2">
-            Selamat datang, <i className="italic">{DEMO_USER.name.split(' ')[0]}</i>
+            Selamat datang, <i className="italic">{firstName}</i>
           </h1>
-          <p className="text-body-md text-white/60">
-            Merawat perjalanan kecantikanmu sejak {DEMO_USER.memberSince}.
-          </p>
+          <p className="text-body-md text-white/60">Anggota sejak {memberYear}.</p>
         </div>
       </div>
 
@@ -72,87 +106,60 @@ export function ProfileClient({ tenant, products, slug }: Props) {
 
           {/* Sidebar */}
           <aside className="w-56 shrink-0">
-            {/* Avatar */}
             <div className="flex flex-col items-center mb-8 pb-8 border-b border-black/10">
               <div className="w-20 h-20 rounded-full bg-[var(--color-primary)]/10 flex items-center justify-center mb-4">
-                <span className="text-display text-[var(--color-primary)] text-2xl font-serif italic">
-                  {DEMO_USER.name.charAt(0)}
-                </span>
+                <span className="text-2xl font-serif italic text-[var(--color-primary)]">{initial}</span>
               </div>
-              <p className="text-headline-md italic text-center leading-tight">{DEMO_USER.name}</p>
-              <p className="text-label-caps text-[10px] text-[var(--color-accent)]/40 mt-1">{DEMO_USER.tier}</p>
+              <p className="text-headline-md italic text-center leading-tight">{profile?.full_name ?? 'Pengguna'}</p>
+              <p className="text-label-caps text-[10px] text-[var(--color-accent)]/40 mt-1">{user.email}</p>
             </div>
 
-            {/* Nav */}
             <nav className="flex flex-col gap-0.5">
               {TABS.map(tab => {
                 const Icon = tab.icon
                 const active = activeTab === tab.id
                 return (
-                  <button
-                    key={tab.id}
-                    type="button"
-                    onClick={() => setActiveTab(tab.id)}
+                  <button key={tab.id} onClick={() => setActiveTab(tab.id)}
                     className={`flex items-center gap-3 px-3 py-3 text-left transition-all rounded-sm text-xs tracking-widest uppercase font-sans ${
-                      active
-                        ? 'bg-[var(--color-primary)] text-white'
-                        : 'text-[var(--color-accent)]/50 hover:text-[var(--color-accent)] hover:bg-black/5'
-                    }`}
-                  >
-                    <Icon size={13} />
-                    {tab.label}
+                      active ? 'bg-[var(--color-primary)] text-white' : 'text-[var(--color-accent)]/50 hover:text-[var(--color-accent)] hover:bg-black/5'
+                    }`}>
+                    <Icon size={13} />{tab.label}
                   </button>
                 )
               })}
+
+              {/* Logout */}
+              <button
+                onClick={() => startTransition(() => logout(slug))}
+                className="flex items-center gap-3 px-3 py-3 text-left transition-all rounded-sm text-xs tracking-widest uppercase font-sans text-red-400 hover:bg-red-50 mt-4">
+                <LogOut size={13} />Keluar
+              </button>
             </nav>
           </aside>
 
-          {/* Main content */}
+          {/* Main */}
           <main className="flex-1 min-w-0">
 
             {/* ── PROFIL ── */}
             {activeTab === 'profile' && (
               <div className="space-y-8">
-
-                {/* Account overview */}
                 <div className="bg-white border border-black/8 rounded p-8">
                   <div className="flex items-start justify-between mb-6">
                     <div>
-                      <p className="text-label-caps text-[10px] text-[var(--color-accent)]/40 mb-2">INFORMASI AKUN</p>
-                      <h2 className="text-headline-lg italic">{DEMO_USER.name}</h2>
-                      <p className="text-body-md text-[var(--color-accent)]/60 mt-1">{DEMO_USER.email}</p>
+                      <p className={labelCls}>INFORMASI AKUN</p>
+                      <h2 className="text-headline-lg italic">{profile?.full_name ?? '-'}</h2>
+                      <p className="text-body-md text-[var(--color-accent)]/60 mt-1">{user.email}</p>
+                      {profile?.whatsapp_number && (
+                        <p className="text-body-md text-[var(--color-accent)]/50 mt-0.5">{profile.whatsapp_number}</p>
+                      )}
+                      {profile?.address && (
+                        <p className="text-body-md text-[var(--color-accent)]/50 mt-0.5">{profile.address}</p>
+                      )}
                     </div>
-                    <div className="flex gap-3">
-                      <button className="text-label-caps text-[10px] border border-black/15 px-4 py-2 hover:bg-[var(--color-secondary)] transition-colors">
-                        Edit Profil
-                      </button>
-                      <button className="text-label-caps text-[10px] border border-black/15 px-4 py-2 hover:bg-[var(--color-secondary)] transition-colors">
-                        Ubah Password
-                      </button>
-                    </div>
-                  </div>
-
-                  {/* Essence Circle */}
-                  <div className="border-t border-black/8 pt-6">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <p className="text-label-caps text-[10px] text-[var(--color-primary)] mb-1">ESSENCE CIRCLE</p>
-                        <div className="flex items-baseline gap-3">
-                          <span className="text-display text-[var(--color-primary)] text-4xl italic">{DEMO_USER.points.toLocaleString('id-ID')}</span>
-                          <span className="text-body-md text-[var(--color-accent)]/50">poin total</span>
-                        </div>
-                        <p className="text-label-caps text-[10px] text-[var(--color-accent)]/40 mt-1">{DEMO_USER.tier}</p>
-                      </div>
-                      <div className="text-right">
-                        <div className="w-32 h-1.5 bg-black/10 rounded-full mb-2">
-                          <div className="h-full bg-[var(--color-primary)] rounded-full" style={{ width: '62%' }} />
-                        </div>
-                        <p className="text-[10px] text-[var(--color-accent)]/40 font-sans">760 poin lagi ke tier berikutnya</p>
-                        <button className="text-label-caps text-[10px] text-[var(--color-primary)] mt-2 hover:opacity-70 transition-opacity">
-                          Lihat Rewards →
-                        </button>
-                      </div>
-                    </div>
+                    <button onClick={() => setActiveTab('settings')}
+                      className="text-label-caps text-[10px] border border-black/15 px-4 py-2 hover:bg-[var(--color-secondary)] transition-colors">
+                      Edit Profil
+                    </button>
                   </div>
                 </div>
 
@@ -160,86 +167,66 @@ export function ProfileClient({ tenant, products, slug }: Props) {
                 <div className="bg-white border border-black/8 rounded p-8">
                   <div className="flex items-center justify-between mb-6">
                     <div>
-                      <p className="text-label-caps text-[10px] text-[var(--color-accent)]/40 mb-1">PROFIL KULIT</p>
+                      <p className={labelCls}>PROFIL KULIT</p>
                       <h3 className="text-headline-md italic">Tipe kulitmu</h3>
                     </div>
-                    <button
-                      onClick={() => setActiveTab('skin')}
-                      className="text-label-caps text-[10px] text-[var(--color-primary)] hover:opacity-70 transition-opacity"
-                    >
-                      Ikuti Kuis Lagi →
+                    <button onClick={() => setActiveTab('skin')}
+                      className="text-label-caps text-[10px] text-[var(--color-primary)] hover:opacity-70">
+                      Perbarui Profil →
                     </button>
                   </div>
-                  <div className="grid grid-cols-3 gap-4">
-                    {[
-                      { label: 'Tipe', value: DEMO_USER.skin.type },
-                      { label: 'Concern', value: DEMO_USER.skin.concern },
-                      { label: 'Sensitivitas', value: DEMO_USER.skin.sensitivity },
-                    ].map(item => (
-                      <div key={item.label} className="border border-black/8 rounded p-4 text-center">
-                        <p className="text-label-caps text-[10px] text-[var(--color-accent)]/40 mb-2">{item.label.toUpperCase()}</p>
-                        <p className="text-headline-md italic">{item.value}</p>
-                      </div>
-                    ))}
-                  </div>
+                  {profile?.skin_type ? (
+                    <div className="flex flex-wrap gap-3">
+                      <span className="text-label-caps text-[10px] bg-[var(--color-primary)]/10 text-[var(--color-primary)] px-3 py-1.5">
+                        {fmt(profile.skin_type)}
+                      </span>
+                      {(profile.skin_concerns ?? []).map(c => (
+                        <span key={c} className="text-label-caps text-[10px] border border-black/15 text-[var(--color-accent)]/60 px-3 py-1.5">
+                          {fmt(c)}
+                        </span>
+                      ))}
+                    </div>
+                  ) : (
+                    <button onClick={() => setActiveTab('skin')}
+                      className="text-body-md text-[var(--color-accent)]/50 italic">
+                      Belum ada profil kulit. Klik untuk mengisi →
+                    </button>
+                  )}
                 </div>
 
                 {/* Recent orders */}
                 <div className="bg-white border border-black/8 rounded p-8">
                   <div className="flex items-center justify-between mb-6">
                     <div>
-                      <p className="text-label-caps text-[10px] text-[var(--color-accent)]/40 mb-1">PERJALANAN TERAKHIR</p>
+                      <p className={labelCls}>PERJALANAN TERAKHIR</p>
                       <h3 className="text-headline-md italic">Pesanan terbaru</h3>
                     </div>
                     <button onClick={() => setActiveTab('orders')} className="text-label-caps text-[10px] text-[var(--color-primary)] hover:opacity-70">
                       Lihat Semua →
                     </button>
                   </div>
-                  <table className="w-full text-sm">
-                    <thead>
-                      <tr className="border-b border-black/8">
-                        {['Pesanan', 'Tanggal', 'Item', 'Total', 'Status'].map(h => (
-                          <th key={h} className="text-left text-label-caps text-[10px] text-[var(--color-accent)]/40 pb-3 pr-4">{h}</th>
-                        ))}
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {DEMO_ORDERS.map(order => (
-                        <tr key={order.id} className="border-b border-black/5 last:border-0">
-                          <td className="py-4 pr-4 font-mono text-xs text-[var(--color-primary)]">{order.id}</td>
-                          <td className="py-4 pr-4 text-body-md text-[var(--color-accent)]/60">{order.date}</td>
-                          <td className="py-4 pr-4 text-body-md">{order.items}</td>
-                          <td className="py-4 pr-4 text-body-md font-medium">{order.total}</td>
-                          <td className="py-4">
-                            <span className="text-label-caps text-[10px] bg-[var(--color-primary)]/10 text-[var(--color-primary)] px-2 py-1">
-                              {order.status}
-                            </span>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
+                  {orders.length === 0 ? (
+                    <p className="text-body-md text-[var(--color-accent)]/40 italic">Belum ada pesanan.</p>
+                  ) : (
+                    <OrderTable orders={orders.slice(0, 3)} />
+                  )}
                 </div>
 
-                {/* Product recommendations */}
-                {products.length > 0 && (
+                {/* Featured products */}
+                {featuredProducts.length > 0 && (
                   <div>
-                    <div className="mb-6">
-                      <p className="text-label-caps text-[10px] text-[var(--color-accent)]/40 mb-1">UNTUK KAMU</p>
-                      <h3 className="text-headline-md italic">Rekomendasi produk</h3>
-                    </div>
+                    <p className={labelCls}>UNTUK KAMU</p>
+                    <h3 className="text-headline-md italic mb-6">Rekomendasi produk</h3>
                     <div className="grid grid-cols-3 gap-6">
-                      {products.map(p => (
+                      {featuredProducts.map(p => (
                         <Link key={p.id} href={`/store/${slug}/products/${p.id}`}
                           className="group bg-white border border-black/8 rounded overflow-hidden hover:border-[var(--color-primary)]/30 transition-colors">
                           <div className="relative aspect-square bg-[var(--color-secondary)]">
-                            {p.image_url && (
-                              <Image src={p.image_url} alt={p.name} fill sizes="33vw" className="object-cover" />
-                            )}
+                            {p.image_url && <Image src={p.image_url} alt={p.name} fill sizes="33vw" className="object-cover" />}
                           </div>
                           <div className="p-4">
                             <p className="text-body-md font-medium leading-tight mb-1 group-hover:text-[var(--color-primary)] transition-colors">{p.name}</p>
-                            <p className="text-label-caps text-[10px] text-[var(--color-accent)]/50">{formatPrice(p.price)}</p>
+                            <p className="text-label-caps text-[10px] text-[var(--color-accent)]/50">{fmtPrice(p.price)}</p>
                           </div>
                         </Link>
                       ))}
@@ -252,140 +239,188 @@ export function ProfileClient({ tenant, products, slug }: Props) {
             {/* ── KULIT ── */}
             {activeTab === 'skin' && (
               <div className="bg-white border border-black/8 rounded p-8">
-                <p className="text-label-caps text-[10px] text-[var(--color-accent)]/40 mb-1">PREFERENSI KULIT</p>
+                <p className={labelCls}>PREFERENSI KULIT</p>
                 <h2 className="text-headline-lg italic mb-8">Profil kulitmu</h2>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                  {[
-                    { label: 'Tipe Kulit', value: DEMO_USER.skin.type, options: ['Normal', 'Kering', 'Berminyak', 'Kombinasi', 'Sensitif'] },
-                    { label: 'Concern Utama', value: DEMO_USER.skin.concern, options: ['Jerawat', 'Pencerah', 'Anti-aging', 'Hidrasi', 'Pori-pori'] },
-                    { label: 'Tingkat Sensitivitas', value: DEMO_USER.skin.sensitivity, options: ['Rendah', 'Sedang', 'Tinggi'] },
-                  ].map(item => (
-                    <div key={item.label} className="border border-black/8 rounded p-5">
-                      <p className="text-label-caps text-[10px] text-[var(--color-accent)]/40 mb-3">{item.label.toUpperCase()}</p>
-                      <p className="text-headline-md italic mb-4">{item.value}</p>
-                      <div className="flex flex-wrap gap-2">
-                        {item.options.map(opt => (
-                          <span key={opt}
-                            className={`text-label-caps text-[10px] px-2 py-1 border cursor-pointer transition-colors ${
-                              opt === item.value
-                                ? 'bg-[var(--color-primary)] text-white border-[var(--color-primary)]'
-                                : 'border-black/15 text-[var(--color-accent)]/50 hover:border-[var(--color-primary)]/40'
-                            }`}>
-                            {opt}
-                          </span>
+                <form action={async (fd) => {
+                  withSave('skin', () => saveSkinProfile(slug, fd))
+                }}>
+                  <div className="space-y-8 max-w-lg">
+                    <div>
+                      <p className={labelCls}>TIPE KULIT</p>
+                      <div className="flex flex-wrap gap-2 mt-2">
+                        {SKIN_TYPES.map(t => (
+                          <label key={t} className="cursor-pointer">
+                            <input type="radio" name="skin_type" value={t} defaultChecked={profile?.skin_type === t} className="sr-only peer" />
+                            <span className="text-label-caps text-[10px] px-3 py-2 border border-black/15 cursor-pointer peer-checked:bg-[var(--color-primary)] peer-checked:text-white peer-checked:border-[var(--color-primary)] hover:border-[var(--color-primary)]/40 transition-colors block">
+                              {fmt(t)}
+                            </span>
+                          </label>
                         ))}
                       </div>
                     </div>
-                  ))}
-                </div>
-                <button className="bg-[var(--color-primary)] text-white text-label-caps tracking-widest px-8 py-3 hover:opacity-90 transition-opacity">
-                  Simpan Preferensi
-                </button>
+                    <div>
+                      <p className={labelCls}>SKIN CONCERNS (pilih semua yang sesuai)</p>
+                      <div className="flex flex-wrap gap-2 mt-2">
+                        {SKIN_CONCERNS.map(c => (
+                          <label key={c} className="cursor-pointer">
+                            <input type="checkbox" name="skin_concerns" value={c}
+                              defaultChecked={profile?.skin_concerns?.includes(c)} className="sr-only peer" />
+                            <span className="text-label-caps text-[10px] px-3 py-2 border border-black/15 cursor-pointer peer-checked:bg-[var(--color-primary)] peer-checked:text-white peer-checked:border-[var(--color-primary)] hover:border-[var(--color-primary)]/40 transition-colors block">
+                              {fmt(c)}
+                            </span>
+                          </label>
+                        ))}
+                      </div>
+                    </div>
+                    <button type="submit" disabled={isPending}
+                      className="bg-[var(--color-primary)] text-white text-label-caps tracking-widest px-8 py-3 hover:opacity-90 transition-opacity disabled:opacity-60 flex items-center gap-2">
+                      {saved === 'skin' ? <><Check size={14} />TERSIMPAN</> : isPending ? 'MENYIMPAN...' : 'SIMPAN PROFIL KULIT'}
+                    </button>
+                  </div>
+                </form>
               </div>
             )}
 
             {/* ── PESANAN ── */}
             {activeTab === 'orders' && (
               <div className="bg-white border border-black/8 rounded p-8">
-                <p className="text-label-caps text-[10px] text-[var(--color-accent)]/40 mb-1">RIWAYAT</p>
+                <p className={labelCls}>RIWAYAT</p>
                 <h2 className="text-headline-lg italic mb-8">Semua pesanan</h2>
-                <table className="w-full">
-                  <thead>
-                    <tr className="border-b border-black/8">
-                      {['Pesanan', 'Tanggal', 'Item', 'Total', 'Status', ''].map((h, i) => (
-                        <th key={i} className="text-left text-label-caps text-[10px] text-[var(--color-accent)]/40 pb-4 pr-4">{h}</th>
-                      ))}
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {DEMO_ORDERS.map(order => (
-                      <tr key={order.id} className="border-b border-black/5 last:border-0">
-                        <td className="py-5 pr-4 font-mono text-xs text-[var(--color-primary)]">{order.id}</td>
-                        <td className="py-5 pr-4 text-body-md text-[var(--color-accent)]/60">{order.date}</td>
-                        <td className="py-5 pr-4 text-body-md">{order.items}</td>
-                        <td className="py-5 pr-4 text-body-md font-medium">{order.total}</td>
-                        <td className="py-5 pr-4">
-                          <span className="text-label-caps text-[10px] bg-[var(--color-primary)]/10 text-[var(--color-primary)] px-2 py-1">{order.status}</span>
-                        </td>
-                        <td className="py-5">
-                          <button className="text-label-caps text-[10px] text-[var(--color-accent)]/40 hover:text-[var(--color-primary)] transition-colors">
-                            Detail
-                          </button>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+                {orders.length === 0 && ordersPage === 1 ? (
+                  <div className="text-center py-16">
+                    <ShoppingBag size={32} className="mx-auto text-[var(--color-accent)]/20 mb-4" />
+                    <p className="text-body-md text-[var(--color-accent)]/40 italic">Belum ada pesanan.</p>
+                    <Link href={`/store/${slug}/shop`}
+                      className="inline-block mt-4 text-label-caps text-[10px] text-[var(--color-primary)] hover:opacity-70">
+                      Mulai Belanja →
+                    </Link>
+                  </div>
+                ) : (
+                  <>
+                    <OrderTable orders={orders} slug={slug} showDetail />
+                    {ordersTotal > ordersPageSize && (
+                      <div className="flex items-center justify-between pt-6 mt-6 border-t border-black/8">
+                        <p className="text-[11px] text-[var(--color-accent)]/40">
+                          {(ordersPage - 1) * ordersPageSize + 1}–{Math.min(ordersPage * ordersPageSize, ordersTotal)} dari {ordersTotal} pesanan
+                        </p>
+                        <div className="flex items-center gap-2">
+                          {ordersPage > 1
+                            ? <Link href={`/store/${slug}/profile?page=${ordersPage - 1}`}
+                                className="text-label-caps text-[10px] border border-black/15 px-3 py-1.5 hover:bg-[var(--color-secondary)] transition-colors">
+                                ← Sebelumnya
+                              </Link>
+                            : <span className="text-label-caps text-[10px] border border-black/10 px-3 py-1.5 opacity-30">← Sebelumnya</span>
+                          }
+                          <span className="text-[11px] text-[var(--color-accent)]/40">{ordersPage} / {Math.ceil(ordersTotal / ordersPageSize)}</span>
+                          {ordersPage < Math.ceil(ordersTotal / ordersPageSize)
+                            ? <Link href={`/store/${slug}/profile?page=${ordersPage + 1}`}
+                                className="text-label-caps text-[10px] border border-black/15 px-3 py-1.5 hover:bg-[var(--color-secondary)] transition-colors">
+                                Berikutnya →
+                              </Link>
+                            : <span className="text-label-caps text-[10px] border border-black/10 px-3 py-1.5 opacity-30">Berikutnya →</span>
+                          }
+                        </div>
+                      </div>
+                    )}
+                  </>
+                )}
               </div>
             )}
 
             {/* ── WISHLIST ── */}
             {activeTab === 'wishlist' && (
               <div className="bg-white border border-black/8 rounded p-8">
-                <p className="text-label-caps text-[10px] text-[var(--color-accent)]/40 mb-1">TERSIMPAN</p>
+                <p className={labelCls}>TERSIMPAN</p>
                 <h2 className="text-headline-lg italic mb-8">Wishlist kamu</h2>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                  {(products.length > 0 ? products : DEMO_WISHLIST.map(w => ({ id: w.name, name: w.name, price: 0, image_url: null } as unknown as Product))).map((p, i) => (
-                    <div key={i} className="border border-black/8 rounded overflow-hidden group">
-                      <div className="relative aspect-square bg-[var(--color-secondary)]">
-                        {'image_url' in p && p.image_url && (
-                          <Image src={p.image_url} alt={p.name} fill sizes="33vw" className="object-cover" />
-                        )}
-                      </div>
-                      <div className="p-4 flex items-center justify-between">
-                        <div>
-                          <p className="text-body-md font-medium">{p.name}</p>
-                          <p className="text-label-caps text-[10px] text-[var(--color-accent)]/50">
-                            {'price' in p ? formatPrice(p.price) : ''}
-                          </p>
-                        </div>
-                        <button className="text-label-caps text-[10px] bg-[var(--color-primary)] text-white px-3 py-1.5 hover:opacity-90 transition-opacity">
-                          Tambah
-                        </button>
-                      </div>
+                {wishlistProducts.length === 0 ? (
+                  <div className="text-center py-16">
+                    <Heart size={32} className="mx-auto text-[var(--color-accent)]/20 mb-4" />
+                    <p className="text-body-md text-[var(--color-accent)]/40 italic">Wishlist masih kosong.</p>
+                    <Link href={`/store/${slug}/shop`}
+                      className="inline-block mt-4 text-label-caps text-[10px] text-[var(--color-primary)] hover:opacity-70">
+                      Jelajahi Produk →
+                    </Link>
+                  </div>
+                ) : (
+                  <>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                      {wishlistProducts.map(p => (
+                        <Link key={p.id} href={`/store/${slug}/products/${p.id}`}
+                          className="group border border-black/8 rounded overflow-hidden hover:border-[var(--color-primary)]/30 transition-colors">
+                          <div className="relative aspect-square bg-[var(--color-secondary)]">
+                            {p.image_url && <Image src={p.image_url} alt={p.name} fill sizes="33vw" className="object-cover" />}
+                          </div>
+                          <div className="p-4 flex items-center justify-between">
+                            <div>
+                              <p className="text-body-md font-medium group-hover:text-[var(--color-primary)] transition-colors">{p.name}</p>
+                              <p className="text-label-caps text-[10px] text-[var(--color-accent)]/50">{fmtPrice(p.price)}</p>
+                            </div>
+                            <span className="text-label-caps text-[10px] bg-[var(--color-primary)] text-white px-3 py-1.5">
+                              ADD
+                            </span>
+                          </div>
+                        </Link>
+                      ))}
                     </div>
-                  ))}
-                </div>
+                    {wishlistTotal > wishlistPageSize && (
+                      <div className="flex items-center justify-between pt-6 mt-6 border-t border-black/8">
+                        <p className="text-[11px] text-[var(--color-accent)]/40">
+                          {(wishlistPage - 1) * wishlistPageSize + 1}–{Math.min(wishlistPage * wishlistPageSize, wishlistTotal)} dari {wishlistTotal} item
+                        </p>
+                        <div className="flex items-center gap-2">
+                          {wishlistPage > 1
+                            ? <Link href={`/store/${slug}/profile?wpage=${wishlistPage - 1}`}
+                                className="text-label-caps text-[10px] border border-black/15 px-3 py-1.5 hover:bg-[var(--color-secondary)] transition-colors">
+                                ← Sebelumnya
+                              </Link>
+                            : <span className="text-label-caps text-[10px] border border-black/10 px-3 py-1.5 opacity-30">← Sebelumnya</span>
+                          }
+                          <span className="text-[11px] text-[var(--color-accent)]/40">{wishlistPage} / {Math.ceil(wishlistTotal / wishlistPageSize)}</span>
+                          {wishlistPage < Math.ceil(wishlistTotal / wishlistPageSize)
+                            ? <Link href={`/store/${slug}/profile?wpage=${wishlistPage + 1}`}
+                                className="text-label-caps text-[10px] border border-black/15 px-3 py-1.5 hover:bg-[var(--color-secondary)] transition-colors">
+                                Berikutnya →
+                              </Link>
+                            : <span className="text-label-caps text-[10px] border border-black/10 px-3 py-1.5 opacity-30">Berikutnya →</span>
+                          }
+                        </div>
+                      </div>
+                    )}
+                  </>
+                )}
               </div>
             )}
 
             {/* ── SETTINGS ── */}
             {activeTab === 'settings' && (
-              <div className="space-y-6">
-                <div className="bg-white border border-black/8 rounded p-8">
-                  <p className="text-label-caps text-[10px] text-[var(--color-accent)]/40 mb-1">PENGATURAN</p>
-                  <h2 className="text-headline-lg italic mb-8">Pengaturan akun</h2>
-                  <div className="space-y-6 max-w-md">
-                    {[
-                      { label: 'Nama Lengkap', value: DEMO_USER.name },
-                      { label: 'Email', value: DEMO_USER.email },
-                      { label: 'Nomor Telepon', value: '+62 812 0000 0000' },
-                    ].map(f => (
-                      <div key={f.label}>
-                        <label className="text-label-caps text-[10px] text-[var(--color-accent)]/40 block mb-2">{f.label.toUpperCase()}</label>
-                        <input defaultValue={f.value}
-                          className="w-full bg-[var(--color-secondary)] border border-black/15 px-4 py-3 text-body-md focus:outline-none focus:border-[var(--color-primary)] transition-colors" />
-                      </div>
-                    ))}
-                    <button className="bg-[var(--color-primary)] text-white text-label-caps tracking-widest px-8 py-3 hover:opacity-90 transition-opacity">
-                      Simpan Perubahan
-                    </button>
+              <div className="bg-white border border-black/8 rounded p-8">
+                <p className={labelCls}>PENGATURAN</p>
+                <h2 className="text-headline-lg italic mb-8">Pengaturan akun</h2>
+                <form action={async (fd) => {
+                  withSave('settings', () => saveProfile(slug, fd))
+                }} className="space-y-6 max-w-md">
+                  <div>
+                    <label className={labelCls}>NAMA LENGKAP</label>
+                    <input name="full_name" defaultValue={profile?.full_name ?? ''} className={inputCls} placeholder="Nama Lengkap" />
                   </div>
-                </div>
-
-                <div className="bg-white border border-black/8 rounded p-8">
-                  <h3 className="text-headline-md italic mb-6">Preferensi Notifikasi</h3>
-                  <div className="space-y-4">
-                    {['Email promosi dan penawaran', 'Update pesanan via email', 'Rekomendasi produk mingguan'].map(item => (
-                      <label key={item} className="flex items-center justify-between cursor-pointer">
-                        <span className="text-body-md">{item}</span>
-                        <div className="w-10 h-5 bg-[var(--color-primary)] rounded-full relative">
-                          <div className="w-4 h-4 bg-white rounded-full absolute right-0.5 top-0.5" />
-                        </div>
-                      </label>
-                    ))}
+                  <div>
+                    <label className={labelCls}>EMAIL</label>
+                    <input defaultValue={user.email} disabled className={`${inputCls} opacity-50 cursor-not-allowed`} />
+                    <p className="text-[11px] text-[var(--color-accent)]/40 mt-1 font-sans">Email tidak dapat diubah di sini.</p>
                   </div>
-                </div>
+                  <div>
+                    <label className={labelCls}>NOMOR WHATSAPP</label>
+                    <input name="whatsapp_number" defaultValue={profile?.whatsapp_number ?? ''} className={inputCls} placeholder="+62 812 3456 7890" />
+                  </div>
+                  <div>
+                    <label className={labelCls}>ALAMAT PENGIRIMAN</label>
+                    <input name="address" defaultValue={profile?.address ?? ''} className={inputCls} placeholder="Jl. Melati No. 12, Jakarta" />
+                  </div>
+                  <button type="submit" disabled={isPending}
+                    className="bg-[var(--color-primary)] text-white text-label-caps tracking-widest px-8 py-3 hover:opacity-90 transition-opacity disabled:opacity-60 flex items-center gap-2">
+                    {saved === 'settings' ? <><Check size={14} />TERSIMPAN</> : isPending ? 'MENYIMPAN...' : 'SIMPAN PERUBAHAN'}
+                  </button>
+                </form>
               </div>
             )}
 
@@ -393,5 +428,46 @@ export function ProfileClient({ tenant, products, slug }: Props) {
         </div>
       </div>
     </div>
+  )
+}
+
+function OrderTable({ orders, slug, showDetail = false }: { orders: any[]; slug?: string; showDetail?: boolean }) {
+  return (
+    <table className="w-full">
+      <thead>
+        <tr className="border-b border-black/8">
+          {['No. Pesanan', 'Tanggal', 'Item', 'Total', 'Status', ...(showDetail ? [''] : [])].map((h, i) => (
+            <th key={i} className="text-left text-label-caps text-[10px] text-[var(--color-accent)]/40 pb-4 pr-4">{h}</th>
+          ))}
+        </tr>
+      </thead>
+      <tbody>
+        {orders.map((o: any) => {
+          const itemNames = (o.order_items ?? []).map((i: any) => i.product_name).join(', ') || '-'
+          const statusCls = STATUS_STYLES[o.status] ?? 'bg-black/5 text-black/50'
+          return (
+            <tr key={o.id} className="border-b border-black/5 last:border-0">
+              <td className="py-5 pr-4 font-mono text-xs text-[var(--color-primary)]">#{o.id.slice(-8).toUpperCase()}</td>
+              <td className="py-5 pr-4 text-body-md text-[var(--color-accent)]/60 whitespace-nowrap">{new Date(o.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })}</td>
+              <td className="py-5 pr-4 text-body-md max-w-[200px] truncate">{itemNames}</td>
+              <td className="py-5 pr-4 text-body-md font-medium whitespace-nowrap">{fmtPrice(o.total_amount)}</td>
+              <td className="py-5 pr-4">
+                <span className={`text-label-caps text-[10px] px-2 py-1 ${statusCls}`}>
+                  {STATUS_LABEL[o.status] ?? o.status}
+                </span>
+              </td>
+              {showDetail && slug && (
+                <td className="py-5">
+                  <Link href={`/store/${slug}/order/${o.id}/track`}
+                    className="text-label-caps text-[10px] text-[var(--color-accent)]/40 hover:text-[var(--color-primary)] transition-colors">
+                    Detail →
+                  </Link>
+                </td>
+              )}
+            </tr>
+          )
+        })}
+      </tbody>
+    </table>
   )
 }

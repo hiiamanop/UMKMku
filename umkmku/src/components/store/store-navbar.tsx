@@ -2,16 +2,15 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
-import { ShoppingBag, Search, User, Menu, X } from 'lucide-react'
+import { ShoppingBag, Search, User, Menu, X, MessageSquare } from 'lucide-react'
 import type { Tenant } from '@/lib/supabase/types'
+import { useCart } from '@/lib/cart-context'
 
-interface Props {
-  tenant: Tenant
-  cartCount?: number
-}
+interface Props { tenant: Tenant }
 
-export function StoreNavbar({ tenant, cartCount = 0 }: Props) {
+export function StoreNavbar({ tenant }: Props) {
   const [mobileOpen, setMobileOpen] = useState(false)
+  const { totalCount: cartCount } = useCart()
 
   const navLinks = [
     { label: 'Shop', href: `/store/${tenant.slug}/shop` },
@@ -59,10 +58,13 @@ export function StoreNavbar({ tenant, cartCount = 0 }: Props) {
               </Link>
             ))}
           </nav>
+          <Link href={`/store/${tenant.slug}/orders`} aria-label="Pesanan saya" className="text-[var(--color-accent)] hover:text-[var(--color-primary)] transition-colors">
+            <MessageSquare size={20} />
+          </Link>
           <Link href={`/store/${tenant.slug}/profile`} aria-label="Account" className="text-[var(--color-accent)] hover:text-[var(--color-primary)] transition-colors">
             <User size={20} />
           </Link>
-          <Link href={`/store/${tenant.slug}/cart`} aria-label="Cart" className="relative text-[var(--color-accent)] hover:text-[var(--color-primary)] transition-colors">
+          <Link id="cart-nav-icon" href={`/store/${tenant.slug}/cart`} aria-label="Cart" className="relative text-[var(--color-accent)] hover:text-[var(--color-primary)] transition-colors">
             <ShoppingBag size={20} />
             {cartCount > 0 && (
               <span className="absolute -top-2 -right-2 bg-[var(--color-primary)] text-white text-[10px] font-bold rounded-full w-4 h-4 flex items-center justify-center">
@@ -86,6 +88,9 @@ export function StoreNavbar({ tenant, cartCount = 0 }: Props) {
               {link.label}
             </Link>
           ))}
+          <Link href={`/store/${tenant.slug}/orders`} onClick={() => setMobileOpen(false)} className="text-label-caps text-[var(--color-accent)] py-1">
+            Pesanan Saya
+          </Link>
         </div>
       )}
     </header>

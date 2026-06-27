@@ -1,0 +1,12 @@
+{
+  "crons": [
+    {
+      "path": "/api/cron/cancel-expired",
+      "schedule": "0 * * * *"
+    },
+    {
+      "path": "/api/cron/suspend-expired",
+      "schedule": "0 18 * * *"
+    }
+  ]
+}

@@ -1,4 +1,6 @@
 export type TenantCategory = 'skincare' | 'parfum' | 'fashion' | 'fdb'
+export type SubscriptionStatus = 'trial' | 'active' | 'expired' | 'suspended'
+export type SubscriptionPlanId = 'free' | 'business' | 'enterprise'
 export type OrderPaymentStatus = 'pending' | 'processing' | 'completed' | 'failed' | 'expired'
 export type OrderStatus = 'pending' | 'processing' | 'shipped' | 'delivered' | 'cancelled'
 
@@ -23,6 +25,7 @@ export interface Tenant {
   category: TenantCategory
   is_active: boolean
   owner_email: string | null
+  owner_id: string | null
   about_image_1_url: string | null
   about_image_2_url: string | null
   cta_image_url: string | null
@@ -41,6 +44,9 @@ export interface Tenant {
   page_sustainability_story_image_url: string | null
   page_sustainability_story_title: string | null
   page_sustainability_story_body: string | null
+  qris_image_url: string | null
+  auth_hero_image_url: string | null
+  subscription_id: string | null
 }
 
 export interface IngredientItem { name: string; description: string }
@@ -119,6 +125,7 @@ export interface Product {
   concerns: string[]
   ingredients: string[]
   usage_step: string | null
+  how_to_use: string | null
   // Category-specific JSON fields
   skincare_data: SkincareData | null
   parfum_data: ParfumData | null
@@ -128,6 +135,8 @@ export interface Product {
   shopee_url: string | null
   sort_order: number
   is_active: boolean
+  stock_quantity: number | null
+  is_preorder: boolean
 }
 
 export interface ChatMessage {
@@ -153,6 +162,36 @@ export interface ChatSession {
   ended_at: string | null
 }
 
+export interface UserProfile {
+  id: string
+  created_at: string
+  full_name: string | null
+  address: string | null
+  whatsapp_number: string | null
+  skin_type: string | null
+  skin_concerns: string[] | null
+  avatar_url: string | null
+  role: 'customer' | 'merchant' | 'super_admin'
+}
+
+export interface Wishlist {
+  id: string
+  created_at: string
+  user_id: string
+  tenant_id: string
+  product_id: string
+}
+
+export interface OrderChat {
+  id: string
+  created_at: string
+  order_id: string
+  role: 'user' | 'assistant'
+  sender_type: 'customer' | 'ai' | 'merchant'
+  content: string | null
+  attachment_url: string | null
+}
+
 export interface Customer {
   id: string
   tenant_id: string
@@ -172,28 +211,86 @@ export interface OrderItem {
   price_at_purchase: number // Rupiah
 }
 
+export interface SubscriptionPlan {
+  id: SubscriptionPlanId
+  name: string
+  price_monthly: number
+  ai_token_limit: number           // -1 = pakai hard cap
+  ai_token_hard_cap: number | null
+  transaction_limit: number | null // null = unlimited
+  is_active: boolean
+}
+
+export interface TenantSubscription {
+  id: string
+  tenant_id: string
+  plan_id: SubscriptionPlanId
+  status: SubscriptionStatus
+  trial_ends_at: string | null
+  current_period_start: string | null
+  current_period_end: string | null
+  ai_tokens_used: number
+  transactions_used: number
+  overage_transactions: number
+  notified_80pct: boolean
+  suspended_notified: boolean
+  created_at: string
+  updated_at: string
+  // join
+  plan?: SubscriptionPlan
+}
+
+export interface TopUpPackage {
+  id: string
+  name: string
+  price: number
+  transaction_quota: number
+  is_active: boolean
+}
+
+export interface SubscriptionInvoice {
+  id: string
+  external_id: string
+  plan_id: SubscriptionPlanId
+  email: string
+  full_name: string | null
+  amount: number
+  ppn: number
+  xendit_fee: number
+  final_amount: number
+  xendit_invoice_id: string | null
+  xendit_invoice_url: string | null
+  status: 'pending' | 'paid' | 'expired' | 'failed'
+  paid_at: string | null
+  tenant_id: string | null
+  onboarding_completed_at: string | null
+  created_at: string
+}
+
+export interface TopUpOrder {
+  id: string
+  tenant_id: string
+  package_id: string
+  status: 'pending' | 'paid' | 'cancelled'
+  paid_at: string | null
+  created_at: string
+}
+
 export interface Order {
   id: string
   tenant_id: string
-  customer_id: string | null
+  user_id: string | null
   created_at: string
-  customer_email: string
-  customer_phone: string | null
+  status: string
+  total_amount: number
   customer_name: string | null
-  items: OrderItem[]
-  // Pricing breakdown (Rupiah)
-  subtotal: number
-  ppn: number // 12% VAT
-  subtotal_with_ppn: number
-  xendit_fee: number // 2.5% of subtotal_with_ppn
-  final_price: number // what customer pays
-  // Payment
-  qris_code: string | null
-  qris_image_url: string | null
-  payment_status: OrderPaymentStatus
-  order_status: OrderStatus
-  promo_code: string | null
-  discount_amount: number
+  customer_whatsapp: string | null
+  shipping_address: string | null
+  courier_name: string | null
+  tracking_number: string | null
+  shipping_photo_url: string | null
   notes: string | null
-  updated_at: string
+  payment_confidence: number | null
+  payment_ai_note: string | null
+  order_items?: OrderItem[]
 }

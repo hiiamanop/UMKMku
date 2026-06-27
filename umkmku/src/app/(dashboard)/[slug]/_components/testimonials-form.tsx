@@ -96,7 +96,7 @@ function TestimonialRow({ slug, item }: { slug: string; item: Testimonial }) {
 
           <div className="flex items-center gap-3 pt-1">
             <Button type="submit" disabled={pending}
-              className="bg-[var(--color-primary)] text-white hover:opacity-90 rounded-none text-label-caps tracking-widest px-5 py-2 h-auto text-[10px]">
+              className="bg-[var(--color-primary)] !text-white hover:bg-[var(--color-primary)] hover:opacity-90 rounded-none text-label-caps tracking-widest px-5 py-2 h-auto text-[10px]">
               {pending ? 'Menyimpan...' : 'Simpan'}
             </Button>
             <DeleteButton slug={slug} id={item.id} />
@@ -158,7 +158,7 @@ function AddTestimonialForm({ slug }: { slug: string }) {
       {state?.error && <p className="text-sm text-red-500">{state.error}</p>}
       <div className="flex items-center gap-3">
         <Button type="submit" disabled={pending}
-          className="bg-[var(--color-primary)] text-white hover:opacity-90 rounded-none text-label-caps tracking-widest px-5 py-2 h-auto text-[10px]">
+          className="bg-[var(--color-primary)] !text-white hover:bg-[var(--color-primary)] hover:opacity-90 rounded-none text-label-caps tracking-widest px-5 py-2 h-auto text-[10px]">
           {pending ? 'Menyimpan...' : 'Tambah'}
         </Button>
         <button type="button" onClick={() => setOpen(false)}

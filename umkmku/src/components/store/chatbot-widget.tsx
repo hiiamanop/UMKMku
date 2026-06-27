@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useRef, useEffect } from 'react'
-import { MessageCircle, X, Send } from 'lucide-react'
+import { Bot, X, Send } from 'lucide-react'
 import type { Tenant, Product } from '@/lib/supabase/types'
 import { ChatbotMessages } from './chatbot-messages'
 
@@ -115,7 +115,7 @@ export function ChatbotWidget({ tenant, products }: Props) {
         {isOpen ? (
           <X className="w-5 h-5 text-white" />
         ) : (
-          <MessageCircle className="w-5 h-5 text-white" />
+          <Bot className="w-5 h-5 text-white" />
         )}
       </button>
 
@@ -138,7 +138,7 @@ export function ChatbotWidget({ tenant, products }: Props) {
 
           {/* Messages */}
           <div className="flex-1 overflow-y-auto p-4 space-y-3 min-h-0">
-            <ChatbotMessages messages={messages} products={products} />
+            <ChatbotMessages messages={messages} products={products} slug={tenant.slug} />
             {isLoading && (
               <div className="flex justify-start">
                 <div className="bg-gray-100 rounded-2xl px-4 py-2 text-sm text-gray-500">

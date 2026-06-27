@@ -1,20 +1,47 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { createServerClient } from '@supabase/ssr'
 
-export function middleware(request: NextRequest) {
+const PROTECTED_PATHS = ['/profile', '/orders', '/checkout', '/order']
+
+export async function middleware(request: NextRequest) {
   const hostname = request.headers.get('host') ?? ''
   const rootDomain = process.env.NEXT_PUBLIC_ROOT_DOMAIN ?? 'localhost:3000'
   const slug = extractSlug(hostname, rootDomain)
 
-  if (!slug) return NextResponse.next()
+  if (!slug) {
+    // Main domain — tambah header x-pathname agar layout bisa tahu current path
+    const requestHeaders = new Headers(request.headers)
+    requestHeaders.set('x-pathname', request.nextUrl.pathname)
+    return NextResponse.next({ request: { headers: requestHeaders } })
+  }
 
   const url = request.nextUrl.clone()
 
-  // API routes dan /store/* tidak perlu di-rewrite
   if (url.pathname.startsWith('/api/')) return NextResponse.next()
   if (url.pathname.startsWith('/store/')) return NextResponse.next()
-  const originalPath = url.pathname
-  url.pathname = `/store/${slug}${originalPath}`
 
+  const originalPath = url.pathname
+
+  // Auth guard for protected store paths
+  if (PROTECTED_PATHS.some(p => originalPath === p || originalPath.startsWith(p + '/'))) {
+    const supabase = createServerClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+      {
+        cookies: {
+          getAll: () => request.cookies.getAll(),
+          setAll: () => {},
+        },
+      }
+    )
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user) {
+      url.pathname = `/store/${slug}/login`
+      return NextResponse.redirect(url)
+    }
+  }
+
+  url.pathname = `/store/${slug}${originalPath}`
   return NextResponse.rewrite(url)
 }
 

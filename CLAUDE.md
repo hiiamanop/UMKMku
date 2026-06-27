@@ -6,15 +6,15 @@
 
 ## Framework Guardrails (BACA DULU)
 
-**Peran AI di proyek ini:** co-founder & CTO yang **menantang ide, bukan menyetujui**. Definisi lengkap (portabel, in-repo): [`docs/COFOUNDER_ROLE.md`](docs/COFOUNDER_ROLE.md). Baca itu di awal tiap diskusi strategis.
+**Peran AI di proyek ini:** co-founder & CTO yang **menantang ide, bukan menyetujui**. Definisi lengkap: [`docs/COFOUNDER_ROLE.md`](docs/COFOUNDER_ROLE.md). Baca itu di awal tiap diskusi strategis.
 
-Sebelum membangun atau mengubah fitur APA PUN, lewati gerbang framework: **invoke skill `umkmku-feature`**. Skill itu memaksa cek scope (feature creep? langgar keputusan final?), pola arsitektur, dan jebakan teknis.
+Sebelum membangun atau mengubah fitur APA PUN, lewati gerbang framework: **invoke skill `umkmku-feature`**.
 
 Tiga lapis yang menjaga konsistensi:
 
-1. **CLAUDE.md (file ini)** — WHAT kita bangun + keputusan final (di bawah).
-2. **Memory project** — peran, gotcha teknis & status terkini. Wajib diingat:
-   - `role-cofounder-cto` — peran Claude: co-founder & CTO yang MENANTANG ide, bukan yes-man
+1. **CLAUDE.md (file ini)** — WHAT kita bangun + keputusan final.
+2. **Memory project** — peran, gotcha teknis & status terkini:
+   - `role-cofounder-cto` — peran Claude: co-founder & CTO yang MENANTANG ide
    - `architecture-patterns` — 4 pola wajib
    - `tech-gotchas-ai-ollama` — jebakan mahal (AI SDK+Ollama+Gemma)
    - `prototype-status` — apa yang sudah/belum jalan
@@ -31,7 +31,7 @@ Tiga lapis yang menjaga konsistensi:
 
 **Vision:** Dunia di mana setiap brand lokal memiliki identitas digital sendiri — pelanggannya sendiri, datanya sendiri, dan kanal penjualannya sendiri.
 
-**Category:** Brand Infrastructure untuk UMKM lokal Indonesia.
+**Category:** Web + Marketplace Builder untuk UMKM lokal Indonesia.
 
 **Category Enemy:** Marketplace-as-foundation (bukan marketplace sebagai channel).
 
@@ -39,7 +39,7 @@ Tiga lapis yang menjaga konsistensi:
 
 ## Ideal Customer Profile (ICP)
 
-**Target Utama (Fase 1):** Skincare & Beauty brand lokal Indonesia
+**Target Utama (Fase 1):** Brand lokal Indonesia (skincare, parfum, fashion, food & beverage)
 
 | Dimensi | Detail |
 |---|---|
@@ -47,7 +47,7 @@ Tiga lapis yang menjaga konsistensi:
 | Channel saat ini | Instagram/TikTok aktif + Shopee/Tokopedia |
 | Tim | Founder + 1–3 orang |
 | Tech savviness | Bisa pakai smartphone, familiar Instagram/Canva |
-| Pain point | Kehilangan repeat buyer, tidak bisa retarget customer lama |
+| Pain point | Kehilangan repeat buyer, tidak punya toko sendiri, bergantung marketplace |
 | Willingness to pay | IDR 150k–500k/bulan jika ROI jelas |
 
 **Bukan ICP sekarang:** Warung, FMCG, jasa, merchant tanpa social media presence.
@@ -58,23 +58,43 @@ Tiga lapis yang menjaga konsistensi:
 
 ### Apa yang Kita Build
 
-Platform multi-tenant di mana merchant UMKM skincare lokal bisa:
+UMKMku adalah **web + marketplace builder** — merchant UMKM bisa punya toko e-commerce sendiri di subdomain mereka, lengkap dengan checkout, payment, dan order management. Bukan sekadar storefront yang redirect ke Tokopedia/Shopee.
 
-1. **Onboarding via AI** — ceritakan bisnis mereka → AI extract config → toko live < 60 detik
+Merchant bisa:
+
+1. **Onboarding via AI** — ceritakan bisnis → AI extract config → toko live < 60 detik
 2. **Subdomain sendiri** — `nama-brand.umkmku.com`
-3. **CMS sederhana** — edit via AI chat atau form langsung
-4. **AI Chatbot di toko** — membantu end-customer menemukan produk yang tepat, redirect ke marketplace untuk transaksi
-5. **Kepemilikan data** — semua customer interaction tercatat di database merchant sendiri
+3. **CMS sederhana** — edit via form langsung (brand, produk, tampilan, halaman)
+4. **Toko lengkap** — customers bisa browse, cart, checkout, bayar via QRIS, tracking pesanan
+5. **AI Chatbot** — bantu customer temukan produk yang tepat, bisa juga rekomendasikan ke marketplace sebagai channel tambahan
+6. **Order management** — merchant kelola pesanan, verifikasi pembayaran (AI-assisted via Gemini Vision), notif WA otomatis
+7. **Kepemilikan data** — semua customer, pesanan, dan interaksi tercatat di database merchant sendiri
 
 ### Apa yang BUKAN Kita Build di MVP
 
-- Payment gateway (transaksi tetap di marketplace)
-- Multiple templates (satu template skincare yang bagus)
-- Mobile app
-- Dashboard analytics
-- SEO tools
+- Multiple templates (satu template per kategori)
+- Mobile app native
 - Drag-and-drop page builder
-- Integrasi inventory
+- Integrasi inventory dengan marketplace
+- Fitur iklan / marketing automation
+
+---
+
+## Subscription Plans
+
+| Plan | Harga | AI Token | Limit Pesanan | Keterangan |
+|---|---|---|---|---|
+| Free | Rp 0 | 10.000 token | — | Trial 7 hari, setelah habis suspend total |
+| Business | Rp 399.000/bulan | 1.000.000 token | 1.000/bulan | Overage Rp 1.000/pesanan, ditagih bulan depan |
+| Enterprise | Rp 599.000/bulan | Internal cap 50M token | Unlimited | Monitor usage, alert jika mendekati cap |
+
+**Top-up pesanan:** Rp 10.000 / 50 pesanan tambahan (bisa dibeli kapan saja)
+
+**Suspend:** Trial habis atau pembayaran gagal → toko suspend total (customer tidak bisa akses) + notif email + WA ke merchant
+
+**Overage pesanan:** Tidak langsung diblokir — notif WA saat kuota tinggal 20%, pesanan tetap masuk dengan biaya overage yang ditagihkan bulan depan.
+
+**AI provider untuk subscription:** Gemini 2.0 Flash (lebih murah, sudah terintegrasi di `lib/ai/gemini.ts`)
 
 ---
 
@@ -93,16 +113,17 @@ Satu Next.js app melayani semua merchant. Setiap merchant hanya punya data berbe
 
 CMS hanya expose field yang template support. Merchant tidak bisa minta feature template yang belum ada.
 
-### 3. Provider-agnostic AI Layer
+### 3. AI Layer
 
-Dev (lokal): Ollama + Gemma 4 12b
-Production: Claude API (Anthropic)
+Dev (lokal): Ollama + Gemma 4 12b (via Ollama native API, bukan AI SDK — untuk chat)
+Production: Gemini 2.0 Flash (`lib/ai/gemini.ts`) untuk chatbot & payment vision
+Onboarding: tetap via `lib/ai/provider.ts` (bisa Ollama atau Gemini)
 
-Switch hanya via env variable. Zero code change.
+> ⚠️ Chat AI TIDAK lewat Vercel AI SDK + Ollama. Pakai `geminiChat()` dari `lib/ai/gemini.ts` langsung.
 
-### 4. Marketplace sebagai channel, bukan musuh
+### 4. Payment di platform sendiri, marketplace sebagai channel tambahan
 
-Di v1, chatbot merekomendasikan produk dan redirect ke Tokopedia/Shopee. Ini adalah fitur, bukan kegagalan. Merchant tidak perlu ubah workflow transaksi mereka.
+Transaksi utama ada di platform UMKMku (QRIS, verifikasi AI). Chatbot boleh juga rekomendasikan link Tokopedia/Shopee sebagai opsi, tapi bukan satu-satunya cara beli.
 
 ---
 
@@ -112,91 +133,39 @@ Di v1, chatbot merekomendasikan produk dan redirect ke Tokopedia/Shopee. Ini ada
 |---|---|---|
 | Framework | Next.js 16.2.9 (App Router) | SSR + API routes dalam satu project, Vercel-native |
 | Language | TypeScript | Type safety untuk multi-tenant config |
-| Styling | Tailwind CSS + shadcn/ui | Cepat, consistent, tidak perlu design system custom |
+| Styling | Tailwind CSS + shadcn/ui | Cepat, consistent |
 | Database | Supabase (PostgreSQL) | Real-time, RLS untuk multi-tenant security, built-in auth |
 | Storage | Supabase Storage | Foto produk merchant |
-| AI (dev) | Ollama + Gemma 4 12b | Gratis, lokal, RTX 3060 12GB feasible dengan quantization |
-| AI (prod) | Claude API (claude-sonnet-4-6) | Quality terbaik untuk Indonesian language |
-| AI SDK | Vercel AI SDK v6 | Provider-agnostic, streaming built-in — TAPI chat di-bypass (lihat Framework Guardrails) |
+| AI (dev/chat) | Ollama + Gemma 4 12b | Gratis, lokal — via native API, bukan AI SDK |
+| AI (prod/chat) | Gemini 2.0 Flash | Murah, cepat, sudah ada di `lib/ai/gemini.ts` |
+| AI (vision) | Gemini 2.5 Flash | Validasi bukti bayar QRIS |
+| AI SDK | Vercel AI SDK v6 | Dipakai untuk onboarding saja |
+| Notifikasi | Fonnte API | WhatsApp notification ke merchant & customer |
 | Deployment | Vercel | Wildcard subdomain, zero-config Next.js |
 | Package Manager | pnpm | Lebih cepat dari npm/yarn |
 
 ---
 
-## Database Schema
+## Database Schema (Ringkasan Aktual)
 
-### `tenants` table
+Tabel lengkap ada di `supabase/migrations/`. Yang paling penting:
 
-```sql
-create table tenants (
-  id              uuid primary key default gen_random_uuid(),
-  slug            text unique not null,        -- "glow-id" → glow-id.umkmku.com
-  created_at      timestamptz default now(),
-
-  -- Brand identity
-  brand_name      text not null,
-  tagline         text,
-  description     text,
-  primary_color   text default '#1a1a1a',
-  secondary_color text default '#f5f5f5',
-  accent_color    text default '#d4a574',
-  logo_url        text,
-  hero_image_url  text,
-
-  -- Kontak
-  whatsapp_number text,
-  instagram_url   text,
-  tokopedia_url   text,                        -- store-level URL
-  shopee_url      text,
-
-  -- Chatbot config
-  chatbot_name    text default 'Beauty Advisor',
-  chatbot_persona text,
-
-  -- Meta
-  is_active       boolean default true,
-  owner_email     text
-);
 ```
+tenants           — config toko: brand, warna, kontak, chatbot, kategori, halaman
+products          — produk per tenant, dengan metadata AI (skin_types, concerns, dll)
+orders            — pesanan customer: status, payment, shipping, tracking
+order_items       — item per pesanan
+order_chats       — percakapan order antara customer ↔ merchant ↔ AI
+chat_sessions     — session chatbot toko
+user_profiles     — profil customer & merchant (role: customer|merchant|super_admin)
+testimonials      — testimoni per toko
+wishlists         — wishlist customer per toko
 
-### `products` table
-
-```sql
-create table products (
-  id          uuid primary key default gen_random_uuid(),
-  tenant_id   uuid references tenants(id) on delete cascade,
-  created_at  timestamptz default now(),
-
-  name         text not null,
-  description  text,
-  price        integer,                        -- rupiah
-  image_url    text,
-
-  -- Untuk AI chatbot matching
-  skin_types   text[],   -- ['oily','combination','dry','sensitive','all']
-  concerns     text[],   -- ['acne','brightening','anti-aging','hydrating','pores']
-  ingredients  text[],   -- ['niacinamide','vitamin-c','retinol','ceramide']
-  usage_step   text,     -- 'cleanser'|'toner'|'serum'|'moisturizer'|'sunscreen'|'treatment'
-
-  -- Marketplace links per produk
-  tokopedia_url text,
-  shopee_url    text,
-
-  sort_order   integer default 0,
-  is_active    boolean default true
-);
-```
-
-### `chat_sessions` table
-
-```sql
-create table chat_sessions (
-  id          uuid primary key default gen_random_uuid(),
-  tenant_id   uuid references tenants(id),
-  started_at  timestamptz default now(),
-  messages    jsonb default '[]',              -- [{role, content, timestamp}]
-  ended_at    timestamptz
-);
+[BELUM ADA — perlu dibuat:]
+subscription_plans      — definisi plan (free/business/enterprise)
+tenant_subscriptions    — status subscription per tenant, usage tracking
+top_up_packages         — paket top-up pesanan
+top_up_orders           — pembelian top-up
 ```
 
 ---
@@ -206,226 +175,110 @@ create table chat_sessions (
 ```
 *.umkmku.com → Vercel → Next.js middleware
   │
-  ├── umkmku.com          → /app/(marketing)
-  ├── dashboard.umkmku.com → /app/(dashboard)
-  └── [slug].umkmku.com   → /app/store/[slug]
+  ├── umkmku.com              → /app/page.tsx (landing — BELUM DIBUAT)
+  ├── [slug].umkmku.com       → /app/store/[slug]/ (storefront publik)
+  └── [slug].umkmku.com/dashboard → /app/(dashboard)/[slug]/ (merchant CMS)
 ```
 
-Middleware baca hostname → extract slug → rewrite URL → Next.js render halaman tenant yang benar.
+Auth guard di middleware: `/profile`, `/orders`, `/checkout`, `/order` → redirect ke login jika belum auth.
 
 ---
 
-## AI Integration Architecture
+## Struktur Folder Aktual
 
-### Provider Config
-
-```typescript
-// lib/ai/provider.ts
-import { createOpenAICompatible } from '@ai-sdk/openai-compatible'
-import { createAnthropic } from '@ai-sdk/anthropic'
-import type { LanguageModel } from 'ai'
-
-export function getAIModel(): LanguageModel {
-  if ((process.env.AI_PROVIDER ?? 'ollama') === 'ollama') {
-    const ollama = createOpenAICompatible({
-      name: 'ollama',
-      baseURL: process.env.OLLAMA_BASE_URL ?? 'http://localhost:11434/v1',
-    })
-    return ollama(process.env.OLLAMA_MODEL ?? 'gemma4:12b')
-  }
-
-  return createAnthropic({ apiKey: process.env.ANTHROPIC_API_KEY })(
-    process.env.ANTHROPIC_MODEL ?? 'claude-sonnet-4-6'
-  )
-}
+```
+umkmku/src/
+├── app/
+│   ├── page.tsx                        ← ROOT: landing page UMKMku (BELUM DIBUAT)
+│   ├── (dashboard)/[slug]/             ← Merchant CMS dashboard
+│   │   ├── page.tsx                    ← Overview: revenue, pesanan pending, low stock
+│   │   ├── appearance/, brand/         ← Edit tampilan & identitas brand
+│   │   ├── chatbot/, chats/            ← Config chatbot + lihat percakapan
+│   │   ├── orders/                     ← Kelola pesanan
+│   │   ├── pages/                      ← Edit halaman about, ingredients, dll
+│   │   └── products/                   ← CRUD produk + stock management
+│   ├── store/[slug]/                   ← Storefront publik per tenant
+│   │   ├── page.tsx                    ← Hero, produk, chatbot, testimoni
+│   │   ├── cart/, checkout/            ← Cart + checkout flow
+│   │   ├── order/[orderId]/            ← Detail pesanan + chat + tracking
+│   │   ├── orders/                     ← Riwayat pesanan customer
+│   │   ├── products/[id]/              ← Detail produk
+│   │   └── profile/                    ← Edit profil customer
+│   └── api/
+│       ├── chat/[slug]/                ← Chatbot publik (Ollama → Gemini)
+│       ├── order-chat/                 ← Chat pesanan + AI payment verification
+│       ├── merchant-chat/              ← Reply manual merchant
+│       ├── onboarding/                 ← AI tenant creation
+│       ├── orders/, products/          ← CRUD
+│       └── cron/cancel-expired/        ← Expired order cancellation (tiap jam)
+├── components/
+│   ├── store/                          ← Chatbot widget, hero, product grid, navbar, footer
+│   ├── checkout/                       ← CheckoutLayout, PriceBreakdown
+│   └── ui/                             ← shadcn components
+└── lib/
+    ├── ai/
+    │   ├── gemini.ts                   ← geminiChat (Flash 2.0) + geminiVision (Flash 2.5)
+    │   ├── provider.ts                 ← Ollama/Anthropic switch (untuk onboarding)
+    │   ├── chatbot.ts                  ← System prompt + parseRecommendations
+    │   └── onboarding.ts               ← System prompt onboarding
+    ├── analytics/queries.ts            ← Metrics 30 hari (revenue, top products, repeat rate)
+    ├── categories/                     ← Validators: skincare, parfum, fashion, fdb
+    ├── notifications/whatsapp.ts       ← Fonnte: notif WA merchant & customer
+    ├── supabase/                       ← client.ts, server.ts, types.ts
+    ├── cart-context.tsx
+    ├── tenant.ts                       ← getTenantBySlug()
+    └── utils/pricing.ts               ← PPN 12% + Xendit fee 2.5%, formatRupiah
 ```
 
-> ⚠️ Pakai `@ai-sdk/openai-compatible`, BUKAN `@ai-sdk/openai` (`createOpenAI` hit `/v1/responses` yang Ollama tidak punya). Dan untuk **chat**, layer ini di-bypass total — lihat Framework Guardrails.
+---
 
-### .env.local (dev)
+## Environment Variables
 
 ```bash
+# Dev
 AI_PROVIDER=ollama
 OLLAMA_BASE_URL=http://localhost:11434/v1
 OLLAMA_MODEL=gemma4:12b
+GEMINI_API_KEY=...                      # Wajib — untuk chatbot prod & payment vision
 
 NEXT_PUBLIC_APP_URL=http://localhost:3000
 NEXT_PUBLIC_ROOT_DOMAIN=localhost:3000
 
-SUPABASE_URL=...
-SUPABASE_ANON_KEY=...
+NEXT_PUBLIC_SUPABASE_URL=...
+NEXT_PUBLIC_SUPABASE_ANON_KEY=...
 SUPABASE_SERVICE_ROLE_KEY=...
-```
 
-### .env.production
+FONNTE_TOKEN=...                        # WhatsApp notification
+CRON_SECRET=...                         # Auth untuk cron job
 
-```bash
-AI_PROVIDER=anthropic
-ANTHROPIC_API_KEY=...
-ANTHROPIC_MODEL=claude-sonnet-4-6
-
-NEXT_PUBLIC_APP_URL=https://umkmku.com
-NEXT_PUBLIC_ROOT_DOMAIN=umkmku.com
-
-SUPABASE_URL=...
-SUPABASE_ANON_KEY=...
-SUPABASE_SERVICE_ROLE_KEY=...
+# Production (tambahan)
+AI_PROVIDER=gemini                      # Switch ke Gemini untuk onboarding
+GEMINI_API_KEY=...
 ```
 
 ---
 
-## AI Onboarding — System Prompt
-
-```
-Kamu adalah asisten onboarding UMKMku.com.
-Tugasmu: ekstrak informasi bisnis skincare lokal dari cerita merchant.
-Kembalikan JSON yang valid tanpa penjelasan tambahan.
-
-Jika ada informasi yang tidak disebutkan, isi dengan nilai default yang masuk akal.
-Jangan tanya balik. Ekstrak semua yang bisa, sisanya null.
-
-Response harus berupa JSON murni:
-{
-  "brand_name": string,
-  "tagline": string,
-  "description": string,
-  "primary_color": string (hex),
-  "secondary_color": string (hex),
-  "accent_color": string (hex),
-  "whatsapp_number": string | null,
-  "instagram_url": string | null,
-  "chatbot_persona": string,
-  "products": [{
-    "name": string,
-    "description": string,
-    "price": number | null,
-    "skin_types": string[],
-    "concerns": string[],
-    "ingredients": string[],
-    "usage_step": string
-  }]
-}
-```
-
----
-
-## AI Chatbot — System Prompt Template
-
-```
-Kamu adalah {chatbot_name}, beauty advisor AI untuk {brand_name}.
-
-Tentang brand ini:
-{description}
-
-Kepribadianmu: {chatbot_persona}
-
-Produk yang tersedia:
-{products_json}
-
-Panduan rekomendasi:
-1. Tanyakan skin type dan concern utama customer jika belum disebutkan
-2. Rekomendasikan maksimal 2 produk yang paling relevan
-3. Jelaskan MENGAPA produk itu cocok untuk mereka
-4. Jika customer tertarik dengan satu produk, akhiri responsmu dengan:
-   [[RECOMMEND:product_id]]
-5. Gunakan Bahasa Indonesia yang ramah dan profesional
-6. Jangan buat klaim medis. Jangan sebut kompetitor.
-7. Jika tidak ada produk yang cocok, sarankan WhatsApp untuk konsultasi.
-```
-
----
-
-## Struktur Folder Project
-
-```
-umkmku/
-├── app/
-│   ├── (marketing)/              # umkmku.com
-│   │   ├── page.tsx              # Landing page platform
-│   │   └── layout.tsx
-│   ├── (dashboard)/              # dashboard.umkmku.com
-│   │   ├── onboarding/
-│   │   │   └── page.tsx          # AI onboarding chat
-│   │   ├── store/
-│   │   │   ├── page.tsx          # Overview toko
-│   │   │   ├── products/         # CRUD produk
-│   │   │   └── appearance/       # Edit visual
-│   │   └── layout.tsx
-│   ├── store/
-│   │   └── [slug]/               # Merchant store pages
-│   │       ├── page.tsx          # Store homepage
-│   │       └── layout.tsx
-│   └── api/
-│       ├── onboarding/
-│       │   └── route.ts          # AI config extraction
-│       └── chat/
-│           └── [slug]/
-│               └── route.ts      # AI product chatbot
-├── components/
-│   ├── store/                    # Store template components
-│   │   ├── hero.tsx
-│   │   ├── product-grid.tsx
-│   │   ├── about-section.tsx
-│   │   └── chatbot-widget.tsx
-│   ├── dashboard/                # CMS components
-│   └── ui/                       # shadcn components
-├── lib/
-│   ├── ai/
-│   │   ├── provider.ts           # Model selection (Ollama/Claude)
-│   │   ├── onboarding.ts         # Onboarding prompts
-│   │   └── chatbot.ts            # Chatbot prompts + action parsing
-│   ├── supabase/
-│   │   ├── client.ts             # Browser client
-│   │   ├── server.ts             # Server client
-│   │   └── types.ts              # Generated types
-│   └── utils.ts
-├── middleware.ts                  # Multi-tenant routing
-├── supabase/
-│   └── migrations/               # SQL migration files
-├── docs/
-│   └── superpowers/
-│       └── plans/                # Implementation plans
-└── .env.local
-```
-
----
-
-## Ollama Setup (Developer)
-
-```bash
-# Install Ollama
-curl -fsSL https://ollama.com/install.sh | sh
-
-# Pull model (verifikasi nama exact dengan: ollama list setelah pull)
-ollama pull gemma4:12b
-
-# Jalankan server (default port 11434)
-ollama serve
-
-# Test
-curl http://localhost:11434/v1/models
-```
-
-**Catatan RTX 3060 12GB:** Gemma 4 12b dengan Q4_K_M quantization membutuhkan ~8GB VRAM. Fit di 12GB dengan overhead. Jika terlalu berat, gunakan `gemma3:9b` sebagai fallback.
-
----
-
-## Validasi Metrics (Prototype Goal)
+## Validasi Metrics
 
 Platform dianggap siap validasi jika:
 - [ ] Merchant bisa onboard dan punya toko live dalam < 5 menit
 - [ ] Toko bisa diakses via subdomain custom
-- [ ] Chatbot bisa merekomendasikan produk dengan benar untuk minimal 3 skin concern berbeda
+- [ ] Customer bisa checkout dan bayar via QRIS
+- [ ] Merchant bisa verifikasi pembayaran dan update status pesanan
+- [ ] Chatbot bisa merekomendasikan produk untuk minimal 3 concern berbeda
 - [ ] Merchant bisa edit konten dan upload foto via CMS
-- [ ] Redirect ke marketplace berfungsi dari chatbot recommendation
+- [ ] Subscription enforcement berjalan: trial 7 hari, suspend jika habis
 
 ---
 
 ## Keputusan yang Sudah Final (Jangan Dibuka Lagi)
 
-1. **Stack:** Next.js + Supabase + Vercel AI SDK — tidak ganti
+1. **Stack:** Next.js + Supabase + Vercel — tidak ganti
 2. **AI approach:** Config generation, bukan code generation — tidak ganti
-3. **MVP scope:** Satu template skincare saja — tidak tambah template baru sebelum validasi
-4. **Transaksi:** Redirect ke marketplace di v1 — tidak build payment gateway dulu
-5. **CMS:** Form + AI chat, bukan visual drag-and-drop — tidak ganti
-6. **Nama:** UMKMku.com — final
+3. **Template:** Satu template per kategori — tidak tambah sebelum validasi
+4. **Transaksi:** Di platform sendiri via QRIS — payment gateway eksternal (Midtrans/Xendit) setelah validasi
+5. **CMS:** Form langsung, bukan visual drag-and-drop — tidak ganti
+6. **AI prod:** Gemini 2.0 Flash — tidak ganti ke Anthropic/Claude untuk saat ini
+7. **Subscription:** Free (10k token, 7 hari) / Business (Rp 399k, 1M token) / Enterprise (Rp 599k, 50M token cap)
+8. **Suspend:** Trial habis = suspend total, bukan partial lock
+9. **Nama:** UMKMku.com — final

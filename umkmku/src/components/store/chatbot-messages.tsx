@@ -11,6 +11,7 @@ interface Message {
 interface Props {
   messages: Message[]
   products: Product[]
+  slug: string
 }
 
 function renderWithLinks(text: string) {
@@ -25,7 +26,7 @@ function renderWithLinks(text: string) {
   )
 }
 
-export function ChatbotMessages({ messages, products }: Props) {
+export function ChatbotMessages({ messages, products, slug }: Props) {
   const productMap = new Map(products.map(p => [p.id, p]))
 
   return (
@@ -53,7 +54,7 @@ export function ChatbotMessages({ messages, products }: Props) {
                 {renderWithLinks(cleanText)}
               </div>
               {recommendedProducts.map(product => (
-                <ChatbotProductCard key={product.id} product={product} />
+                <ChatbotProductCard key={product.id} product={product} slug={slug} />
               ))}
             </div>
           </div>

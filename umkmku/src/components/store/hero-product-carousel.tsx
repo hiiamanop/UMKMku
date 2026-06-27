@@ -32,7 +32,6 @@ export function HeroProductCarousel({ products, slug }: Props) {
   if (products.length === 0) return null
 
   const product = products[index]
-  const marketplaceUrl = product.tokopedia_url || product.shopee_url || `/store/${slug}/shop`
 
   return (
     <div className="max-w-xs w-full">
@@ -97,12 +96,10 @@ export function HeroProductCarousel({ products, slug }: Props) {
       )}
 
       <Link
-        href={marketplaceUrl}
-        target={marketplaceUrl.startsWith('http') ? '_blank' : undefined}
-        rel={marketplaceUrl.startsWith('http') ? 'noopener noreferrer' : undefined}
+        href={`/store/${slug}/products/${product.id}`}
         className="w-full py-4 border border-[var(--color-accent)]/30 bg-[var(--color-primary)] text-white text-label-caps tracking-widest flex items-center justify-center gap-4 hover:opacity-90 transition-opacity group"
       >
-        BUY NOW
+        CHECK NOW
         <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
       </Link>
     </div>

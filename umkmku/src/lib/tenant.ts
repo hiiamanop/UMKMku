@@ -1,4 +1,4 @@
-import { createClient } from '@/lib/supabase/server'
+import { createServiceClient } from '@/lib/supabase/server'
 import type { Tenant, Product } from '@/lib/supabase/types'
 
 export interface TenantWithProducts {
@@ -7,16 +7,16 @@ export interface TenantWithProducts {
 }
 
 export async function getTenantBySlug(slug: string): Promise<TenantWithProducts | null> {
-  const supabase = await createClient()
+  const supabase = createServiceClient()
 
-  const { data: tenant, error: tenantError } = await supabase
+  const { data: tenant } = await supabase
     .from('tenants')
     .select('*')
     .eq('slug', slug)
     .eq('is_active', true)
     .single()
 
-  if (tenantError || !tenant) return null
+  if (!tenant) return null
 
   const { data: products } = await supabase
     .from('products')
@@ -25,8 +25,5 @@ export async function getTenantBySlug(slug: string): Promise<TenantWithProducts 
     .eq('is_active', true)
     .order('sort_order', { ascending: true })
 
-  return {
-    tenant,
-    products: products ?? [],
-  }
+  return { tenant, products: products ?? [] }
 }
