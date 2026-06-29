@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { cookies, headers } from 'next/headers'
 import { createServerClient } from '@supabase/ssr'
 import { createServiceClient } from '@/lib/supabase/server'
+import { AssistantChat } from '@/components/dashboard/AssistantChat'
 
 const NAV = [
   { href: '/admin', label: 'Overview' },
@@ -62,6 +63,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
         </div>
       </aside>
       <main className="flex-1 p-8 overflow-auto">{children}</main>
+      <AssistantChat isAdmin />
     </div>
   )
 }

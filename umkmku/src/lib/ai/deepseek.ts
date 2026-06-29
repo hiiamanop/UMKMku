@@ -36,13 +36,16 @@ export async function deepseekVision(prompt: string, imageBase64: string, mimeTy
       messages: [{
         role: 'user',
         content: [
-          { type: 'text', text: prompt },
           { type: 'image_url', image_url: { url: `data:${mimeType};base64,${imageBase64}` } },
+          { type: 'text', text: prompt },
         ],
       }],
     }),
   })
-  if (!res.ok) throw new Error(`DeepSeek vision error: ${res.status}`)
+  if (!res.ok) {
+    const err = await res.text()
+    throw new Error(`DeepSeek vision error: ${res.status} ${err}`)
+  }
   const data = await res.json()
   return data.choices?.[0]?.message?.content ?? ''
 }

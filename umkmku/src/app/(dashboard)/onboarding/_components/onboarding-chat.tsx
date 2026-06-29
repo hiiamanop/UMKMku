@@ -450,24 +450,26 @@ export function OnboardingChat() {
                 ))}
               </div>
 
-              <div className="w-full rounded-2xl p-4 text-xs text-left" style={{ background: '#fff7ed', border: '1px solid #fed7aa' }}>
-                <strong style={{ color: '#9a3412' }}>Development mode?</strong>
-                <span style={{ color: '#9a3412' }}>{' '}Email masuk ke Supabase Inbucket:{' '}
-                  <a href="http://localhost:54324" target="_blank" rel="noopener noreferrer" className="underline font-mono">
-                    localhost:54324
-                  </a>
-                </span>
-              </div>
+              {process.env.NODE_ENV === 'development' && (
+                <div className="w-full rounded-2xl p-4 text-xs text-left" style={{ background: '#fff7ed', border: '1px solid #fed7aa' }}>
+                  <strong style={{ color: '#9a3412' }}>Development mode?</strong>
+                  <span style={{ color: '#9a3412' }}>{' '}Email masuk ke Supabase Inbucket:{' '}
+                    <a href="http://localhost:54324" target="_blank" rel="noopener noreferrer" className="underline font-mono">
+                      localhost:54324
+                    </a>
+                  </span>
+                </div>
+              )}
 
               <div className="flex flex-col gap-3 w-full">
                 <a
                   href={plan !== 'free'
                     ? `/subscribe/payment?plan=${plan}&slug=${result.slug}`
-                    : `/store/${result.slug}/login`}
+                    : `/${result.slug}`}
                   className="flex items-center justify-center gap-2 py-3.5 rounded-2xl text-sm font-semibold text-white transition-opacity hover:opacity-90"
                   style={{ background: PRIMARY }}
                 >
-                  {plan !== 'free' ? 'Lanjut ke Pembayaran' : 'Ke Halaman Login'}
+                  {plan !== 'free' ? 'Lanjut ke Pembayaran' : 'Ke Dashboard Toko'}
                   <ArrowRight size={14} />
                 </a>
                 <p className="text-xs" style={{ color: TEXT_SEC }}>

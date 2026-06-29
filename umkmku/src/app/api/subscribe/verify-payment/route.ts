@@ -91,7 +91,9 @@ export async function POST(req: NextRequest) {
     const parsed = await checkWithDeepSeek(base64, file.type, amount, ref, merchantName)
     verified = parsed.valid === true
     reason = parsed.reason ?? reason
-  } catch { /* fallback ke manual review */ }
+  } catch (err) {
+    console.error('[verify-payment] DeepSeek error:', err)
+  }
 
   const planName = invoice.plan_id.charAt(0).toUpperCase() + invoice.plan_id.slice(1)
 

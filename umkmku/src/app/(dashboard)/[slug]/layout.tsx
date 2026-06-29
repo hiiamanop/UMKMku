@@ -2,6 +2,7 @@ import { notFound, redirect } from 'next/navigation'
 import { getTenantBySlug } from '@/lib/tenant'
 import { createClient, createServiceClient } from '@/lib/supabase/server'
 import { DashboardNav } from './_components/dashboard-nav'
+import { AssistantChat } from '@/components/dashboard/AssistantChat'
 import { LogOut, ExternalLink, AlertTriangle } from 'lucide-react'
 import Link from 'next/link'
 
@@ -171,6 +172,8 @@ export default async function MerchantDashboardLayout({ children, params }: Prop
           {isSuspended ? <SuspendedOverlay slug={slug} planId={subscription?.plan_id} /> : children}
         </main>
       </div>
+
+      <AssistantChat tenantId={tenant.id} slug={slug} />
     </div>
   )
 }
