@@ -134,7 +134,7 @@ export async function POST(
     }
   } catch { /* Ollama tidak tersedia, lanjut ke fallback */ }
 
-  // Fallback: Gemini 2.0 Flash
+  // Fallback: DeepSeek
   try {
     const text = await deepseekChat(messages, systemPrompt)
     await incrementTokens(inputTokens + estimateTokens(text))
