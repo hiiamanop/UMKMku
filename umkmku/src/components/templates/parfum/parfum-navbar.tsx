@@ -17,8 +17,6 @@ export function ParfumNavbar({ tenant }: Props) {
 
   const navLinks = [
     { label: 'Fragrances', href: `/store/${slug}/shop` },
-    { label: 'House', href: `/store/${slug}/about` },
-    { label: 'Journal', href: `/store/${slug}/about` },
   ]
 
   return (

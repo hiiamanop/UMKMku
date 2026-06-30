@@ -47,6 +47,7 @@ export interface Tenant {
   qris_image_url: string | null
   auth_hero_image_url: string | null
   subscription_id: string | null
+  template_id: string | null
 }
 
 export interface IngredientItem { name: string; description: string }

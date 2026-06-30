@@ -12,6 +12,8 @@ const NAV = [
   { href: '/admin/merchants/ongoing', label: 'Ongoing' },
   { href: '/admin/merchants/leads', label: 'Leads' },
   { href: '/admin/promos', label: 'Kode Promo' },
+  { href: '/admin/categories', label: 'Kategori' },
+  { href: '/admin/templates', label: 'Templates' },
   { href: '/admin/settings', label: 'Pengaturan' },
 ]
 

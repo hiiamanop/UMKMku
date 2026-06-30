@@ -15,6 +15,7 @@ export async function POST(request: NextRequest) {
     const category: CategoryType = body.category?.trim().toLowerCase()
     const description: string = body.description?.trim()
     const invoiceId: string | null = body.invoiceId ?? null
+    const templateId: string | null = body.template_id ?? null
 
     // Validate category
     if (!category || !VALID_CATEGORIES.includes(category)) {
@@ -38,43 +39,31 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Extract config dari AI
-    // Production (AI_PROVIDER=gemini): langsung Gemini 2.0 Flash
-    // Dev (AI_PROVIDER=ollama): coba Ollama dulu, fallback ke Gemini
-    const onboardingPrompt = getOnboardingSystemPrompt(category)
-    let text: string
-    if (useGeminiDirect()) {
-      text = await deepseekChat([{ role: 'user', content: description }], onboardingPrompt)
+    // Jika config sudah tersedia (dari preview + adjust flow), skip AI extraction
+    let config: ReturnType<typeof buildConfig>
+    if (body.config) {
+      config = buildConfig(body.config)
     } else {
-      try {
-        const result = await generateText({ model: getAIModel(), system: onboardingPrompt, prompt: description })
-        text = result.text
-      } catch {
+      // Extract config dari AI
+      const onboardingPrompt = getOnboardingSystemPrompt(category)
+      let text: string
+      if (useGeminiDirect()) {
         text = await deepseekChat([{ role: 'user', content: description }], onboardingPrompt)
+      } else {
+        try {
+          const result = await generateText({ model: getAIModel(), system: onboardingPrompt, prompt: description })
+          text = result.text
+        } catch {
+          text = await deepseekChat([{ role: 'user', content: description }], onboardingPrompt)
+        }
       }
-    }
 
-    // Parse JSON dari response (handle ```json blocks)
-    const jsonMatch = text.match(/```json\s*([\s\S]*?)\s*```/) || text.match(/(\{[\s\S]*\})/s)
-    if (!jsonMatch) {
-      console.error('No JSON found in AI response:', text)
-      return NextResponse.json({ error: 'Terjadi kesalahan sistem. Coba lagi.' }, { status: 500 })
-    }
-    const jsonStr = jsonMatch[1] ?? jsonMatch[0]
-    const raw = JSON.parse(jsonStr)
-
-    // Normalize dan apply defaults
-    const config = {
-      brand_name: String(raw.brand_name ?? 'My Brand'),
-      tagline: raw.tagline ? String(raw.tagline) : null,
-      description: raw.description ? String(raw.description) : String(raw.brand_name ?? 'Brand skincare lokal'),
-      primary_color: /^#[0-9a-fA-F]{6}$/.test(raw.primary_color) ? raw.primary_color : '#1a1a1a',
-      secondary_color: /^#[0-9a-fA-F]{6}$/.test(raw.secondary_color) ? raw.secondary_color : '#f5f5f5',
-      accent_color: /^#[0-9a-fA-F]{6}$/.test(raw.accent_color) ? raw.accent_color : '#d4a574',
-      whatsapp_number: raw.whatsapp_number ? String(raw.whatsapp_number) : null,
-      instagram_url: raw.instagram_url ? String(raw.instagram_url) : null,
-      chatbot_persona: raw.chatbot_persona ? String(raw.chatbot_persona) : 'Beauty advisor yang ramah dan informatif',
-      products: normalizeProducts(raw.products),
+      const jsonMatch = text.match(/```json\s*([\s\S]*?)\s*```/) || text.match(/(\{[\s\S]*\})/s)
+      if (!jsonMatch) {
+        console.error('No JSON found in AI response:', text)
+        return NextResponse.json({ error: 'Terjadi kesalahan sistem. Coba lagi.' }, { status: 500 })
+      }
+      config = buildConfig(JSON.parse(jsonMatch[1] ?? jsonMatch[0]))
     }
 
     // Generate slug unik
@@ -98,6 +87,7 @@ export async function POST(request: NextRequest) {
         instagram_url: config.instagram_url,
         chatbot_name: getCategoryDefaultChatbotName(category),
         chatbot_persona: config.chatbot_persona,
+        template_id: templateId,
       })
       .select('id')
       .single()
@@ -174,7 +164,7 @@ export async function POST(request: NextRequest) {
     }
 
     const trialEndsAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString()
-    const { data: newSub } = await supabase
+    const { data: newSub, error: subError } = await supabase
       .from('tenant_subscriptions')
       .insert({
         tenant_id: tenant.id,
@@ -187,7 +177,9 @@ export async function POST(request: NextRequest) {
       .select('id')
       .single()
 
-    if (newSub) {
+    if (subError) {
+      console.error('tenant_subscriptions insert error:', subError)
+    } else if (newSub) {
       await supabase.from('tenants').update({ subscription_id: newSub.id }).eq('id', tenant.id)
     }
 
@@ -205,6 +197,21 @@ export async function POST(request: NextRequest) {
       { error: 'Terjadi kesalahan sistem. Coba lagi.' },
       { status: 500 }
     )
+  }
+}
+
+function buildConfig(raw: Record<string, unknown>) {
+  return {
+    brand_name: String(raw.brand_name ?? 'My Brand'),
+    tagline: raw.tagline ? String(raw.tagline) : null,
+    description: raw.description ? String(raw.description) : String(raw.brand_name ?? 'Brand lokal'),
+    primary_color: /^#[0-9a-fA-F]{6}$/.test(raw.primary_color as string) ? raw.primary_color as string : '#1a1a1a',
+    secondary_color: /^#[0-9a-fA-F]{6}$/.test(raw.secondary_color as string) ? raw.secondary_color as string : '#f5f5f5',
+    accent_color: /^#[0-9a-fA-F]{6}$/.test(raw.accent_color as string) ? raw.accent_color as string : '#d4a574',
+    whatsapp_number: raw.whatsapp_number ? String(raw.whatsapp_number) : null,
+    instagram_url: raw.instagram_url ? String(raw.instagram_url) : null,
+    chatbot_persona: raw.chatbot_persona ? String(raw.chatbot_persona) : 'Advisor yang ramah dan informatif',
+    products: normalizeProducts(raw.products),
   }
 }
 

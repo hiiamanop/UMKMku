@@ -18,6 +18,7 @@ export default function LandingPage() {
           <span className="text-xl font-bold" style={{ color: PRIMARY }}>UMKM<span style={{ color: GOLD }}>u</span></span>
           <div className="hidden md:flex items-center gap-8 text-sm font-medium" style={{ color: TEXT_SEC }}>
             <Link href="#fitur" className="hover:text-[#0A2F73] transition-colors">Fitur</Link>
+            <Link href="/templates" className="hover:text-[#0A2F73] transition-colors">Templates</Link>
             <Link href="/pricing" className="hover:text-[#0A2F73] transition-colors">Harga</Link>
             <Link href="/insight" className="hover:text-[#0A2F73] transition-colors">Insight</Link>
             <Link href="#testimoni" className="hover:text-[#0A2F73] transition-colors">Kisah Sukses</Link>

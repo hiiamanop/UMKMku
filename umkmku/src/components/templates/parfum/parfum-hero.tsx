@@ -10,7 +10,13 @@ export function ParfumHero({ tenant }: Props) {
   const { slug } = tenant
 
   return (
-    <section className="relative min-h-screen flex items-end overflow-hidden">
+    <section
+      className="relative min-h-screen flex items-end overflow-hidden"
+      data-editable="hero_image_url"
+      data-edit-type="image"
+      data-edit-label="Foto Hero"
+      data-edit-value={tenant.hero_image_url ?? ''}
+    >
       {/* Background */}
       {tenant.hero_image_url ? (
         <Image
@@ -37,7 +43,13 @@ export function ParfumHero({ tenant }: Props) {
           {tenant.category === 'parfum' ? 'FINE FRAGRANCE' : (tenant.category ?? 'FINE FRAGRANCE').toUpperCase()}
         </span>
 
-        <h1 className="text-5xl md:text-7xl italic font-light text-white mb-8 leading-tight max-w-3xl">
+        <h1
+          className="text-5xl md:text-7xl italic font-light text-white mb-8 leading-tight max-w-3xl"
+          data-editable="tagline"
+          data-edit-type="text"
+          data-edit-label="Tagline"
+          data-edit-value={tenant.tagline ?? tenant.brand_name}
+        >
           {tenant.tagline ?? tenant.brand_name}
         </h1>
 

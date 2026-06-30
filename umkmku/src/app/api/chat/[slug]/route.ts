@@ -1,6 +1,6 @@
 import { NextRequest } from 'next/server'
 import { buildChatbotSystemPrompt } from '@/lib/ai/chatbot'
-import { createServiceClient } from '@/lib/supabase/server'
+import { createClient, createServiceClient } from '@/lib/supabase/server'
 import { deepseekChat } from '@/lib/ai/deepseek'
 
 const MAX_MESSAGES = 10
@@ -69,7 +69,24 @@ export async function POST(
     )
   }
 
-  const systemPrompt = buildChatbotSystemPrompt(tenant, products ?? [])
+  // Cek user yang sedang login untuk context personal
+  let userContext = null
+  try {
+    const authClient = await createClient()
+    const { data: { user } } = await authClient.auth.getUser()
+    if (user) {
+      const { data: profile } = await supabase
+        .from('user_profiles')
+        .select('full_name, skin_type, skin_concerns')
+        .eq('id', user.id)
+        .single()
+      if (profile) {
+        userContext = { name: profile.full_name, skinType: profile.skin_type, skinConcerns: profile.skin_concerns }
+      }
+    }
+  } catch { /* opsional — lanjut tanpa context user */ }
+
+  const systemPrompt = buildChatbotSystemPrompt(tenant, products ?? [], userContext)
 
   // Estimasi kasar: 1 token ≈ 4 karakter
   const estimateTokens = (text: string) => Math.ceil(text.length / 4)

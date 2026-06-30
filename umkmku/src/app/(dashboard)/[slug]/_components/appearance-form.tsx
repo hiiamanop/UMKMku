@@ -15,7 +15,7 @@ export function AppearanceForm({ tenant }: { tenant: Tenant }) {
   )
 
   return (
-    <form action={action} encType="multipart/form-data" className="space-y-0">
+    <form action={action} className="space-y-0">
 
       <FormSection title="Warna Brand" description="Warna-warna ini akan diterapkan ke seluruh toko kamu.">
         <div className="grid grid-cols-3 gap-5 mb-5">

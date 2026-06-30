@@ -10,7 +10,13 @@ const USAGE_STEP_LABELS: Record<string, string> = {
   mask: 'Masker',
 }
 
-export function buildChatbotSystemPrompt(tenant: Tenant, products: Product[]): string {
+interface UserContext {
+  name: string | null
+  skinType: string | null
+  skinConcerns: string[] | null
+}
+
+export function buildChatbotSystemPrompt(tenant: Tenant, products: Product[], user?: UserContext | null): string {
   const productList = products.map(p => `
 [ID: ${p.id}]
 Nama: ${p.name}
@@ -26,6 +32,16 @@ Bahan utama: ${p.ingredients.join(', ')}
   const whatsappLine = waNumber
     ? `Jika tidak ada produk yang cocok, sarankan customer menghubungi WhatsApp dengan format link: https://wa.me/${waNumber}`
     : 'Jika tidak ada produk yang cocok, sampaikan bahwa kamu akan bantu cari solusi terbaik.'
+
+  let customerContext: string
+  if (!user) {
+    customerContext = `CUSTOMER: Belum login. Jika customer tanya siapa dirimu atau nama mereka, sampaikan bahwa kamu belum mengenali mereka karena belum login. Ajak mereka login di halaman toko untuk pengalaman yang lebih personal, dan tawarkan untuk mengisi quiz kulit agar bisa memberikan rekomendasi yang tepat.`
+  } else {
+    const nameStr = user.name ? `Nama: ${user.name}` : 'Nama: belum diisi'
+    const skinStr = user.skinType ? `Jenis kulit: ${user.skinType}` : ''
+    const concernStr = user.skinConcerns?.length ? `Masalah kulit: ${user.skinConcerns.join(', ')}` : ''
+    customerContext = `CUSTOMER YANG SEDANG CHAT:\n${nameStr}${skinStr ? `\n${skinStr}` : ''}${concernStr ? `\n${concernStr}` : ''}\n\nSapa customer dengan namanya jika diketahui. Gunakan data profil kulit mereka untuk rekomendasi yang lebih personal.`
+  }
 
   return `Kamu adalah ${tenant.chatbot_name}, beauty advisor AI untuk ${tenant.brand_name}.
 
@@ -45,6 +61,8 @@ CARA MEREKOMENDASIKAN:
    [[RECOMMEND:PRODUCT_ID_DISINI]]
    Ganti PRODUCT_ID_DISINI dengan ID produk yang kamu rekomendasikan (dari kolom ID di atas)
    Jika merekomendasikan 2 produk, gunakan 2 token terpisah
+
+${customerContext}
 
 ATURAN PENTING:
 - Jawab HANYA dalam Bahasa Indonesia

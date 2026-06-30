@@ -12,9 +12,10 @@ const TEXT_SEC = '#5E6B85'
 interface Props {
   plan: { id: string; name: string; price: number }
   pricing: PricingBreakdown
+  slug?: string
 }
 
-export function CheckoutForm({ plan, pricing }: Props) {
+export function CheckoutForm({ plan, pricing, slug }: Props) {
   const [fullName, setFullName] = useState('')
   const [email, setEmail] = useState('')
   const [phone, setPhone] = useState('')
@@ -33,7 +34,7 @@ export function CheckoutForm({ plan, pricing }: Props) {
       const res = await fetch('/api/subscribe/create-invoice', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ planId: plan.id, fullName, email, phone, paymentMethod }),
+        body: JSON.stringify({ planId: plan.id, fullName, email, phone, paymentMethod, slug }),
       })
       const data = await res.json()
       if (!res.ok) throw new Error(data.error ?? 'Gagal membuat invoice')
