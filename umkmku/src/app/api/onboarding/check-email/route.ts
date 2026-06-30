@@ -9,9 +9,8 @@ export async function POST(req: NextRequest) {
 
   const supabase = createServiceClient()
 
-  // Cari user via direct lookup (lebih efisien dari listUsers yang fetch semua user)
-  const { data: authData } = await supabase.auth.admin.getUserByEmail(email)
-  const user = authData?.user ?? null
+  const { data: listData } = await supabase.auth.admin.listUsers()
+  const user = listData?.users.find(u => u.email === email) ?? null
   if (!user) return NextResponse.json({ isMerchant: false })
 
   // Cek apakah user ini punya tenant
