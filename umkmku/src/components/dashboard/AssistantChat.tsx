@@ -12,9 +12,11 @@ interface Props {
   tenantId?: string
   slug?: string
   isAdmin?: boolean
+  brandColor?: string
 }
 
-export function AssistantChat({ tenantId, slug, isAdmin }: Props) {
+export function AssistantChat({ tenantId, slug, isAdmin, brandColor }: Props) {
+  const color = brandColor ?? '#0A2F73'
   const [open, setOpen] = useState(false)
   const [messages, setMessages] = useState<Message[]>([])
   const [input, setInput] = useState('')
@@ -71,7 +73,7 @@ export function AssistantChat({ tenantId, slug, isAdmin }: Props) {
       <button
         onClick={() => setOpen(o => !o)}
         className="fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full shadow-lg flex items-center justify-center transition-transform hover:scale-105 active:scale-95"
-        style={{ background: '#0A2F73' }}
+        style={{ background: color }}
         aria-label="Buka assistant"
       >
         {open ? <X size={22} className="text-white" /> : <MessageCircle size={22} className="text-white" />}
@@ -81,7 +83,7 @@ export function AssistantChat({ tenantId, slug, isAdmin }: Props) {
       {open && (
         <div className="fixed bottom-24 right-6 z-50 w-[360px] max-h-[520px] rounded-2xl shadow-2xl flex flex-col bg-white border border-gray-100 overflow-hidden">
           {/* Header */}
-          <div className="px-4 py-3 flex items-center gap-3 border-b" style={{ background: '#0A2F73' }}>
+          <div className="px-4 py-3 flex items-center gap-3 border-b" style={{ background: color }}>
             <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center">
               <Bot size={16} className="text-white" />
             </div>
@@ -89,7 +91,7 @@ export function AssistantChat({ tenantId, slug, isAdmin }: Props) {
               <p className="text-white text-sm font-semibold">
                 {isAdmin ? 'Admin Assistant' : 'Assistant Toko'}
               </p>
-              <p className="text-white/50 text-xs">Powered by DeepSeek</p>
+              <p className="text-white/50 text-xs">Your personal merchant assistant</p>
             </div>
           </div>
 
@@ -100,7 +102,7 @@ export function AssistantChat({ tenantId, slug, isAdmin }: Props) {
                 <div
                   className="max-w-[80%] rounded-2xl px-4 py-2.5 text-sm leading-relaxed whitespace-pre-wrap"
                   style={m.role === 'user'
-                    ? { background: '#0A2F73', color: '#fff' }
+                    ? { background: color, color: '#fff' }
                     : { background: '#F8FAFC', color: '#111827', border: '1px solid #E5EAF0' }}
                 >
                   {m.content}
@@ -120,18 +122,21 @@ export function AssistantChat({ tenantId, slug, isAdmin }: Props) {
           {/* Input */}
           <div className="p-3 border-t flex gap-2">
             <input
-              className="flex-1 rounded-xl border border-gray-200 px-3 py-2 text-sm outline-none focus:border-[#0A2F73] transition-colors"
+              className="flex-1 rounded-xl border border-gray-200 px-3 py-2 text-sm outline-none transition-colors"
+              style={{ '--tw-ring-color': color } as React.CSSProperties}
               placeholder="Ketik pertanyaan..."
               value={input}
               onChange={e => setInput(e.target.value)}
               onKeyDown={e => e.key === 'Enter' && !e.shiftKey && send()}
               disabled={loading}
+              onFocus={e => (e.target.style.borderColor = color)}
+              onBlur={e => (e.target.style.borderColor = '')}
             />
             <button
               onClick={send}
               disabled={loading || !input.trim()}
               className="w-9 h-9 rounded-xl flex items-center justify-center transition-opacity disabled:opacity-40"
-              style={{ background: '#0A2F73' }}
+              style={{ background: color }}
             >
               <Send size={14} className="text-white" />
             </button>

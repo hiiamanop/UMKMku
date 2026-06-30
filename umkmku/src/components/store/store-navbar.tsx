@@ -14,9 +14,6 @@ export function StoreNavbar({ tenant }: Props) {
 
   const navLinks = [
     { label: 'Shop', href: `/store/${tenant.slug}/shop` },
-    { label: 'Ingredients', href: `/store/${tenant.slug}/ingredients` },
-    { label: 'Sustainability', href: `/store/${tenant.slug}/sustainability` },
-    { label: 'About', href: `/store/${tenant.slug}/about` },
   ]
 
   return (

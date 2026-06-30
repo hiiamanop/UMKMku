@@ -173,7 +173,7 @@ export default async function MerchantDashboardLayout({ children, params }: Prop
         </main>
       </div>
 
-      <AssistantChat tenantId={tenant.id} slug={slug} />
+      <AssistantChat tenantId={tenant.id} slug={slug} brandColor={tenant.primary_color ?? undefined} />
     </div>
   )
 }

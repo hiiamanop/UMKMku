@@ -15,8 +15,6 @@ export function FashionNavbar({ tenant }: Props) {
 
   const navLinks = [
     { label: 'SHOP', href: `/store/${slug}/shop` },
-    { label: 'COLLECTIONS', href: `/store/${slug}/shop` },
-    { label: 'ABOUT', href: `/store/${slug}/about` },
   ]
 
   return (

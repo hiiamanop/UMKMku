@@ -12,8 +12,6 @@ interface Props { tenant: Tenant }
 const NAV_LINKS = [
   { label: 'Home', href: '' },
   { label: 'Menu', href: '/shop' },
-  { label: 'About', href: '#about' },
-  { label: 'Contact', href: '#contact' },
 ]
 
 export function FnbNavbar({ tenant }: Props) {

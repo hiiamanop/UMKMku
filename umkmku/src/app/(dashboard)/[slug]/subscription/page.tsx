@@ -245,7 +245,7 @@ export default async function SubscriptionPage({ params }: Props) {
           <div className="flex gap-3">
             {plan.id === 'free' && (
               <Link
-                href="/subscribe?from=dashboard"
+                href={`/subscribe?from=dashboard&slug=${slug}`}
                 className="flex-1 py-3 rounded-xl text-center text-sm font-semibold transition-opacity hover:opacity-90"
                 style={{ background: '#F4B400', color: '#1a1a1a' }}
               >
@@ -253,7 +253,7 @@ export default async function SubscriptionPage({ params }: Props) {
               </Link>
             )}
             <Link
-              href={`/subscribe?from=dashboard&plan=enterprise`}
+              href={`/subscribe?from=dashboard&plan=enterprise&slug=${slug}`}
               className="flex-1 py-3 rounded-xl text-center text-sm font-semibold border border-white/30 text-white transition-colors hover:bg-white/10"
             >
               Enterprise — Rp 599k/bln

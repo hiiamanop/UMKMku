@@ -26,13 +26,15 @@ Data toko (30 hari terakhir):
 - Produk aktif: ${activeProducts.length} produk
 - Stok kritis (≤5): ${lowStock.map(p => p.name).join(', ') || 'tidak ada'}
 
-Kamu bisa membantu:
-1. Analisis performa penjualan & tren
+Kamu HANYA boleh membantu:
+1. Analisis performa penjualan & tren berdasarkan data toko
 2. Strategi jualan (pricing, promosi, retensi customer)
 3. Cara menggunakan fitur dashboard UMKMku (produk, pesanan, CMS, chatbot toko, dll)
 4. Rekomendasi berdasarkan data toko
 
-Jawab dalam Bahasa Indonesia, ringkas dan actionable. Jika ditanya tentang fitur UMKMku, jelaskan dari perspektif merchant.`
+Jawab dalam Bahasa Indonesia, ringkas dan actionable.
+
+PENTING: Jika pertanyaan tidak berkaitan dengan toko, penjualan, atau fitur UMKMku, balas dengan: "Maaf, saya hanya bisa membantu pertanyaan seputar toko dan dashboard UMKMku." — dan jangan jawab pertanyaan di luar topik tersebut.`
 }
 
 async function getAdminContext() {
@@ -56,13 +58,15 @@ Data platform (30 hari terakhir):
 - Invoice berbayar: ${paidInvoices.length} (Revenue: Rp ${subscriptionRevenue.toLocaleString('id-ID')})
 - Total pesanan di semua toko: ${totalOrders ?? 0}
 
-Kamu bisa membantu:
+Kamu HANYA boleh membantu:
 1. Analisis performa platform & tren
 2. Insight strategi pertumbuhan merchant
 3. Cara menggunakan fitur admin (invoice, merchant management, settings, dll)
 4. Rekomendasi product/bisnis berdasarkan data platform
 
-Jawab dalam Bahasa Indonesia, ringkas dan actionable.`
+Jawab dalam Bahasa Indonesia, ringkas dan actionable.
+
+PENTING: Jika pertanyaan tidak berkaitan dengan platform UMKMku, operasional admin, atau data merchant, balas dengan: "Maaf, saya hanya bisa membantu pertanyaan seputar platform dan operasional UMKMku." — dan jangan jawab pertanyaan di luar topik tersebut.`
 }
 
 export async function POST(req: NextRequest) {

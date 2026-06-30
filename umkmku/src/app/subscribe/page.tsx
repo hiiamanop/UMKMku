@@ -65,7 +65,19 @@ const plans = [
   },
 ]
 
-export default function SubscribePage() {
+interface Props {
+  searchParams: Promise<{ slug?: string; plan?: string }>
+}
+
+export default async function SubscribePage({ searchParams }: Props) {
+  const { slug } = await searchParams
+  const slugParam = slug ? `&slug=${slug}` : ''
+  const dynamicPlans = plans.map(p =>
+    p.id === 'business' ? { ...p, href: `/subscribe/checkout?plan=business${slugParam}` }
+    : p.id === 'enterprise' ? { ...p, href: `/subscribe/checkout?plan=enterprise${slugParam}` }
+    : p
+  )
+
   return (
     <div className="min-h-screen font-sans" style={{ background: SURFACE }}>
 
@@ -101,7 +113,7 @@ export default function SubscribePage() {
       {/* Plan cards */}
       <div className="mx-auto max-w-5xl px-6 pb-16">
         <div className="grid md:grid-cols-3 gap-5">
-          {plans.map((p) => (
+          {dynamicPlans.map((p) => (
             <div
               key={p.id}
               className="rounded-2xl flex flex-col"

@@ -32,6 +32,7 @@ export function ChatbotMessages({ messages, products, slug }: Props) {
   return (
     <div className="space-y-3">
       {messages.map((message) => {
+        if (message.role === 'assistant' && !message.content.trim()) return null
         if (message.role === 'user') {
           return (
             <div key={message.id} className="flex justify-end">

@@ -7,7 +7,7 @@ interface Props {
   tenant: Tenant
 }
 
-const NAV_BLOCKS = ['Shop', 'About Us', 'Ingredients', 'Sustainability', 'Contact', 'Blog']
+const NAV_BLOCKS = ['Shop', 'Contact']
 
 export function StoreFooter({ tenant }: Props) {
   return (
@@ -39,7 +39,13 @@ export function StoreFooter({ tenant }: Props) {
         </div>
 
         {/* Center image / brand name */}
-        <div className="md:col-span-2 relative h-48 overflow-hidden">
+        <div
+          className="md:col-span-2 relative h-48 overflow-hidden"
+          data-editable="footer_image_url"
+          data-edit-type="image"
+          data-edit-label="Footer — Foto Tengah"
+          data-edit-value={tenant.footer_image_url ?? ''}
+        >
           {tenant.footer_image_url ? (
             <Image src={tenant.footer_image_url} alt={tenant.brand_name} fill sizes="(max-width: 768px) 100vw, 640px" className="object-cover grayscale hover:grayscale-0 transition-all duration-700" />
           ) : (
@@ -54,24 +60,26 @@ export function StoreFooter({ tenant }: Props) {
           <div>
             <span className="text-label-caps text-white/40 mb-3 block">HUBUNGI KAMI</span>
             {tenant.whatsapp_number && (
-              <a
-                href={`https://wa.me/${tenant.whatsapp_number.replace(/[^0-9]/g, '')}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-[13px] text-white/80 hover:text-white block mb-1"
+              <span
+                data-editable="whatsapp_number"
+                data-edit-type="text"
+                data-edit-label="Nomor WhatsApp"
+                data-edit-value={tenant.whatsapp_number}
+                className="text-[13px] text-white/80 hover:text-white block mb-1 cursor-pointer"
               >
                 WhatsApp: {tenant.whatsapp_number}
-              </a>
+              </span>
             )}
             {tenant.instagram_url && (
-              <a
-                href={tenant.instagram_url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-[13px] text-white/80 hover:text-white block"
+              <span
+                data-editable="instagram_url"
+                data-edit-type="text"
+                data-edit-label="URL Instagram"
+                data-edit-value={tenant.instagram_url}
+                className="text-[13px] text-white/80 hover:text-white block cursor-pointer"
               >
                 Instagram
-              </a>
+              </span>
             )}
           </div>
         </div>

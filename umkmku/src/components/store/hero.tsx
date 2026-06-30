@@ -11,7 +11,13 @@ export function Hero({ tenant, products }: Props) {
   return (
     <section className="grid grid-cols-1 md:grid-cols-12 w-full min-h-[600px] md:min-h-[720px]">
       {/* LEFT 7/12 — lifestyle / hero image */}
-      <div className="md:col-span-7 relative overflow-hidden h-[400px] md:h-auto bg-[var(--color-accent)]">
+      <div
+        className="md:col-span-7 relative overflow-hidden h-[400px] md:h-auto bg-[var(--color-accent)]"
+        data-editable="hero_image_url"
+        data-edit-type="image"
+        data-edit-label="Foto Hero"
+        data-edit-value={tenant.hero_image_url ?? ''}
+      >
         {tenant.hero_image_url ? (
           <Image
             src={tenant.hero_image_url}
@@ -29,20 +35,35 @@ export function Hero({ tenant, products }: Props) {
         {/* Text bottom-left */}
         <div className="absolute bottom-12 left-8 md:left-16 z-10 max-w-lg">
           <h1 className="text-display text-white mb-4">
-            {tenant.tagline ? (
-              <>
-                {tenant.tagline.split(' ').slice(0, Math.ceil(tenant.tagline.split(' ').length / 2)).join(' ')}{' '}
-                <br />
-                <i className="font-normal italic">
-                  {tenant.tagline.split(' ').slice(Math.ceil(tenant.tagline.split(' ').length / 2)).join(' ')}
-                </i>
-              </>
-            ) : (
-              <i className="font-normal italic">{tenant.brand_name}</i>
-            )}
+            <span
+              data-editable="tagline"
+              data-edit-type="text"
+              data-edit-label="Tagline"
+              data-edit-value={tenant.tagline ?? ''}
+            >
+              {tenant.tagline ? (
+                <>
+                  {tenant.tagline.split(' ').slice(0, Math.ceil(tenant.tagline.split(' ').length / 2)).join(' ')}{' '}
+                  <br />
+                  <i className="font-normal italic">
+                    {tenant.tagline.split(' ').slice(Math.ceil(tenant.tagline.split(' ').length / 2)).join(' ')}
+                  </i>
+                </>
+              ) : (
+                <i className="font-normal italic">{tenant.brand_name}</i>
+              )}
+            </span>
           </h1>
           {tenant.description && (
-            <p className="text-white/90 text-body-md max-w-sm">{tenant.description}</p>
+            <p
+              className="text-white/90 text-body-md max-w-sm"
+              data-editable="description"
+              data-edit-type="textarea"
+              data-edit-label="Deskripsi"
+              data-edit-value={tenant.description}
+            >
+              {tenant.description}
+            </p>
           )}
         </div>
       </div>

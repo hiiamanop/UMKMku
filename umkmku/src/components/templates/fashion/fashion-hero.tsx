@@ -10,7 +10,13 @@ export function FashionHero({ tenant }: Props) {
   const shopUrl = `/store/${tenant.slug}/shop`
 
   return (
-    <section className="relative w-full min-h-[90vh] overflow-hidden bg-[var(--color-primary)]">
+    <section
+      className="relative w-full min-h-[90vh] overflow-hidden bg-[var(--color-primary)]"
+      data-editable="hero_image_url"
+      data-edit-type="image"
+      data-edit-label="Foto Hero"
+      data-edit-value={tenant.hero_image_url ?? ''}
+    >
       {/* Background image */}
       {tenant.hero_image_url && (
         <Image
@@ -32,12 +38,24 @@ export function FashionHero({ tenant }: Props) {
           NEW SEASON
         </span>
 
-        <h1 className="text-6xl md:text-8xl font-bold italic text-white leading-none mb-4">
+        <h1
+          className="text-6xl md:text-8xl font-bold italic text-white leading-none mb-4"
+          data-editable="brand_name"
+          data-edit-type="text"
+          data-edit-label="Nama Brand"
+          data-edit-value={tenant.brand_name}
+        >
           {tenant.brand_name}
         </h1>
 
         {tenant.tagline && (
-          <p className="text-white/80 text-base md:text-lg mb-8 max-w-sm leading-relaxed">
+          <p
+            className="text-white/80 text-base md:text-lg mb-8 max-w-sm leading-relaxed"
+            data-editable="tagline"
+            data-edit-type="text"
+            data-edit-label="Tagline"
+            data-edit-value={tenant.tagline}
+          >
             {tenant.tagline}
           </p>
         )}

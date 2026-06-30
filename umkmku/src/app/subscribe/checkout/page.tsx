@@ -26,11 +26,11 @@ const PLANS: Record<string, { id: string; name: string; price: number; features:
 }
 
 interface Props {
-  searchParams: Promise<{ plan?: string }>
+  searchParams: Promise<{ plan?: string; slug?: string }>
 }
 
 export default async function CheckoutPage({ searchParams }: Props) {
-  const { plan: planKey = 'business' } = await searchParams
+  const { plan: planKey = 'business', slug } = await searchParams
   const plan = PLANS[planKey]
   if (!plan) redirect('/subscribe')
 
@@ -119,7 +119,7 @@ export default async function CheckoutPage({ searchParams }: Props) {
         </div>
 
         {/* Right: Form */}
-        <CheckoutForm plan={plan} pricing={pricing} />
+        <CheckoutForm plan={plan} pricing={pricing} slug={slug} />
       </div>
     </div>
   )
