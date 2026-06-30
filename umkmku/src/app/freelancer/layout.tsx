@@ -12,8 +12,8 @@ export default function FreelancerLayout({ children }: { children: React.ReactNo
       <nav style={{ borderBottom: `1px solid ${BORDER}` }} className="bg-white">
         <div className="mx-auto max-w-5xl px-6 flex items-center justify-between h-14">
           <div className="flex items-center gap-6">
-            <Link href="/" className="text-base font-bold" style={{ color: PRIMARY }}>
-              UMKM<span style={{ color: GOLD }}>u</span>
+            <Link href="/">
+              <img src="/logo.png" alt="UMKMu" style={{ height: '32px', width: 'auto' }} />
             </Link>
             <span className="text-xs px-2.5 py-1 rounded-full font-semibold" style={{ background: `${PRIMARY}12`, color: PRIMARY }}>
               Freelancer Portal

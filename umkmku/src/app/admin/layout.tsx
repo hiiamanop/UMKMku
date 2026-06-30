@@ -46,7 +46,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
     <div className="min-h-screen flex bg-[#F8FAFC] font-sans">
       <aside className="w-52 bg-[#0A2F73] flex flex-col shrink-0">
         <div className="px-5 py-5 border-b border-white/10">
-          <span className="font-bold text-white">UMKM<span className="text-[#F4B400]">u</span></span>
+          <img src="/logo.png" alt="UMKMu" style={{ height: '32px', width: 'auto' }} />
           <span className="ml-2 text-xs text-white/40">Admin</span>
         </div>
         <nav className="flex flex-col gap-1 p-3 flex-1">

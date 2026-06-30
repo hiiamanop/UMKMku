@@ -101,7 +101,7 @@ export function QrisPaymentClient({ invoiceId, planName, fullName, email, amount
       <nav style={{ borderBottom: `1px solid ${BORDER}`, background: 'white' }} className="sticky top-0 z-50">
         <div className="mx-auto max-w-2xl px-6 flex items-center h-16">
           <Link href="/">
-            <img src="/logo.png" alt="UMKMu" className="h-8 w-auto" />
+            <img src="/logo.png" alt="UMKMu" style={{ height: '32px', width: 'auto' }} />
           </Link>
         </div>
       </nav>

@@ -33,8 +33,8 @@ export default async function PaymentPage({ searchParams }: Props) {
       {/* Navbar */}
       <nav style={{ borderBottom: `1px solid ${BORDER}`, background: 'white' }} className="sticky top-0 z-50">
         <div className="mx-auto max-w-2xl px-6 flex items-center justify-between h-16">
-          <Link href="/" className="text-xl font-bold" style={{ color: PRIMARY }}>
-            UMKM<span style={{ color: GOLD }}>ku</span>
+          <Link href="/">
+            <img src="/logo.png" alt="UMKMu" style={{ height: '32px', width: 'auto' }} />
           </Link>
           <div className="flex items-center gap-2 text-sm" style={{ color: TEXT_SEC }}>
             <Clock size={14} />

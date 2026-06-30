@@ -37,8 +37,8 @@ export default async function SubscribeSuccessPage({ searchParams }: Props) {
     <div className="min-h-screen flex flex-col items-center justify-center px-6 py-12" style={{ background: SURFACE }}>
 
       {/* Brand */}
-      <Link href="/" className="text-2xl font-bold mb-12" style={{ color: PRIMARY }}>
-        UMKM<span style={{ color: GOLD }}>ku</span>
+      <Link href="/" className="mb-12">
+        <img src="/logo.png" alt="UMKMu" style={{ height: '32px', width: 'auto' }} />
       </Link>
 
       <div className="w-full max-w-md text-center flex flex-col items-center gap-6">

@@ -29,7 +29,7 @@ export default function PrivacyPage() {
       <nav style={{ borderBottom: `1px solid ${BORDER}`, background: 'white' }} className="sticky top-0 z-50">
         <div className="mx-auto max-w-3xl px-6 flex items-center justify-between h-14">
           <Link href="/">
-            <img src="/logo.png" alt="UMKMu" className="h-8 w-auto" />
+            <img src="/logo.png" alt="UMKMu" style={{ height: '32px', width: 'auto' }} />
           </Link>
           <Link href="/" className="text-sm font-medium hover:underline" style={{ color: TEXT_SEC }}>
             ← Kembali ke Beranda

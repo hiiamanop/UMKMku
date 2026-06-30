@@ -87,8 +87,8 @@ export default async function SubscribePage({ searchParams }: Props) {
           <Link href="/" className="flex items-center gap-2 text-sm font-medium" style={{ color: TEXT_SEC }}>
             <ArrowLeft size={14} /> Kembali
           </Link>
-          <Link href="/" className="text-xl font-bold" style={{ color: PRIMARY }}>
-            UMKM<span style={{ color: GOLD }}>ku</span>
+          <Link href="/">
+            <img src="/logo.png" alt="UMKMu" style={{ height: '32px', width: 'auto' }} />
           </Link>
           <Link href="/pricing" className="text-sm" style={{ color: TEXT_SEC }}>
             Bandingkan semua fitur →

@@ -307,8 +307,8 @@ export function OnboardingChat() {
 
       {/* Top bar */}
       <div className="bg-white border-b px-6 py-4 flex items-center justify-between" style={{ borderColor: BORDER }}>
-        <a href="/" className="text-lg font-bold" style={{ color: PRIMARY }}>
-          UMKM<span style={{ color: GOLD }}>ku</span>
+        <a href="/">
+          <img src="/logo.png" alt="UMKMu" style={{ height: '32px', width: 'auto' }} />
         </a>
         {plan !== 'free' && (
           <span className="text-xs font-semibold px-3 py-1.5 rounded-full" style={{ background: `${GOLD}22`, color: '#8B6800' }}>

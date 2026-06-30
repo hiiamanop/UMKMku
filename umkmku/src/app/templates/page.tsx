@@ -34,8 +34,8 @@ export default async function TemplatesPage() {
       {/* Navbar */}
       <nav style={{ borderBottom: `1px solid ${BORDER}` }} className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm">
         <div className="mx-auto max-w-6xl px-6 flex items-center justify-between h-16">
-          <Link href="/" className="text-xl font-bold" style={{ color: PRIMARY }}>
-            UMKM<span style={{ color: GOLD }}>u</span>
+          <Link href="/">
+            <img src="/logo.png" alt="UMKMu" style={{ height: '32px', width: 'auto' }} />
           </Link>
           <div className="hidden md:flex items-center gap-8 text-sm font-medium" style={{ color: TEXT_SEC }}>
             <Link href="/#fitur" className="hover:text-[#0A2F73] transition-colors">Fitur</Link>

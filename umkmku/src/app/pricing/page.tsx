@@ -104,7 +104,7 @@ export default function PricingPage() {
             Kembali
           </Link>
           <Link href="/">
-            <img src="/logo.png" alt="UMKMu" className="h-8 w-auto" />
+            <img src="/logo.png" alt="UMKMu" style={{ height: '32px', width: 'auto' }} />
           </Link>
           <Link
             href="/onboarding"

@@ -33,7 +33,7 @@ export default function AdminLoginPage() {
     <div className="min-h-screen flex items-center justify-center bg-[#F8FAFC]">
       <div className="w-full max-w-sm">
         <div className="text-center mb-8">
-          <span className="text-2xl font-bold text-[#0A2F73]">UMKM<span className="text-[#F4B400]">u</span></span>
+          <img src="/logo.png" alt="UMKMu" style={{ height: '32px', width: 'auto' }} />
           <p className="text-sm text-gray-500 mt-1">Admin Panel</p>
         </div>
 

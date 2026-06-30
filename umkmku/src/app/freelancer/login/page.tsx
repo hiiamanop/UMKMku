@@ -41,8 +41,8 @@ export default function FreelancerLoginPage() {
     <div className="min-h-screen bg-gray-50 font-sans flex items-center justify-center px-4">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
-          <Link href="/" className="text-xl font-bold" style={{ color: PRIMARY }}>
-            UMKM<span style={{ color: GOLD }}>u</span>
+          <Link href="/">
+            <img src="/logo.png" alt="UMKMu" style={{ height: '32px', width: 'auto' }} />
           </Link>
           <h1 className="text-2xl font-bold text-gray-900 mt-4 mb-1">Masuk sebagai Creator</h1>
           <p className="text-sm text-gray-500">Dashboard Template Creator UMKMu</p>

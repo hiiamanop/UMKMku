@@ -110,8 +110,8 @@ export default function InsightPage() {
             <ArrowLeft size={14} />
             Kembali
           </Link>
-          <Link href="/" className="text-xl font-bold" style={{ color: PRIMARY }}>
-            UMKM<span style={{ color: GOLD }}>u</span>
+          <Link href="/">
+            <img src="/logo.png" alt="UMKMu" style={{ height: '32px', width: 'auto' }} />
           </Link>
           <Link
             href="/onboarding"
@@ -268,8 +268,8 @@ export default function InsightPage() {
       {/* Footer minimal */}
       <footer style={{ background: '#06183D' }} className="py-8 mt-12">
         <div className="mx-auto max-w-6xl px-6 flex items-center justify-between">
-          <Link href="/" className="text-lg font-bold text-white">
-            UMKM<span style={{ color: GOLD }}>u</span>
+          <Link href="/">
+            <img src="/logo.png" alt="UMKMu" style={{ height: '32px', width: 'auto' }} />
           </Link>
           <p className="text-sm" style={{ color: 'rgba(255,255,255,0.4)' }}>
             © 2026 UMKMu.site

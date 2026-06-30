@@ -27,7 +27,7 @@ export default function LandingPage() {
       {/* Navbar */}
       <nav style={{ borderBottom: `1px solid ${BORDER}` }} className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm">
         <div className="mx-auto max-w-6xl px-6 flex items-center justify-between h-16">
-          <img src="/logo.png" alt="UMKMu" className="h-8 w-auto" />
+          <img src="/logo.png" alt="UMKMu" style={{ height: '32px', width: 'auto' }} />
           <div className="hidden md:flex items-center gap-8 text-sm font-medium" style={{ color: TEXT_SEC }}>
             <Link href="#fitur" className="hover:text-[#0A2F73] transition-colors">Fitur</Link>
             <Link href="#testimoni" className="hover:text-[#0A2F73] transition-colors">Kisah Sukses</Link>
@@ -319,7 +319,7 @@ export default function LandingPage() {
         <div className="mx-auto max-w-6xl px-6">
           <div className="flex flex-col md:flex-row justify-between gap-10">
             <div className="flex flex-col gap-3 max-w-xs">
-              <span className="text-xl font-bold text-white">UMKM<span style={{ color: GOLD }}>u</span></span>
+              <img src="/logo.png" alt="UMKMu" style={{ height: '32px', width: 'auto' }} className="self-start" />
               <p className="text-sm" style={{ color: 'rgba(255,255,255,0.5)' }}>
                 Platform web & marketplace builder untuk UMKM lokal Indonesia. Tokomu, datamu, pelangganmu.
               </p>
