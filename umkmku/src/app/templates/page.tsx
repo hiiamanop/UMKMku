@@ -16,7 +16,7 @@ const CATEGORIES = [
 ]
 
 export const metadata = {
-  title: 'Templates — UMKMu',
+  title: 'Templates, UMKMu',
   description: 'Pilih template toko untuk brandmu. Tersedia berbagai desain untuk skincare, parfum, fashion, dan F&B.',
 }
 

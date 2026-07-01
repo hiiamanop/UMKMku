@@ -3,7 +3,7 @@ import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
   title: 'Kebijakan Privasi | UMKMu',
-  description: 'Kebijakan privasi UMKMu — bagaimana kami melindungi data pribadi Anda sesuai UU PDP.',
+  description: 'Kebijakan privasi UMKMu, bagaimana kami melindungi data pribadi Anda sesuai UU PDP.',
 }
 
 const PRIMARY = '#0A2F73'
@@ -50,7 +50,7 @@ export default function PrivacyPage() {
         </div>
 
         <p className="text-sm leading-relaxed mb-10" style={{ color: TEXT_SEC }}>
-          UMKMu (&ldquo;kami&rdquo;, &ldquo;platform&rdquo;) berkomitmen melindungi privasi seluruh pengguna — baik Merchant (UMKM yang menggunakan platform) maupun Customer (pembeli di toko Merchant). Kebijakan ini menjelaskan data apa yang kami kumpulkan, bagaimana kami menggunakannya, dan hak Anda atas data tersebut, sesuai <strong>Undang-Undang No. 27 Tahun 2022 tentang Pelindungan Data Pribadi (UU PDP)</strong>.
+          UMKMu (&ldquo;kami&rdquo;, &ldquo;platform&rdquo;) berkomitmen melindungi privasi seluruh pengguna, baik Merchant (UMKM yang menggunakan platform) maupun Customer (pembeli di toko Merchant). Kebijakan ini menjelaskan data apa yang kami kumpulkan, bagaimana kami menggunakannya, dan hak Anda atas data tersebut, sesuai <strong>Undang-Undang No. 27 Tahun 2022 tentang Pelindungan Data Pribadi (UU PDP)</strong>.
         </p>
 
         <Section title="1. Data yang Kami Kumpulkan">
@@ -109,7 +109,7 @@ export default function PrivacyPage() {
             ].map((p) => (
               <div key={p.name} className="p-4 rounded-xl bg-white" style={{ border: `1px solid ${BORDER}` }}>
                 <div className="font-semibold text-sm mb-1" style={{ color: PRIMARY }}>{p.name}</div>
-                <div className="text-sm">{p.reason} — {p.detail}</div>
+                <div className="text-sm">{p.reason}, {p.detail}</div>
               </div>
             ))}
           </div>
@@ -176,7 +176,7 @@ export default function PrivacyPage() {
         <Section title="10. Hubungi Kami">
           <p>Pertanyaan, permintaan, atau kekhawatiran terkait privasi dapat disampaikan ke:</p>
           <div className="mt-3 p-4 rounded-xl bg-white" style={{ border: `1px solid ${BORDER}` }}>
-            <div className="font-semibold text-sm mb-1" style={{ color: PRIMARY }}>UMKMu — Tim Privasi</div>
+            <div className="font-semibold text-sm mb-1" style={{ color: PRIMARY }}>UMKMu, Tim Privasi</div>
             <div className="text-sm">
               Email: <a href="mailto:halo@umkmu.site" className="underline" style={{ color: PRIMARY }}>halo@umkmu.site</a>
             </div>

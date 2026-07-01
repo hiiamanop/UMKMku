@@ -43,7 +43,7 @@ export function StoreFooter({ tenant }: Props) {
           className="md:col-span-2 relative h-48 overflow-hidden"
           data-editable="footer_image_url"
           data-edit-type="image"
-          data-edit-label="Footer — Foto Tengah"
+          data-edit-label="Footer, Foto Tengah"
           data-edit-value={tenant.footer_image_url ?? ''}
         >
           {tenant.footer_image_url ? (

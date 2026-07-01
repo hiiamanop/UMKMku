@@ -73,7 +73,7 @@ export async function sendPaymentReceived({
   const result = await getResend().emails.send({
     from: FROM,
     to,
-    subject: `Pembayaran diterima — UMKMu ${planName}`,
+    subject: `Pembayaran diterima, UMKMu ${planName}`,
     html: layout(`
       <!-- Heading -->
       <tr><td style="padding-bottom:24px">
@@ -144,7 +144,7 @@ export async function sendPaymentRejected({
   await getResend().emails.send({
     from: FROM,
     to,
-    subject: `Bukti pembayaran perlu dikonfirmasi manual — UMKMu`,
+    subject: `Bukti pembayaran perlu dikonfirmasi manual, UMKMu`,
     html: layout(`
       <tr><td style="padding-bottom:24px">
         <h1 style="margin:0 0 6px;font-size:28px;font-weight:800;color:#111827;letter-spacing:-0.5px">
@@ -200,7 +200,7 @@ export async function sendSubscriptionActivated({
   const result = await getResend().emails.send({
     from: FROM,
     to,
-    subject: `Plan ${planName} kamu sudah aktif — UMKMu`,
+    subject: `Plan ${planName} kamu sudah aktif, UMKMu`,
     html: layout(`
       <!-- Heading -->
       <tr><td style="padding-bottom:24px">

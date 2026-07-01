@@ -216,7 +216,7 @@ export function QrisPaymentClient({ invoiceId, planName, fullName, email, amount
                 </button>
               </div>
               <p className="text-xs leading-relaxed" style={{ color: TEXT_SEC }}>
-                Jika kamu bayar via <strong>m-banking</strong>, tulis kode ini di kolom catatan/berita transfer — membantu verifikasi lebih cepat.
+                Jika kamu bayar via <strong>m-banking</strong>, tulis kode ini di kolom catatan/berita transfer, membantu verifikasi lebih cepat.
                 Jika via <strong>e-wallet</strong> (GoPay, OVO, dll) yang tidak ada kolom catatan, lewati saja.
               </p>
             </div>

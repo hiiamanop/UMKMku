@@ -88,7 +88,7 @@ export async function POST(req: NextRequest) {
       invoiceId,
     }),
     sendTelegramMessage(
-      `🚀 <b>Subscription Diaktifkan — ${planName}</b>\n` +
+      `🚀 <b>Subscription Diaktifkan, ${planName}</b>\n` +
       `Nama: ${invoice.full_name}\nEmail: ${invoice.email}`
     ),
   ])

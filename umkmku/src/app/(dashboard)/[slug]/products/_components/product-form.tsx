@@ -86,7 +86,7 @@ export function ProductForm({ slug, product, onSuccess }: Props) {
           <input type="checkbox" name="is_preorder" value="true" id="is_preorder"
             defaultChecked={product?.is_preorder ?? false} className={checkboxCls} />
           <label htmlFor="is_preorder" className="text-xs cursor-pointer">
-            Pre-Order — bisa dipesan meski stok 0
+            Pre-Order, bisa dipesan meski stok 0
           </label>
         </div>
 

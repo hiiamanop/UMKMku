@@ -15,7 +15,7 @@ function escapeHtml(s: string) {
 
 function buildPrompt(amount: number, refCode: string, merchantName: string | null, invoiceCreatedAt: Date) {
   const merchantCheck = merchantName
-    ? `4. Apakah nama penerima mengandung "${merchantName.slice(0, 25)}"?\n   (Aplikasi sering memotong nama merchant menjadi 25 karakter pertama — cocokkan hanya bagian itu)`
+    ? `4. Apakah nama penerima mengandung "${merchantName.slice(0, 25)}"?\n   (Aplikasi sering memotong nama merchant menjadi 25 karakter pertama, cocokkan hanya bagian itu)`
     : ''
 
   const invoiceTime = invoiceCreatedAt.toLocaleString('id-ID', { timeZone: 'Asia/Jakarta', hour12: false })
@@ -155,7 +155,7 @@ export async function POST(req: NextRequest) {
 
     await Promise.all([
       sendTelegramMessage(
-        `✅ <b>Pembayaran Terverifikasi AI — UMKMu ${invoice.plan_id}</b>\n` +
+        `✅ <b>Pembayaran Terverifikasi AI, UMKMu ${invoice.plan_id}</b>\n` +
         `Nama: ${invoice.full_name}\nEmail: ${invoice.email}\n` +
         `Nominal: Rp ${invoice.final_amount.toLocaleString('id-ID')}\nRef: ${ref}\n\n` +
         `⚡ Validasi manual di /admin/invoices`
@@ -179,7 +179,7 @@ export async function POST(req: NextRequest) {
 
   await Promise.all([
     sendTelegramMessage(
-      `⚠️ <b>Bukti Bayar Ditolak AI — Perlu Review</b>\n` +
+      `⚠️ <b>Bukti Bayar Ditolak AI, Perlu Review</b>\n` +
       `Nama: ${invoice.full_name}\nEmail: ${invoice.email}\n` +
       `Alasan: ${reason}\nRef: ${ref}\nInvoice: ${invoiceId}`
     ),

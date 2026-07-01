@@ -76,12 +76,12 @@ export async function generateMetadata({ params }: Props) {
     ? `http://${rootDomain}/store/${slug}`
     : `https://${slug}.${rootDomain}`
 
-  const title = `${tenant.brand_name}${tenant.tagline ? ` — ${tenant.tagline}` : ''}`
+  const title = `${tenant.brand_name}${tenant.tagline ? `, ${tenant.tagline}` : ''}`
   const description = tenant.description ?? `Toko resmi ${tenant.brand_name}. Produk skincare lokal Indonesia terbaik.`
   const image = tenant.hero_image_url ?? tenant.logo_url ?? null
 
   return {
-    title: { default: title, template: `%s — ${tenant.brand_name}` },
+    title: { default: title, template: `%s, ${tenant.brand_name}` },
     description,
     alternates: { canonical: storeUrl },
     openGraph: {

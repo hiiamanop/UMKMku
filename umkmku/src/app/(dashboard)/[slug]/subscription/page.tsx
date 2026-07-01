@@ -144,7 +144,7 @@ export default async function SubscriptionPage({ params }: Props) {
           )}
           {tokenPct >= 80 && tokenLimit && (
             <p className="text-xs text-amber-600">
-              ⚠️ Token hampir habis — pertimbangkan upgrade plan.
+              ⚠️ Token hampir habis, pertimbangkan upgrade plan.
             </p>
           )}
         </div>
@@ -176,7 +176,7 @@ export default async function SubscriptionPage({ params }: Props) {
           )}
           {txLimit && txPct >= 80 && (
             <p className="text-xs text-amber-600">
-              ⚠️ Kuota pesanan tinggal {txLimit - sub.transactions_used} — segera top-up agar toko tidak terganggu.
+              ⚠️ Kuota pesanan tinggal {txLimit - sub.transactions_used}, segera top-up agar toko tidak terganggu.
             </p>
           )}
         </div>
@@ -188,7 +188,7 @@ export default async function SubscriptionPage({ params }: Props) {
               Pesanan overage: {sub.overage_transactions} pesanan
             </div>
             <div className="text-orange-700 mt-0.5">
-              Biaya tambahan: Rp {(sub.overage_transactions * 1000).toLocaleString('id-ID')} — akan ditagih bulan depan.
+              Biaya tambahan: Rp {(sub.overage_transactions * 1000).toLocaleString('id-ID')}, akan ditagih bulan depan.
             </div>
           </div>
         )}
@@ -249,14 +249,14 @@ export default async function SubscriptionPage({ params }: Props) {
                 className="flex-1 py-3 rounded-xl text-center text-sm font-semibold transition-opacity hover:opacity-90"
                 style={{ background: '#F4B400', color: '#1a1a1a' }}
               >
-                Business — Rp 399k/bln
+                Business, Rp 399k/bln
               </Link>
             )}
             <Link
               href={`/subscribe?from=dashboard&plan=enterprise&slug=${slug}`}
               className="flex-1 py-3 rounded-xl text-center text-sm font-semibold border border-white/30 text-white transition-colors hover:bg-white/10"
             >
-              Enterprise — Rp 599k/bln
+              Enterprise, Rp 599k/bln
             </Link>
           </div>
           <p className="text-white/40 text-xs">

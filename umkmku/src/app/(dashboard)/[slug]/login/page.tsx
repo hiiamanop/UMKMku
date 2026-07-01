@@ -146,7 +146,7 @@ export default function DashboardLoginPage() {
     // Email confirmation required
     setError(null)
     setLoading(false)
-    setMode('loading') // repurpose as "check email" state — handle below
+    setMode('loading') // repurpose as "check email" state, handle below
     alert(`Cek email ${email} untuk konfirmasi, lalu login.`)
     setMode('login')
   }

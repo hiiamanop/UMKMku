@@ -83,7 +83,7 @@ export function TestimonialsSection({ tenant, testimonials }: Props) {
               </div>
               <p className="text-label-caps text-white/60">
                 {current.author_name}
-                {current.author_title && ` — ${current.author_title}`}
+                {current.author_title && `, ${current.author_title}`}
               </p>
             </div>
 

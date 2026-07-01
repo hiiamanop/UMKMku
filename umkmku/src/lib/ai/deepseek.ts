@@ -27,7 +27,7 @@ export async function deepseekChat(
   return data.choices?.[0]?.message?.content ?? ''
 }
 
-// DeepSeek API belum support vision — pakai Gemini 2.0 Flash (free tier)
+// DeepSeek API belum support vision, pakai Gemini 2.0 Flash (free tier)
 export async function deepseekVision(prompt: string, imageBase64: string, mimeType = 'image/jpeg'): Promise<string> {
   const key = process.env.GEMINI_API_KEY
   if (!key) throw new Error('GEMINI_API_KEY not set')

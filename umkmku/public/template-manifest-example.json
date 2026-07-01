@@ -1,6 +1,6 @@
 {
   "name": "Nama Template Kamu",
-  "description": "Deskripsi singkat template — gaya, mood, cocok untuk apa.",
+  "description": "Deskripsi singkat template, gaya, mood, cocok untuk apa.",
   "category": "skincare",
   "version": "1.0.0",
   "entry_component": "HomePage",

@@ -4,10 +4,10 @@ import { ArrowRight, Check, TrendingUp, MessageCircle, Bell, ShoppingBag, Star, 
 import { LandingChat } from '@/components/landing/LandingChat'
 
 export const metadata: Metadata = {
-  title: 'UMKMu — Buat Toko Online UMKM dalam 60 Detik',
+  title: 'UMKMu, Buat Toko Online UMKM dalam 60 Detik',
   description: 'Platform toko online terbaik untuk UMKM Indonesia. Subdomain sendiri, AI chatbot penjualan, checkout QRIS, dan manajemen pesanan. Coba gratis 7 hari.',
   openGraph: {
-    title: 'UMKMu — Buat Toko Online UMKM dalam 60 Detik',
+    title: 'UMKMu, Buat Toko Online UMKM dalam 60 Detik',
     description: 'Platform toko online terbaik untuk UMKM Indonesia. Subdomain sendiri, AI chatbot penjualan, checkout QRIS, dan manajemen pesanan.',
     url: 'https://www.umkmu.site',
     type: 'website',
@@ -59,7 +59,7 @@ export default function LandingPage() {
             Marketplace
           </h1>
           <p className="text-lg max-w-xl leading-relaxed" style={{ color: TEXT_SEC }}>
-            Bangun toko digital brand kamu dalam 60 detik. AI yang onboarding, chatbot yang jualan, notif WhatsApp otomatis — semua dalam satu platform.
+            Bangun toko digital brand kamu dalam 60 detik. AI yang onboarding, chatbot yang jualan, notif WhatsApp otomatis, semua dalam satu platform.
           </p>
           <div className="flex flex-col sm:flex-row items-center gap-4 mt-2">
             <Link
@@ -100,7 +100,7 @@ export default function LandingPage() {
               {
                 icon: <ShoppingBag size={22} />,
                 title: 'Toko di Subdomain Sendiri',
-                desc: 'nama-brand.umkmu.site — toko kamu, data kamu, pelanggan kamu. Tidak lagi bergantung algoritma marketplace.',
+                desc: 'nama-brand.umkmu.site, toko kamu, data kamu, pelanggan kamu. Tidak lagi bergantung algoritma marketplace.',
               },
               {
                 icon: <MessageCircle size={22} />,
@@ -110,7 +110,7 @@ export default function LandingPage() {
               {
                 icon: <Bell size={22} />,
                 title: 'Notifikasi WhatsApp Otomatis',
-                desc: 'Customer dan merchant dapat notif WA real-time — pesanan baru, pembayaran, pengiriman, semua otomatis.',
+                desc: 'Customer dan merchant dapat notif WA real-time, pesanan baru, pembayaran, pengiriman, semua otomatis.',
               },
             ].map((f) => (
               <div key={f.title} className="bg-white rounded-2xl p-7 flex flex-col gap-4" style={{ border: `1px solid ${BORDER}` }}>
@@ -126,9 +126,9 @@ export default function LandingPage() {
           {/* Secondary features */}
           <div className="grid md:grid-cols-2 gap-6 mt-6">
             {[
-              { title: 'Checkout & Pembayaran QRIS', desc: 'Customer bisa checkout, bayar QRIS, dan lacak pesanan — semua di toko kamu.' },
+              { title: 'Checkout & Pembayaran QRIS', desc: 'Customer bisa checkout, bayar QRIS, dan lacak pesanan, semua di toko kamu.' },
               { title: 'Verifikasi Pembayaran via AI', desc: 'Upload bukti bayar, AI langsung verifikasi otomatis. Tidak perlu cek manual.' },
-              { title: 'Manajemen Pesanan Lengkap', desc: 'Dashboard kelola pesanan, update status, kirim notif — dari satu tempat.' },
+              { title: 'Manajemen Pesanan Lengkap', desc: 'Dashboard kelola pesanan, update status, kirim notif, dari satu tempat.' },
               { title: 'Onboarding via AI', desc: 'Ceritakan bisnismu, AI langsung buat toko dan isi produk. Tidak perlu coding.' },
             ].map((f) => (
               <div key={f.title} className="bg-white rounded-2xl p-6 flex gap-4" style={{ border: `1px solid ${BORDER}` }}>
@@ -147,7 +147,7 @@ export default function LandingPage() {
       <section className="py-20 mx-auto max-w-6xl px-6">
         <div className="text-center mb-14">
           <h2 className="text-3xl font-bold" style={{ color: PRIMARY }}>Toko Live dalam 3 Langkah</h2>
-          <p className="mt-3 text-base" style={{ color: TEXT_SEC }}>Dari cerita ke toko online — kurang dari 5 menit</p>
+          <p className="mt-3 text-base" style={{ color: TEXT_SEC }}>Dari cerita ke toko online, kurang dari 5 menit</p>
         </div>
         <div className="grid md:grid-cols-3 gap-8">
           {[
@@ -289,7 +289,7 @@ export default function LandingPage() {
           ))}
         </div>
         <p className="text-center text-sm mt-6" style={{ color: TEXT_SEC }}>
-          Butuh lebih banyak pesanan? Top-up kapan saja — <strong>Rp 10.000 untuk 50 pesanan tambahan</strong>.{' '}
+          Butuh lebih banyak pesanan? Top-up kapan saja, <strong>Rp 10.000 untuk 50 pesanan tambahan</strong>.{' '}
           <Link href="/pricing" className="underline font-medium" style={{ color: PRIMARY }}>Lihat perbandingan lengkap →</Link>
         </p>
       </section>
@@ -335,7 +335,7 @@ export default function LandingPage() {
                 <div className="text-sm font-semibold text-white">Ekosistem</div>
                 <Link href="/freelancer/register" className="text-sm" style={{ color: 'rgba(255,255,255,0.5)' }}>Jadi Template Partner</Link>
                 <Link href="/templates" className="text-sm" style={{ color: 'rgba(255,255,255,0.5)' }}>Gallery Template</Link>
-                <Link href="/insight" className="text-sm" style={{ color: 'rgba(255,255,255,0.5)' }}>Insight UMKM</Link>
+                <Link href="/insight" className="text-sm" style={{ color: 'rgba(255,255,255,0.5)' }}>Insight & Blog</Link>
               </div>
               <div className="flex flex-col gap-3">
                 <div className="text-sm font-semibold text-white">Legal</div>

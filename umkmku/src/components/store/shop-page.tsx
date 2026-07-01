@@ -158,7 +158,7 @@ export function ShopPage({
         </div>
 
         <div className="flex gap-6">
-          {/* Sidebar — desktop */}
+          {/* Sidebar, desktop */}
           <aside className="hidden md:block w-64 shrink-0">{filterPanel}</aside>
 
           {/* Mobile filter sheet */}

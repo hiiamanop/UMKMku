@@ -34,7 +34,7 @@ export function StoreNavbar({ tenant }: Props) {
           </button>
         </div>
 
-        {/* CENTER: brand name — italic serif */}
+        {/* CENTER: brand name, italic serif */}
         <Link
           href={`/store/${tenant.slug}`}
           className="absolute left-1/2 -translate-x-1/2 text-headline-md italic text-[var(--color-primary)] tracking-tight"

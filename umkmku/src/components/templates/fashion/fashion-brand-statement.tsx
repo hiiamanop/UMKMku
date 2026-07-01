@@ -15,7 +15,7 @@ export function FashionBrandStatement({ tenant }: Props) {
       </span>
 
       <blockquote className="max-w-3xl text-3xl md:text-5xl font-bold italic text-white leading-tight mb-10">
-        &ldquo;{tenant.tagline ?? `${tenant.brand_name} — crafted with intention.`}&rdquo;
+        &ldquo;{tenant.tagline ?? `${tenant.brand_name}, crafted with intention.`}&rdquo;
       </blockquote>
 
       {tenant.description && (

@@ -49,29 +49,29 @@ export function AppearanceForm({ tenant }: { tenant: Tenant }) {
       <FormSection title="Gambar Halaman Utama" description="Gambar-gambar di landing page toko kamu.">
         <div className="grid grid-cols-1 gap-7">
           <ImageUploader
-            name="hero_image" label="Hero — Foto utama kiri halaman"
+            name="hero_image" label="Hero, Foto utama kiri halaman"
             hint="Rekomendasi: 1920×1080px landscape. Maks 5MB."
             currentUrl={tenant.hero_image_url} aspectClass="w-48 h-28"
           />
           <div className="grid grid-cols-2 gap-6">
             <ImageUploader
-              name="about_image_1" label="About — Foto kiri"
+              name="about_image_1" label="About, Foto kiri"
               hint="Portrait 3:4. Maks 5MB."
               currentUrl={tenant.about_image_1_url} aspectClass="w-24 h-32"
             />
             <ImageUploader
-              name="about_image_2" label="About — Foto kanan"
+              name="about_image_2" label="About, Foto kanan"
               hint="Portrait 3:4. Maks 5MB."
               currentUrl={tenant.about_image_2_url} aspectClass="w-24 h-32"
             />
           </div>
           <ImageUploader
-            name="cta_image" label="CTA Banner — Background banner 'Temukan Koleksi Kami'"
+            name="cta_image" label="CTA Banner, Background banner 'Temukan Koleksi Kami'"
             hint="Rekomendasi: 1920×500px landscape. Maks 5MB."
             currentUrl={tenant.cta_image_url} aspectClass="w-48 h-20"
           />
           <ImageUploader
-            name="footer_image" label="Footer — Foto tengah footer"
+            name="footer_image" label="Footer, Foto tengah footer"
             hint="Rekomendasi: portrait atau square. Maks 5MB."
             currentUrl={tenant.footer_image_url} aspectClass="w-48 h-28"
           />

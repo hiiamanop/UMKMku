@@ -1,4 +1,4 @@
-# Plan 2: AI Onboarding — Config Extraction dari Merchant Description
+# Plan 2: AI Onboarding, Config Extraction dari Merchant Description
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
@@ -37,7 +37,7 @@ Buat `src/app/(dashboard)/layout.tsx`:
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'UMKMku — Dashboard',
+  title: 'UMKMku, Dashboard',
 }
 
 export default function DashboardLayout({
@@ -69,7 +69,7 @@ export default function OnboardingPage() {
       <div>
         <h1 className="text-2xl font-bold">Ceritakan bisnis kamu</h1>
         <p className="text-gray-500 mt-1">
-          Ceritakan brand skincare kamu — nama, produk, warna favorit, siapa target customer kamu.
+          Ceritakan brand skincare kamu, nama, produk, warna favorit, siapa target customer kamu.
           Semakin detail semakin bagus. Kami akan buatkan toko kamu dalam hitungan detik.
         </p>
       </div>
@@ -195,7 +195,7 @@ export function OnboardingChat() {
 pnpm dev
 ```
 
-Buka `http://localhost:3000/onboarding` — harus tampil form textarea dan tombol.
+Buka `http://localhost:3000/onboarding`, harus tampil form textarea dan tombol.
 
 - [ ] **Step 5: Commit**
 
@@ -206,7 +206,7 @@ git commit -m "feat: add onboarding page and chat UI"
 
 ---
 
-### Task 2: Onboarding API — AI Config Extraction
+### Task 2: Onboarding API, AI Config Extraction
 
 **Files:**
 - Create: `src/app/api/onboarding/route.ts`
@@ -351,7 +351,7 @@ describe('extractedConfigSchema', () => {
 })
 ```
 
-- [ ] **Step 4: Run test — FAIL**
+- [ ] **Step 4: Run test, FAIL**
 
 ```bash
 pnpm test
@@ -517,7 +517,7 @@ Expected response:
 }
 ```
 
-Cek Supabase dashboard — harus ada 1 tenant dan 2 produk baru.
+Cek Supabase dashboard, harus ada 1 tenant dan 2 produk baru.
 
 - [ ] **Step 8: Commit**
 

@@ -26,7 +26,7 @@ function getStepIndex(status: string): number {
 
 const STATUS_LABEL: Record<string, string> = {
   pending_payment:   'Menunggu Pembayaran',
-  payment_submitted: 'Bukti Dikirim — Menunggu Verifikasi',
+  payment_submitted: 'Bukti Dikirim, Menunggu Verifikasi',
   payment_verified:  'Pembayaran Terverifikasi',
   shipped:           'Pesanan Dikirim',
   delivered:         'Pesanan Diterima',
@@ -105,7 +105,7 @@ export default async function TrackOrderPage({ params }: Props) {
         </p>
       </section>
 
-      {/* Status Card — Stepper */}
+      {/* Status Card, Stepper */}
       <section className="px-6 md:px-16 max-w-[1280px] mx-auto mt-10">
         <div className="bg-white border border-black/8 p-8 md:p-12 relative overflow-hidden">
           {/* Est delivery / status badge top-right */}
@@ -200,7 +200,7 @@ export default async function TrackOrderPage({ params }: Props) {
       {/* Bento: Order Details + Summary */}
       <section className="px-6 md:px-16 max-w-[1280px] mx-auto mt-6 grid grid-cols-1 md:grid-cols-12 gap-6">
 
-        {/* Order items — 8 cols */}
+        {/* Order items, 8 cols */}
         <div className="md:col-span-8 bg-white border border-black/8 p-8">
           <h3 className="text-headline-md italic text-[var(--color-accent)] mb-8">Detail Pesanan</h3>
 
@@ -258,7 +258,7 @@ export default async function TrackOrderPage({ params }: Props) {
           </div>
         </div>
 
-        {/* Summary — 4 cols */}
+        {/* Summary, 4 cols */}
         <div className="md:col-span-4 space-y-6">
           {/* Totals */}
           <div className="bg-white border border-black/8 p-8">

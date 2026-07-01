@@ -51,7 +51,7 @@ export function TopUpButton({ packageId, tenantId, packageName, price }: Props) 
       disabled={state === 'loading'}
       className="flex items-center gap-1.5 text-xs font-semibold px-3 py-2 rounded-lg text-white transition-opacity hover:opacity-90 disabled:opacity-60"
       style={{ background: '#0A2F73' }}
-      title={`Top-up ${packageName} — Rp ${price.toLocaleString('id-ID')}`}
+      title={`Top-up ${packageName}, Rp ${price.toLocaleString('id-ID')}`}
     >
       {state === 'loading' ? <Loader2 size={12} className="animate-spin" /> : <ShoppingBag size={12} />}
       Beli

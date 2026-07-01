@@ -68,7 +68,7 @@ export function CheckoutClient({ slug, tenant, initialName, initialWhatsapp, ini
       if (result.error) { setError(result.error); return }
       if (result.orderId) {
         router.push(`/store/${slug}/order/${result.orderId}/processing`)
-        // clearCart() moved to processing page — calling it here races against router.push
+        // clearCart() moved to processing page, calling it here races against router.push
       }
     })
   }

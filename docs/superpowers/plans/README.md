@@ -1,4 +1,4 @@
-# UMKMku.com — Implementation Plans
+# UMKMku.com, Implementation Plans
 
 Prototype untuk validasi platform brand infrastructure UMKM skincare lokal Indonesia.
 
@@ -27,7 +27,7 @@ Platform siap diiklankan jika semua ini ✓:
 
 ## Batas MVP (Jangan Tambah Sebelum Validasi)
 
-- Tidak ada auth/login — merchant akses via link
+- Tidak ada auth/login, merchant akses via link
 - Satu template skincare saja
 - Tidak ada payment gateway
 - Tidak ada analytics dashboard

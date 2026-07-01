@@ -12,7 +12,7 @@ async function verifyMerchantOwnsOrder(slug: string, orderId: string) {
   return { tenant, order }
 }
 
-// GET /api/merchant-chat?orderId=xxx&slug=xxx — load messages for merchant dashboard
+// GET /api/merchant-chat?orderId=xxx&slug=xxx, load messages for merchant dashboard
 export async function GET(req: NextRequest) {
   const orderId = req.nextUrl.searchParams.get('orderId')
   const slug = req.nextUrl.searchParams.get('slug')
@@ -37,7 +37,7 @@ export async function GET(req: NextRequest) {
   return NextResponse.json({ messages: messages ?? [], order: result.order })
 }
 
-// POST /api/merchant-chat — merchant kirim pesan manual
+// POST /api/merchant-chat, merchant kirim pesan manual
 export async function POST(req: NextRequest) {
   const { slug, orderId, content } = await req.json()
   if (!slug || !orderId || !content?.trim()) {

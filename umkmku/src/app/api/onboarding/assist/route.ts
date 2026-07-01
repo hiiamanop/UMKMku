@@ -18,7 +18,7 @@ Informasi ideal yang dibutuhkan:
 
 Deskripsi awal merchant: "${description}"
 
-ATURAN PENTING — selalu balas dengan JSON ini:
+ATURAN PENTING, selalu balas dengan JSON ini:
 {
   "done": false,
   "text": "pertanyaan follow-up SATU kalimat yang spesifik dan belum ditanyakan sebelumnya"

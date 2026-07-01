@@ -90,7 +90,7 @@ export async function POST(
         userContext = { name: profile.full_name, skinType: profile.skin_type, skinConcerns: profile.skin_concerns }
       }
     }
-  } catch { /* opsional — lanjut tanpa context user */ }
+  } catch { /* opsional, lanjut tanpa context user */ }
 
   const systemPrompt = buildChatbotSystemPrompt(tenant, products ?? [], userContext)
 

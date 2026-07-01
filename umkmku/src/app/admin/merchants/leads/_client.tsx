@@ -17,7 +17,7 @@ export function LeadsClient({ data }: { data: Row[] }) {
     <>
       <div>
         <h1 className="text-2xl font-bold text-[#0A2F73] mb-2">Leads</h1>
-        <p className="text-sm text-[#5E6B85] mb-6">Merchant yang sedang trial gratis — {data.length} merchant</p>
+        <p className="text-sm text-[#5E6B85] mb-6">Merchant yang sedang trial gratis, {data.length} merchant</p>
         <div className="bg-white rounded-xl border border-[#E5EAF0] overflow-hidden">
           <table className="w-full text-sm">
             <thead className="bg-[#F8FAFC] border-b border-[#E5EAF0]">

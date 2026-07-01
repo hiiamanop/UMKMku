@@ -149,7 +149,7 @@ export function PromoAdminClient({ initialPromos }: { initialPromos: Promo[] }) 
       {showBroadcast && (
         <div className="bg-amber-50 border border-amber-200 rounded-xl p-5">
           <h3 className="text-sm font-semibold text-amber-800 mb-3">
-            Broadcast WA — Kode: <span className="font-mono">{showBroadcast}</span>
+            Broadcast WA, Kode: <span className="font-mono">{showBroadcast}</span>
           </h3>
           <textarea rows={3} className={`${inputCls} mb-3`}
             placeholder={`Dapatkan diskon spesial! Gunakan kode promo *${showBroadcast}* untuk potongan harga di toko kamu.`}

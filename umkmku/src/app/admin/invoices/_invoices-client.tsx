@@ -117,7 +117,7 @@ export function InvoicesClient({ invoices: initial }: { invoices: Invoice[] }) {
         </div>
       )}
 
-      {/* Modal aktivasi — konfirmasi ref code */}
+      {/* Modal aktivasi, konfirmasi ref code */}
       {activateModal && (() => {
         const ref = refCode(activateModal.invoiceId)
         const match = activateRefInput.trim().toUpperCase() === ref

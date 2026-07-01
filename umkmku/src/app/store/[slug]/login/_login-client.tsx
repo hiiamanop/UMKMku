@@ -52,7 +52,7 @@ export function LoginClient({ authHeroImageUrl }: { authHeroImageUrl: string | n
 
   return (
     <div className="min-h-screen grid md:grid-cols-[42%_1fr]">
-      {/* Left — hero panel */}
+      {/* Left, hero panel */}
       <div className="hidden md:flex relative flex-col justify-end p-12 overflow-hidden"
         style={{ background: 'var(--color-secondary)' }}>
         <div className="absolute inset-0">
@@ -73,7 +73,7 @@ export function LoginClient({ authHeroImageUrl }: { authHeroImageUrl: string | n
         </div>
       </div>
 
-      {/* Right — form */}
+      {/* Right, form */}
       <div className="flex flex-col items-center justify-center px-8 md:px-16 py-16 bg-[#fafaf8]">
         <div className="w-full max-w-[400px]">
           {/* Brand */}

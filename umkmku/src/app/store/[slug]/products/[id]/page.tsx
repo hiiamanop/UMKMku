@@ -39,13 +39,13 @@ export async function generateMetadata({ params }: Props) {
     openGraph: {
       type: 'website',
       url: productUrl,
-      title: `${title} — ${tenant.brand_name}`,
+      title: `${title}, ${tenant.brand_name}`,
       description,
       ...(image ? { images: [{ url: image, width: 1200, height: 1200, alt: title }] } : {}),
     },
     twitter: {
       card: image ? 'summary_large_image' : 'summary',
-      title: `${title} — ${tenant.brand_name}`,
+      title: `${title}, ${tenant.brand_name}`,
       description,
       ...(image ? { images: [image] } : {}),
     },
@@ -110,7 +110,7 @@ export default async function ProductDetailPage({ params }: Props) {
       {
         key: 'how_to_use',
         label: 'HOW TO WEAR',
-        content: product.how_to_use ?? 'Apply to pulse points — wrists, neck, and behind the ears. Allow the warmth of your skin to lift the fragrance and let it evolve throughout the day.',
+        content: product.how_to_use ?? 'Apply to pulse points, wrists, neck, and behind the ears. Allow the warmth of your skin to lift the fragrance and let it evolve throughout the day.',
       },
       { key: 'shipping', label: 'SHIPPING & RETURNS', content: SHIPPING_TEXT },
     ]
@@ -234,17 +234,17 @@ export default async function ProductDetailPage({ params }: Props) {
             </div>
           </section>
 
-          {/* The Ritual — dark banner */}
+          {/* The Ritual, dark banner */}
           <section
             className="px-6 md:px-16 py-20 flex flex-col md:flex-row items-center gap-16"
             style={{ background: 'var(--color-primary)' }}
           >
             <div className="w-full md:w-1/2">
               <h2 className="font-serif text-3xl italic font-light text-white mb-6">
-                A fragrance is not simply worn — it becomes you.
+                A fragrance is not simply worn, it becomes you.
               </h2>
               <p className="text-white/50 text-sm leading-relaxed">
-                Apply to pulse points and allow the warmth of your body to lift each note. Give it time — the truest expression of the fragrance comes after ten minutes on the skin.
+                Apply to pulse points and allow the warmth of your body to lift each note. Give it time, the truest expression of the fragrance comes after ten minutes on the skin.
               </p>
             </div>
             <div className="w-full md:w-1/2 h-[320px] overflow-hidden relative bg-white/5">
@@ -412,7 +412,7 @@ export default async function ProductDetailPage({ params }: Props) {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <main className="max-w-[1280px] mx-auto">
-        {/* Product Hero — 7/5 grid */}
+        {/* Product Hero, 7/5 grid */}
         <section className="grid grid-cols-1 md:grid-cols-12 gap-8 px-6 md:px-16 py-16 md:py-24">
           {/* Image */}
           <div className="md:col-span-7 flex justify-center items-start">

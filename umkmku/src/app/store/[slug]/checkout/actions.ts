@@ -55,7 +55,7 @@ export async function createOrder(
       const newCount = sub.transactions_used + 1
 
       if (newCount > limit) {
-        // Pesanan masuk sebagai overage — tidak diblokir
+        // Pesanan masuk sebagai overage, tidak diblokir
         await service
           .from('tenant_subscriptions')
           .update({ overage_transactions: sub.overage_transactions + 1 })
@@ -154,7 +154,7 @@ export async function createOrder(
   // Seed greeting chat
   const totalFmt = 'Rp ' + totalAmount.toLocaleString('id-ID')
   const itemList = items
-    .map(i => `• ${i.name} (x${i.quantity}) — Rp ${(i.price * i.quantity).toLocaleString('id-ID')}`)
+    .map(i => `• ${i.name} (x${i.quantity}), Rp ${(i.price * i.quantity).toLocaleString('id-ID')}`)
     .join('\n')
 
   const greeting = `Halo! 👋 Terima kasih telah berbelanja di **${tenant.brand_name}**.
@@ -178,7 +178,7 @@ Setelah membayar, kirimkan bukti pembayaran (screenshot) ke chat ini ya! 📸`
     attachment_url: tenant.qris_image_url || null,
   })
 
-  // Notifikasi WA — fire-and-forget, tidak blokir response
+  // Notifikasi WA, fire-and-forget, tidak blokir response
   if (tenant.whatsapp_number) {
     notifyMerchantNewOrder({
       merchantWa: tenant.whatsapp_number,

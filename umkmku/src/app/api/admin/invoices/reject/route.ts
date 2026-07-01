@@ -27,7 +27,7 @@ export async function POST(req: NextRequest) {
   await db.from('subscription_invoices').update({ status: 'failed' }).eq('id', invoiceId)
 
   await Promise.all([
-    sendTelegramMessage(`❌ <b>Invoice Ditolak Manual — ${planName}</b>\nNama: ${invoice.full_name}\nEmail: ${invoice.email}\nAlasan: ${reason}`),
+    sendTelegramMessage(`❌ <b>Invoice Ditolak Manual, ${planName}</b>\nNama: ${invoice.full_name}\nEmail: ${invoice.email}\nAlasan: ${reason}`),
     sendPaymentRejected({
       to: invoice.email,
       fullName: invoice.full_name ?? '',

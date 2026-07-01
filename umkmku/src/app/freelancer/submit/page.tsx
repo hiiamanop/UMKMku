@@ -1,6 +1,6 @@
 import { SubmitTemplateForm } from './_form'
 
-export const metadata = { title: 'Submit Template — UMKMu Freelancer' }
+export const metadata = { title: 'Submit Template, UMKMu Freelancer' }
 
 export default function SubmitTemplatePage() {
   return (

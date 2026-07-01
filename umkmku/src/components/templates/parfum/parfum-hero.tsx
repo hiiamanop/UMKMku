@@ -37,7 +37,7 @@ export function ParfumHero({ tenant }: Props) {
       {/* Gradient overlay */}
       <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
 
-      {/* Text content — bottom center */}
+      {/* Text content, bottom center */}
       <div className="relative z-10 w-full flex flex-col items-center text-center pb-20 px-6">
         <span className="tracking-[0.3em] uppercase text-xs text-white/60 mb-4">
           {tenant.category === 'parfum' ? 'FINE FRAGRANCE' : (tenant.category ?? 'FINE FRAGRANCE').toUpperCase()}

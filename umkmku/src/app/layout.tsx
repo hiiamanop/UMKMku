@@ -20,10 +20,10 @@ const hankenGrotesk = Hanken_Grotesk({
 export const metadata: Metadata = {
   metadataBase: new URL('https://www.umkmu.site'),
   title: {
-    default: 'UMKMu — Platform Toko Online untuk UMKM Indonesia',
+    default: 'UMKMu, Platform Toko Online untuk UMKM Indonesia',
     template: '%s | UMKMu',
   },
-  description: 'Buat toko online profesional untuk UMKM-mu dalam 60 detik. Subdomain sendiri, AI chatbot, checkout QRIS, dan manajemen pesanan — semua dalam satu platform.',
+  description: 'Buat toko online profesional untuk UMKM-mu dalam 60 detik. Subdomain sendiri, AI chatbot, checkout QRIS, dan manajemen pesanan, semua dalam satu platform.',
   keywords: ['toko online umkm', 'website umkm indonesia', 'marketplace builder', 'toko online skincare', 'toko online parfum', 'jualan online indonesia'],
   authors: [{ name: 'UMKMu' }],
   openGraph: {
@@ -31,13 +31,13 @@ export const metadata: Metadata = {
     locale: 'id_ID',
     url: 'https://www.umkmu.site',
     siteName: 'UMKMu',
-    title: 'UMKMu — Platform Toko Online untuk UMKM Indonesia',
+    title: 'UMKMu, Platform Toko Online untuk UMKM Indonesia',
     description: 'Buat toko online profesional untuk UMKM-mu dalam 60 detik.',
     images: [{ url: 'https://www.umkmu.site/og-image.png', width: 1200, height: 630, alt: 'UMKMu Platform' }],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'UMKMu — Platform Toko Online untuk UMKM Indonesia',
+    title: 'UMKMu, Platform Toko Online untuk UMKM Indonesia',
     description: 'Buat toko online profesional untuk UMKM-mu dalam 60 detik.',
   },
   robots: {

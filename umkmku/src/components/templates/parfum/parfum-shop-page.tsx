@@ -89,7 +89,7 @@ export function ParfumShopPage({
       </div>
 
       <div className="flex flex-col md:flex-row min-h-screen">
-        {/* Sidebar — desktop */}
+        {/* Sidebar, desktop */}
         <aside className="hidden md:block w-64 shrink-0 border-r border-black/10 px-8 py-10">
           <div className="sticky top-24 space-y-8">
             {/* Clear filters */}

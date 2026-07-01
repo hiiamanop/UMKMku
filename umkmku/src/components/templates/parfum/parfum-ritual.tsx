@@ -10,7 +10,7 @@ export function ParfumRitual({ tenant }: Props) {
 
   const ritualText =
     tenant.page_about_story ??
-    'A fragrance is not simply worn — it is layered into the skin and left to breathe. Apply to pulse points; let the warmth of your body carry the story forward.'
+    'A fragrance is not simply worn, it is layered into the skin and left to breathe. Apply to pulse points; let the warmth of your body carry the story forward.'
 
   return (
     <section
@@ -18,7 +18,7 @@ export function ParfumRitual({ tenant }: Props) {
       style={{ background: 'var(--color-primary)', color: 'white' }}
     >
       <div className="max-w-[1400px] mx-auto grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
-        {/* Left — text */}
+        {/* Left, text */}
         <div>
           <span className="text-[10px] tracking-[0.35em] uppercase text-white/40 block mb-6">
             THE RITUAL
@@ -28,7 +28,7 @@ export function ParfumRitual({ tenant }: Props) {
           </p>
         </div>
 
-        {/* Right — CTAs */}
+        {/* Right, CTAs */}
         <div className="flex flex-col items-start gap-4">
           <Link
             href={`/store/${slug}/about`}

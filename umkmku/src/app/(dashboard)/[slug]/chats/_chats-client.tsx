@@ -160,7 +160,7 @@ export function ChatsClient({ slug, threads }: Props) {
 
       <div className="flex gap-0 bg-white border border-black/8 rounded overflow-hidden" style={{ height: 'calc(100vh - 240px)', minHeight: '500px' }}>
 
-        {/* Thread list — only lastMessage needed for preview */}
+        {/* Thread list, only lastMessage needed for preview */}
         <div className="w-72 shrink-0 border-r border-black/8 overflow-y-auto">
           {threads.map(t => {
             const isActive = selected === t.order.id
@@ -181,7 +181,7 @@ export function ChatsClient({ slug, threads }: Props) {
           })}
         </div>
 
-        {/* Chat view — full messages loaded on-demand */}
+        {/* Chat view, full messages loaded on-demand */}
         {activeThread ? (
           <div className="flex-1 flex flex-col min-w-0">
             <div className="px-6 py-4 border-b border-black/8 flex items-center justify-between shrink-0">

@@ -2,7 +2,7 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Template toko skincare yang indah, mobile-first, dan fully dynamic — dibaca dari konfigurasi Supabase per tenant. Termasuk hero, product catalog, about section, dan floating chatbot button.
+**Goal:** Template toko skincare yang indah, mobile-first, dan fully dynamic, dibaca dari konfigurasi Supabase per tenant. Termasuk hero, product catalog, about section, dan floating chatbot button.
 
 **Architecture:** Server component baca tenant + produk dari Supabase, injeksi warna brand via CSS variables, render template statis. Chatbot widget adalah Client Component terpisah yang di-lazy load.
 
@@ -16,7 +16,7 @@
 - Warna brand diinjeksi via CSS variables di layout level
 - Jika tenant tidak ditemukan (slug tidak valid), return 404
 - Semua gambar pakai `next/image` dengan `alt` text yang meaningful
-- Template hanya punya satu layout — tidak ada pilihan template lain di MVP
+- Template hanya punya satu layout, tidak ada pilihan template lain di MVP
 
 ---
 
@@ -111,7 +111,7 @@ export async function generateMetadata({ params }: Props) {
   if (!data) return {}
 
   return {
-    title: `${data.tenant.brand_name}${data.tenant.tagline ? ` — ${data.tenant.tagline}` : ''}`,
+    title: `${data.tenant.brand_name}${data.tenant.tagline ? `, ${data.tenant.tagline}` : ''}`,
     description: data.tenant.description ?? undefined,
   }
 }

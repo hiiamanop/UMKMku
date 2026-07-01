@@ -62,7 +62,7 @@ export default async function MerchantDashboardLayout({ children, params }: Prop
   const rootDomain = process.env.NEXT_PUBLIC_ROOT_DOMAIN ?? 'localhost:3000'
   const storeUrl = `http://${slug}.${rootDomain}`
 
-  // Auth guard — baca pathname dari header yang diset middleware
+  // Auth guard, baca pathname dari header yang diset middleware
   // untuk menghindari redirect loop pada halaman login itu sendiri
   const { headers } = await import('next/headers')
   const headersList = await headers()
@@ -155,7 +155,7 @@ export default async function MerchantDashboardLayout({ children, params }: Prop
         {/* Top bar */}
         <header className="bg-white/60 backdrop-blur border-b border-black/5 px-10 py-4 flex items-center justify-between sticky top-0 z-10">
           <p className="text-label-caps text-[var(--color-accent)]/50">
-            UMKMku.com — Merchant Portal
+            UMKMku.com, Merchant Portal
           </p>
           <a
             href={storeUrl}

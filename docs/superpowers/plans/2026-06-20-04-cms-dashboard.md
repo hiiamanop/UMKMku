@@ -1,17 +1,17 @@
-# Plan 4: CMS Dashboard — Merchant Edit Interface
+# Plan 4: CMS Dashboard, Merchant Edit Interface
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Merchant bisa login ke dashboard, edit konten toko (teks, warna, kontak), upload foto produk, dan mengelola daftar produk. Perubahan langsung tercermin di subdomain mereka.
 
-**Architecture:** Dashboard di `dashboard.umkmku.com/[slug]`. Merchant identify via slug di URL (no auth di prototype — auth bisa ditambah nanti). Semua update via Server Actions ke Supabase service client. Upload foto via Supabase Storage.
+**Architecture:** Dashboard di `dashboard.umkmku.com/[slug]`. Merchant identify via slug di URL (no auth di prototype, auth bisa ditambah nanti). Semua update via Server Actions ke Supabase service client. Upload foto via Supabase Storage.
 
 **Tech Stack:** Next.js Server Actions, Supabase Storage, react-hook-form, shadcn/ui form components
 
 ## Global Constraints
 
 - Lihat Global Constraints di Plan 1
-- Prototype tidak pakai auth — merchant akses dashboard via link `dashboard.umkmku.com/[slug]`
+- Prototype tidak pakai auth, merchant akses dashboard via link `dashboard.umkmku.com/[slug]`
 - Upload gambar: max 5MB, format JPG/PNG/WebP
 - Semua Server Actions harus validate input sebelum ke database
 - Tidak ada drag-and-drop, tidak ada visual editor
@@ -371,7 +371,7 @@ git commit -m "feat: add brand & contact form with Server Actions"
 
 ---
 
-### Task 3: Product Management — CRUD
+### Task 3: Product Management, CRUD
 
 **Files:**
 - Create: `src/app/(dashboard)/[slug]/products/page.tsx`
@@ -794,4 +794,4 @@ git commit -m "feat: add product CRUD with image upload to Supabase Storage"
 - [x] No placeholders: semua kode aktual
 - [x] Input validation di semua Server Actions
 - [x] File upload: type check dan size check sebelum upload
-- [x] No auth di prototype — catatan ini sudah di Global Constraints
+- [x] No auth di prototype, catatan ini sudah di Global Constraints

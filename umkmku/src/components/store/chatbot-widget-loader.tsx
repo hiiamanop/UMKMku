@@ -3,7 +3,7 @@
 import dynamic from 'next/dynamic'
 import type { Tenant, Product } from '@/lib/supabase/types'
 
-// Lazy load chatbot — tidak delay First Contentful Paint
+// Lazy load chatbot, tidak delay First Contentful Paint
 const ChatbotWidget = dynamic(
   () => import('./chatbot-widget').then(m => m.ChatbotWidget),
   { ssr: false }

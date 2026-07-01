@@ -34,7 +34,7 @@ Kamu HANYA boleh membantu:
 
 Jawab dalam Bahasa Indonesia, ringkas dan actionable.
 
-PENTING: Jika pertanyaan tidak berkaitan dengan toko, penjualan, atau fitur UMKMku, balas dengan: "Maaf, saya hanya bisa membantu pertanyaan seputar toko dan dashboard UMKMku." — dan jangan jawab pertanyaan di luar topik tersebut.`
+PENTING: Jika pertanyaan tidak berkaitan dengan toko, penjualan, atau fitur UMKMku, balas dengan: "Maaf, saya hanya bisa membantu pertanyaan seputar toko dan dashboard UMKMku.", dan jangan jawab pertanyaan di luar topik tersebut.`
 }
 
 async function getAdminContext() {
@@ -66,7 +66,7 @@ Kamu HANYA boleh membantu:
 
 Jawab dalam Bahasa Indonesia, ringkas dan actionable.
 
-PENTING: Jika pertanyaan tidak berkaitan dengan platform UMKMku, operasional admin, atau data merchant, balas dengan: "Maaf, saya hanya bisa membantu pertanyaan seputar platform dan operasional UMKMku." — dan jangan jawab pertanyaan di luar topik tersebut.`
+PENTING: Jika pertanyaan tidak berkaitan dengan platform UMKMku, operasional admin, atau data merchant, balas dengan: "Maaf, saya hanya bisa membantu pertanyaan seputar platform dan operasional UMKMku.", dan jangan jawab pertanyaan di luar topik tersebut.`
 }
 
 export async function POST(req: NextRequest) {

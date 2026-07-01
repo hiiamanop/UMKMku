@@ -72,7 +72,7 @@ const plans = [
 const faqs = [
   {
     q: 'Apa yang terjadi setelah trial 7 hari habis?',
-    a: 'Toko kamu akan disuspend — customer tidak bisa mengakses toko sampai kamu upgrade ke plan berbayar. Kami kirim notifikasi email dan WhatsApp sebelum dan saat trial habis.',
+    a: 'Toko kamu akan disuspend, customer tidak bisa mengakses toko sampai kamu upgrade ke plan berbayar. Kami kirim notifikasi email dan WhatsApp sebelum dan saat trial habis.',
   },
   {
     q: 'Bagaimana cara top-up kuota pesanan?',
@@ -209,7 +209,7 @@ export default function PricingPage() {
           <div>
             <div className="font-semibold text-sm" style={{ color: PRIMARY }}>Butuh lebih banyak pesanan?</div>
             <div className="text-sm mt-1" style={{ color: TEXT_SEC }}>
-              Top-up kapan saja di dashboard — tidak perlu upgrade plan dulu.
+              Top-up kapan saja di dashboard, tidak perlu upgrade plan dulu.
             </div>
           </div>
           <div className="shrink-0 flex items-center gap-3">

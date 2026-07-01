@@ -55,11 +55,11 @@ export default function TermsPage() {
 
         <Section title="1. Definisi">
           <ul className="list-disc pl-5 space-y-2">
-            <li><strong style={{ color: PRIMARY }}>Platform</strong> — Layanan UMKMu yang dapat diakses melalui umkmu.site dan subdomain terkait.</li>
-            <li><strong style={{ color: PRIMARY }}>Merchant</strong> — UMKM atau individu yang mendaftar untuk membuat dan mengelola toko online di UMKMu.</li>
-            <li><strong style={{ color: PRIMARY }}>Customer</strong> — Individu yang mengunjungi dan melakukan pembelian di toko Merchant melalui Platform.</li>
-            <li><strong style={{ color: PRIMARY }}>Konten</strong> — Semua informasi, teks, gambar, dan data yang diunggah atau dibuat oleh Merchant di Platform.</li>
-            <li><strong style={{ color: PRIMARY }}>Layanan</strong> — Seluruh fitur Platform termasuk pembuatan toko, AI Chatbot, checkout, manajemen pesanan, dan notifikasi.</li>
+            <li><strong style={{ color: PRIMARY }}>Platform</strong>, Layanan UMKMu yang dapat diakses melalui umkmu.site dan subdomain terkait.</li>
+            <li><strong style={{ color: PRIMARY }}>Merchant</strong>, UMKM atau individu yang mendaftar untuk membuat dan mengelola toko online di UMKMu.</li>
+            <li><strong style={{ color: PRIMARY }}>Customer</strong>, Individu yang mengunjungi dan melakukan pembelian di toko Merchant melalui Platform.</li>
+            <li><strong style={{ color: PRIMARY }}>Konten</strong>, Semua informasi, teks, gambar, dan data yang diunggah atau dibuat oleh Merchant di Platform.</li>
+            <li><strong style={{ color: PRIMARY }}>Layanan</strong>, Seluruh fitur Platform termasuk pembuatan toko, AI Chatbot, checkout, manajemen pesanan, dan notifikasi.</li>
           </ul>
         </Section>
 
@@ -229,7 +229,7 @@ export default function TermsPage() {
         <Section title="13. Hubungi Kami">
           <p>Pertanyaan mengenai Syarat &amp; Ketentuan dapat disampaikan ke:</p>
           <div className="mt-3 p-4 rounded-xl bg-white" style={{ border: `1px solid ${BORDER}` }}>
-            <div className="font-semibold text-sm mb-1" style={{ color: PRIMARY }}>UMKMu — Tim Legal</div>
+            <div className="font-semibold text-sm mb-1" style={{ color: PRIMARY }}>UMKMu, Tim Legal</div>
             <div className="text-sm">
               Email: <a href="mailto:halo@umkmu.site" className="underline" style={{ color: PRIMARY }}>halo@umkmu.site</a>
             </div>

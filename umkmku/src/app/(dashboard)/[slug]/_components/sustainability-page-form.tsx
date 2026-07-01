@@ -70,7 +70,7 @@ export function SustainabilityPageForm({ tenant }: { tenant: Tenant }) {
           <div>
             <FieldLabel hint="Paragraf di bawah judul.">Teks Penjelasan</FieldLabel>
             <Textarea name="story_body" defaultValue={tenant.page_sustainability_story_body ?? ''}
-              placeholder="Keberlanjutan bukan sekadar kata-kata bagi kami — ini adalah inti dari setiap keputusan yang kami buat..."
+              placeholder="Keberlanjutan bukan sekadar kata-kata bagi kami, ini adalah inti dari setiap keputusan yang kami buat..."
               className={`min-h-[120px] ${inputCls}`} />
           </div>
         </div>

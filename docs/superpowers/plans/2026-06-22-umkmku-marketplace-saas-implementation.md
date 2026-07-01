@@ -4,7 +4,7 @@
 
 **Goal:** Build a multi-tenant SaaS marketplace where Indonesian UMKM merchants (skincare, parfum, fashion, F&B) create independent digital storefronts with AI-powered onboarding, product chatbot, and QRIS checkout.
 
-**Architecture:** Hybrid three-service design — Core Platform (Next.js 16, multi-tenant routing) + Chatbot Service (stateless Node.js, horizontal scaling) + Payment Service (async webhook handler for Xendit). Extends existing skincare prototype; adds category-aware schema, merchant dashboard, payment integration, RLS+caching for scale.
+**Architecture:** Hybrid three-service design, Core Platform (Next.js 16, multi-tenant routing) + Chatbot Service (stateless Node.js, horizontal scaling) + Payment Service (async webhook handler for Xendit). Extends existing skincare prototype; adds category-aware schema, merchant dashboard, payment integration, RLS+caching for scale.
 
 **Tech Stack:** 
 - Core: Next.js 16.2.9, TypeScript, Tailwind + shadcn/ui
@@ -23,7 +23,7 @@
 - **One subscription tier (MVP):** Fixed price TBD (pricing decision deferred; schema ready).
 - **Config-not-code:** All merchant customization via JSON config + Supabase, not code generation.
 - **Free tier MVP:** Vercel free, Supabase free (500MB DB, 50k MAU), no Redis initially.
-- **Reuse prototype:** Skincare prototype already has routing, onboarding, multi-tenant foundation — extend, don't rebuild.
+- **Reuse prototype:** Skincare prototype already has routing, onboarding, multi-tenant foundation, extend, don't rebuild.
 
 ---
 
@@ -131,36 +131,36 @@ payment-service/
 - Task 3: Create pricing utilities (PPN 12% + Xendit fee 2.5% calculation)
 
 ### Phase 2: Core Platform & Dashboard (Week 2-3)
-- Task 4: Extend Core Platform — products CRUD endpoint
-- Task 5: Extend Core Platform — orders creation + pricing logic
+- Task 4: Extend Core Platform, products CRUD endpoint
+- Task 5: Extend Core Platform, orders creation + pricing logic
 - Task 6: Create merchant dashboard component structure
-- Task 7: Extend onboarding flow — category selection + category-aware AI extraction
-- Task 8: Extend checkout page — display PPN + Xendit fee breakdown
+- Task 7: Extend onboarding flow, category selection + category-aware AI extraction
+- Task 8: Extend checkout page, display PPN + Xendit fee breakdown
 - Task 9: Create merchant products management page (CRUD UI)
 - Task 10: Create merchant orders management page (view + status updates)
 - Task 11: Create merchant analytics page (basic metrics)
 
 ### Phase 3: Chatbot Service (Week 3-4)
 - Task 12: Initialize chatbot service repo (Express + TypeScript)
-- Task 13: Create chatbot service — config cache layer
-- Task 14: Create chatbot service — AI model provider (Ollama + Claude)
-- Task 15: Create chatbot service — category-specific matching logic
-- Task 16: Create chatbot service — chat endpoint (POST /api/chat/:tenant_slug)
+- Task 13: Create chatbot service, config cache layer
+- Task 14: Create chatbot service, AI model provider (Ollama + Claude)
+- Task 15: Create chatbot service, category-specific matching logic
+- Task 16: Create chatbot service, chat endpoint (POST /api/chat/:tenant_slug)
 - Task 17: Deploy chatbot service to Vercel
 
 ### Phase 4: Payment Service (Week 4-5)
 - Task 18: Initialize payment service repo (Express + TypeScript)
-- Task 19: Create payment service — Xendit client wrapper
-- Task 20: Create payment service — order service (pricing calculation)
-- Task 21: Create payment service — checkout endpoint (dynamic QRIS generation)
-- Task 22: Create payment service — webhook handler (Xendit signature verification)
-- Task 23: Create payment service — async queue worker
+- Task 19: Create payment service, Xendit client wrapper
+- Task 20: Create payment service, order service (pricing calculation)
+- Task 21: Create payment service, checkout endpoint (dynamic QRIS generation)
+- Task 22: Create payment service, webhook handler (Xendit signature verification)
+- Task 23: Create payment service, async queue worker
 - Task 24: Deploy payment service to Vercel
 
 ### Phase 5: Core Platform Updates & Integration (Week 5)
-- Task 25: Update Core Platform — cart to payment service integration
-- Task 26: Update Core Platform — webhook handler integration
-- Task 27: Update Core Platform — call chatbot service API (not local)
+- Task 25: Update Core Platform, cart to payment service integration
+- Task 26: Update Core Platform, webhook handler integration
+- Task 27: Update Core Platform, call chatbot service API (not local)
 
 ### Phase 6: Testing & Deployment (Week 6)
 - Task 28: Load testing (100 concurrent users, checkout flow)
@@ -173,7 +173,7 @@ payment-service/
 
 ## Phase 1: Foundation & Database
 
-### Task 1: Extend Supabase Schema — Add Category Support
+### Task 1: Extend Supabase Schema, Add Category Support
 
 **Files:**
 - Create: `umkmku/supabase/migrations/002_add_categories.sql`
@@ -242,7 +242,7 @@ payment-service/
 
 ## Phase 2: Core Platform & Dashboard
 
-### Task 4: Extend Core Platform — Products CRUD Endpoint
+### Task 4: Extend Core Platform, Products CRUD Endpoint
 
 **Files:**
 - Modify: `umkmku/src/middleware.ts` (ensure `/api/` routes skip rewrite)
@@ -267,7 +267,7 @@ payment-service/
 
 ---
 
-### Task 5: Extend Core Platform — Orders Creation + Pricing Logic
+### Task 5: Extend Core Platform, Orders Creation + Pricing Logic
 
 **Files:**
 - Create: `umkmku/src/app/api/orders/route.ts` (POST create order, returns {order_id, qris_code, final_price})
@@ -316,7 +316,7 @@ payment-service/
 
 ---
 
-### Task 7: Extend Onboarding Flow — Category Selection + AI Extraction
+### Task 7: Extend Onboarding Flow, Category Selection + AI Extraction
 
 **Files:**
 - Modify: `umkmku/src/app/(marketing)/onboarding/page.tsx`
@@ -338,7 +338,7 @@ payment-service/
 
 ---
 
-### Task 8: Extend Checkout Page — Display PPN + Xendit Fee Breakdown
+### Task 8: Extend Checkout Page, Display PPN + Xendit Fee Breakdown
 
 **Files:**
 - Modify: `umkmku/src/app/store/[slug]/checkout/page.tsx`
@@ -448,7 +448,7 @@ payment-service/
 
 ---
 
-### Task 13: Create Chatbot Service — Config Cache Layer
+### Task 13: Create Chatbot Service, Config Cache Layer
 
 **Files:**
 - Create: `chatbot-service/src/services/config-cache.ts`
@@ -466,7 +466,7 @@ payment-service/
 
 ---
 
-### Task 14: Create Chatbot Service — AI Model Provider
+### Task 14: Create Chatbot Service, AI Model Provider
 
 **Files:**
 - Create: `chatbot-service/src/services/ai-model.ts`
@@ -484,7 +484,7 @@ payment-service/
 
 ---
 
-### Task 15: Create Chatbot Service — Category-Specific Matching Logic
+### Task 15: Create Chatbot Service, Category-Specific Matching Logic
 
 **Files:**
 - Create: `chatbot-service/src/services/category-matcher.ts`
@@ -503,7 +503,7 @@ payment-service/
 
 ---
 
-### Task 16: Create Chatbot Service — Chat Endpoint
+### Task 16: Create Chatbot Service, Chat Endpoint
 
 **Files:**
 - Create: `chatbot-service/src/routes/chat.ts`
@@ -567,7 +567,7 @@ payment-service/
 
 ---
 
-### Task 19: Create Payment Service — Xendit Client Wrapper
+### Task 19: Create Payment Service, Xendit Client Wrapper
 
 **Files:**
 - Create: `payment-service/src/services/xendit-client.ts`
@@ -589,7 +589,7 @@ payment-service/
 
 ---
 
-### Task 20: Create Payment Service — Order Service
+### Task 20: Create Payment Service, Order Service
 
 **Files:**
 - Create: `payment-service/src/services/order-service.ts`
@@ -611,7 +611,7 @@ payment-service/
 
 ---
 
-### Task 21: Create Payment Service — Checkout Endpoint
+### Task 21: Create Payment Service, Checkout Endpoint
 
 **Files:**
 - Create: `payment-service/src/routes/checkout.ts`
@@ -634,7 +634,7 @@ payment-service/
 
 ---
 
-### Task 22: Create Payment Service — Webhook Handler
+### Task 22: Create Payment Service, Webhook Handler
 
 **Files:**
 - Create: `payment-service/src/routes/webhook.ts`
@@ -658,7 +658,7 @@ payment-service/
 
 ---
 
-### Task 23: Create Payment Service — Async Queue Worker
+### Task 23: Create Payment Service, Async Queue Worker
 
 **Files:**
 - Create: `payment-service/src/services/queue-worker.ts`
@@ -699,7 +699,7 @@ payment-service/
 
 ## Phase 5: Core Platform Updates & Integration
 
-### Task 25: Update Core Platform — Cart to Payment Service Integration
+### Task 25: Update Core Platform, Cart to Payment Service Integration
 
 **Files:**
 - Modify: `umkmku/src/app/store/[slug]/checkout/page.tsx`
@@ -719,7 +719,7 @@ payment-service/
 
 ---
 
-### Task 26: Update Core Platform — Webhook Handler Integration
+### Task 26: Update Core Platform, Webhook Handler Integration
 
 **Files:**
 - Modify: `umkmku/src/app/api/webhook/xendit/route.ts` (if exists, or redirect to payment service)
@@ -736,7 +736,7 @@ payment-service/
 
 ---
 
-### Task 27: Update Core Platform — Call Chatbot Service API
+### Task 27: Update Core Platform, Call Chatbot Service API
 
 **Files:**
 - Modify: `umkmku/src/app/api/chat/[slug]/route.ts`

@@ -46,7 +46,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ redirectUrl: `/subscribe/payment/qris?id=${invoice.id}` })
   }
 
-  // Payment gateway (Xendit) — belum tersedia
+  // Payment gateway (Xendit), belum tersedia
   await service.from('subscription_invoices').delete().eq('id', invoice.id)
   return NextResponse.json({ error: 'Payment gateway belum tersedia' }, { status: 503 })
 }

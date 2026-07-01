@@ -95,7 +95,7 @@ export default async function SubscribeSuccessPage({ searchParams }: Props) {
           <div className="flex flex-col gap-2.5">
             {[
               'Buat akun UMKMku dengan email yang sama',
-              'Ceritakan bisnis kamu — AI akan buat toko dalam 60 detik',
+              'Ceritakan bisnis kamu, AI akan buat toko dalam 60 detik',
               'Toko langsung aktif dengan plan ' + (PLAN_NAMES[inv.plan_id] ?? inv.plan_id),
             ].map((s, i) => (
               <div key={i} className="flex items-start gap-2.5 text-sm" style={{ color: TEXT_SEC }}>

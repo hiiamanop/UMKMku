@@ -78,7 +78,7 @@ async function notifyMerchantSuspended({ merchantWa, brandName, isTrial }: {
 
   const phone = merchantWa.replace(/\D/g, '').replace(/^0/, '62')
   const message = isTrial
-    ? `⚠️ *Trial UMKMku Habis* — ${brandName}
+    ? `⚠️ *Trial UMKMku Habis*, ${brandName}
 
 Masa trial 7 hari kamu sudah berakhir. Tokomu saat ini tidak aktif.
 
@@ -86,7 +86,7 @@ Upgrade ke plan Business (Rp 399.000/bln) atau Enterprise (Rp 599.000/bln) untuk
 
 👉 Lihat pilihan plan: https://umkmku.com/pricing
 📞 Hubungi kami untuk proses upgrade.`
-    : `⚠️ *Langganan UMKMku Berakhir* — ${brandName}
+    : `⚠️ *Langganan UMKMku Berakhir*, ${brandName}
 
 Periode langgananmu telah berakhir. Tokomu saat ini tidak aktif dan tidak bisa diakses pelanggan.
 
@@ -112,7 +112,7 @@ async function sendSuspendEmail(
   brandName: string,
   isTrial: boolean,
 ) {
-  // Supabase tidak punya API kirim email custom — skip untuk sekarang
+  // Supabase tidak punya API kirim email custom, skip untuk sekarang
   // TODO: integrasikan Resend/SendGrid jika butuh email notifikasi
   void supabase; void email; void brandName; void isTrial
 }

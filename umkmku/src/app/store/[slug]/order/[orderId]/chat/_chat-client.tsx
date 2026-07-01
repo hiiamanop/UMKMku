@@ -26,7 +26,7 @@ function fmt(n: number) { return 'Rp ' + n.toLocaleString('id-ID') }
 
 const STATUS_LABEL: Record<string, string> = {
   pending_payment: 'Menunggu Pembayaran',
-  payment_submitted: 'Bukti Dikirim — Sedang Diverifikasi',
+  payment_submitted: 'Bukti Dikirim, Sedang Diverifikasi',
   payment_verified: 'Pembayaran Terverifikasi',
   shipped: 'Dalam Pengiriman',
   delivered: 'Terkirim',
@@ -177,7 +177,7 @@ export function OrderChatClient({ slug, order, tenant, initialMessages }: Props)
         </Link>
       </div>
 
-      {/* Messages — wrapper keeps flex-1 always in flow; opacity hides without layout shift */}
+      {/* Messages, wrapper keeps flex-1 always in flow; opacity hides without layout shift */}
       <div className="flex-1 relative overflow-hidden">
         {!msgsReady && (
           <div className="absolute inset-0 flex items-center justify-center z-10">
@@ -190,7 +190,7 @@ export function OrderChatClient({ slug, order, tenant, initialMessages }: Props)
           const isMerchant = msg.sender_type === 'merchant'
           const isAudit = msg.sender_type === 'ai' && msg.content?.startsWith('📋')
 
-          // AI audit card — tampil terpisah bukan bubble
+          // AI audit card, tampil terpisah bukan bubble
           if (isAudit) {
             const isRejected = msg.content?.includes('❌')
             const isWarning = msg.content?.includes('⚠️')

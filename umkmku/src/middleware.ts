@@ -11,7 +11,7 @@ export async function middleware(request: NextRequest) {
   if (!slug) {
     const pathname = request.nextUrl.pathname
 
-    // Admin auth guard — proteksi semua /admin/* kecuali /admin/login
+    // Admin auth guard, proteksi semua /admin/* kecuali /admin/login
     if (pathname.startsWith('/admin') && pathname !== '/admin/login') {
       const supabase = createServerClient(
         process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -24,7 +24,7 @@ export async function middleware(request: NextRequest) {
         url.pathname = '/admin/login'
         return NextResponse.redirect(url)
       }
-      // Role check — hanya super_admin yang boleh akses /admin/*
+      // Role check, hanya super_admin yang boleh akses /admin/*
       const serviceDb = createServerClient(
         process.env.NEXT_PUBLIC_SUPABASE_URL!,
         process.env.SUPABASE_SERVICE_ROLE_KEY!,

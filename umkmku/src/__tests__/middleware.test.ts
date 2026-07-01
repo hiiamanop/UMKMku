@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest'
 
-// Extract slug dari hostname — pure function, mudah di-test
+// Extract slug dari hostname, pure function, mudah di-test
 function extractSlug(hostname: string, rootDomain: string): string | null {
   // Hapus port jika ada
   const host = hostname.split(':')[0]

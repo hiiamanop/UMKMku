@@ -15,7 +15,7 @@ function ResetPasswordForm() {
   const [error, setError] = useState<string | null>(null)
   const [ready, setReady] = useState(false)
 
-  // Supabase sends tokens as hash params — exchange them for a session
+  // Supabase sends tokens as hash params, exchange them for a session
   useEffect(() => {
     const supabase = createClient()
     supabase.auth.onAuthStateChange((event) => {
@@ -33,7 +33,7 @@ function ResetPasswordForm() {
     const { error: updateError } = await supabase.auth.updateUser({ password })
     if (updateError) { setError(updateError.message); setLoading(false); return }
 
-    // Redirect ke dashboard — slug tidak diketahui di sini, arahkan ke root
+    // Redirect ke dashboard, slug tidak diketahui di sini, arahkan ke root
     router.push('/')
   }
 

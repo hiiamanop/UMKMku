@@ -33,7 +33,7 @@ export function FreelancerRegisterForm() {
     try {
       const supabase = createClient()
 
-      // Try sign up — if email exists, sign in instead (merchant/customer joining as creator)
+      // Try sign up, if email exists, sign in instead (merchant/customer joining as creator)
       let userId: string | undefined
       const { data: authData, error: authErr } = await supabase.auth.signUp({
         email,
@@ -42,7 +42,7 @@ export function FreelancerRegisterForm() {
       })
 
       if (authErr || (authData.user?.identities?.length ?? 1) === 0) {
-        // Email already registered — verify via login
+        // Email already registered, verify via login
         const { data: loginData, error: loginErr } = await supabase.auth.signInWithPassword({ email, password })
         if (loginErr) throw new Error('Email sudah terdaftar. Masukkan password akun yang sudah ada.')
         userId = loginData.user.id

@@ -4,7 +4,7 @@ import { redirect } from 'next/navigation'
 import Link from 'next/link'
 import { Plus, Clock, CheckCircle2, XCircle, Sparkles, ArrowRight } from 'lucide-react'
 
-export const metadata = { title: 'Dashboard Freelancer — UMKMu' }
+export const metadata = { title: 'Dashboard Freelancer, UMKMu' }
 
 const STATUS_CONFIG = {
   pending: { label: 'Menunggu Review', icon: Clock, cls: 'bg-amber-50 text-amber-700 border-amber-200' },

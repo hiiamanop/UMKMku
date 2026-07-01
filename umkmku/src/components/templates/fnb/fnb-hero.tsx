@@ -30,9 +30,9 @@ export function FnbHero({ tenant }: Props) {
               data-editable="description"
               data-edit-type="textarea"
               data-edit-label="Deskripsi"
-              data-edit-value={tenant.description ?? 'Discover the finest selection of fresh produce, artisan foods, and ready-to-eat meals — delivered fast to your doorstep.'}
+              data-edit-value={tenant.description ?? 'Discover the finest selection of fresh produce, artisan foods, and ready-to-eat meals, delivered fast to your doorstep.'}
             >
-              {tenant.description ?? 'Discover the finest selection of fresh produce, artisan foods, and ready-to-eat meals — delivered fast to your doorstep.'}
+              {tenant.description ?? 'Discover the finest selection of fresh produce, artisan foods, and ready-to-eat meals, delivered fast to your doorstep.'}
             </p>
             <div className="flex flex-wrap gap-4">
               <Link

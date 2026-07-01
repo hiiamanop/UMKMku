@@ -4,7 +4,7 @@ import { createClient, createServiceClient } from '@/lib/supabase/server'
 import { deepseekChat, deepseekVision } from '@/lib/ai/deepseek'
 import { notifyMerchantPaymentSubmitted } from '@/lib/notifications/whatsapp'
 
-// GET /api/order-chat?orderId=xxx — load messages
+// GET /api/order-chat?orderId=xxx, load messages
 export async function GET(req: NextRequest) {
   const orderId = req.nextUrl.searchParams.get('orderId')
   if (!orderId) return NextResponse.json({ error: 'orderId required' }, { status: 400 })
@@ -28,7 +28,7 @@ export async function GET(req: NextRequest) {
   return NextResponse.json({ messages: messages ?? [], order })
 }
 
-// POST /api/order-chat — send message (text or attachment)
+// POST /api/order-chat, send message (text or attachment)
 export async function POST(req: NextRequest) {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
@@ -57,13 +57,13 @@ export async function POST(req: NextRequest) {
     attachment_url: attachmentUrl || null,
   })
 
-  // Payment proof — always submit to dashboard, AI result determines confidence only
+  // Payment proof, always submit to dashboard, AI result determines confidence only
   if (attachmentUrl && order.status === 'pending_payment') {
     const service2 = createServiceClient()
     const { data: tenant2 } = await service2.from('tenants').select('brand_name, whatsapp_number').eq('id', order.tenant_id).single()
     const aiReply = await validatePayment(order, attachmentUrl, tenant2?.brand_name ?? null)
 
-    // Notif WA ke merchant — customer sudah kirim bukti bayar
+    // Notif WA ke merchant, customer sudah kirim bukti bayar
     if (tenant2?.whatsapp_number) {
       notifyMerchantPaymentSubmitted({
         merchantWa: tenant2.whatsapp_number,
@@ -103,7 +103,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ reply: cancelReply, orderCancelled: true })
   }
 
-  // General AI response via Ollama — include recent chat history for context
+  // General AI response via Ollama, include recent chat history for context
   const { data: recentChats } = await supabase
     .from('order_chats')
     .select('role, content')
@@ -162,7 +162,7 @@ Pesan terbaru dari customer: "${userMessage}"
 
 Instruksi:
 - Balas dalam Bahasa Indonesia yang ramah dan empati, maksimal 2-3 kalimat
-- Jika ada penolakan pembayaran dan customer protes, JANGAN minta kirim bukti lagi — akui situasinya dan minta hubungi merchant via WA untuk verifikasi manual
+- Jika ada penolakan pembayaran dan customer protes, JANGAN minta kirim bukti lagi, akui situasinya dan minta hubungi merchant via WA untuk verifikasi manual
 - Jangan menyebutkan kompetitor atau klaim medis`
 
   try {
@@ -208,7 +208,7 @@ async function validatePayment(order: any, imageUrl: string, brandName: string |
   const customerName = order.customer_name ?? 'tidak diketahui'
   const merchantName = brandName ?? 'nama toko'
 
-  // Fetch image once — dipakai oleh Ollama maupun Gemini fallback
+  // Fetch image once, dipakai oleh Ollama maupun Gemini fallback
   let imageBase64: string | null = null
   try {
     const imgRes = await fetch(imageUrl)

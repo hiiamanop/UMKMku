@@ -79,7 +79,7 @@ export async function updateOrderStatus(slug: string, orderId: string, status: s
     await supabase.from('order_chats').insert({ order_id: orderId, role: 'assistant', content })
   }
 
-  // Notifikasi WA ke customer — fire-and-forget
+  // Notifikasi WA ke customer, fire-and-forget
   const customerWa = currentOrder?.customer_whatsapp
   const customerName = currentOrder?.customer_name ?? ''
   const { data: tenant } = await supabase.from('tenants').select('brand_name').eq('slug', slug).single()

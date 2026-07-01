@@ -32,7 +32,7 @@ export function FashionHero({ tenant }: Props) {
       {/* Dark overlay */}
       <div className="absolute inset-0 bg-black/30" />
 
-      {/* Text — bottom-left */}
+      {/* Text, bottom-left */}
       <div className="absolute bottom-12 left-8 md:left-16 max-w-xl">
         <span className="inline-block text-[10px] tracking-widest uppercase text-white/80 border border-white/40 px-3 py-1 mb-5">
           NEW SEASON

@@ -38,7 +38,7 @@ export function AboutSection({ tenant }: Props) {
               className="text-headline-lg leading-snug"
               data-editable="page_about_story"
               data-edit-type="textarea"
-              data-edit-label="About — Teks Heading"
+              data-edit-label="About, Teks Heading"
               data-edit-value={heading}
             >
               {heading}
@@ -67,7 +67,7 @@ export function AboutSection({ tenant }: Props) {
                       className="text-headline-md"
                       data-editable={`page_commitments[${i}].title`}
                       data-edit-type="text"
-                      data-edit-label={`Pillar ${i + 1} — Judul`}
+                      data-edit-label={`Pillar ${i + 1}, Judul`}
                       data-edit-value={pillar.title}
                     >
                       {pillar.title}
@@ -89,7 +89,7 @@ export function AboutSection({ tenant }: Props) {
                     className="text-body-md text-[var(--color-accent)]/70 mt-4 ml-[calc(10px+1.25rem)] max-w-sm leading-relaxed"
                     data-editable={`page_commitments[${i}].body`}
                     data-edit-type="textarea"
-                    data-edit-label={`Pillar ${i + 1} — Deskripsi`}
+                    data-edit-label={`Pillar ${i + 1}, Deskripsi`}
                     data-edit-value={pillar.body}
                   >
                     {pillar.body}
@@ -105,7 +105,7 @@ export function AboutSection({ tenant }: Props) {
               className="aspect-[3/4] overflow-hidden relative"
               data-editable="about_image_1_url"
               data-edit-type="image"
-              data-edit-label="About — Foto Kiri"
+              data-edit-label="About, Foto Kiri"
               data-edit-value={tenant.about_image_1_url ?? ''}
             >
               {tenant.about_image_1_url ? (
@@ -118,7 +118,7 @@ export function AboutSection({ tenant }: Props) {
               className="aspect-[3/4] overflow-hidden mt-12 relative"
               data-editable="about_image_2_url"
               data-edit-type="image"
-              data-edit-label="About — Foto Kanan"
+              data-edit-label="About, Foto Kanan"
               data-edit-value={tenant.about_image_2_url ?? ''}
             >
               {tenant.about_image_2_url ? (

@@ -1,7 +1,7 @@
 import { createServiceClient } from '@/lib/supabase/server'
 import { CategoriesClient } from './_client'
 
-export const metadata = { title: 'Kategori — Admin UMKMu' }
+export const metadata = { title: 'Kategori, Admin UMKMu' }
 
 export default async function CategoriesPage() {
   const db = createServiceClient()

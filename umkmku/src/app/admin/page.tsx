@@ -3,7 +3,7 @@ import { createClient, createServiceClient } from '@/lib/supabase/server'
 import { AdminActions } from './_admin-actions'
 
 export default async function AdminPage() {
-  // Auth guard — hanya super_admin
+  // Auth guard, hanya super_admin
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) redirect('/admin/login')
@@ -50,7 +50,7 @@ export default async function AdminPage() {
       {/* Header */}
       <div className="bg-[#0A2F73] text-white px-8 py-6 flex items-center justify-between">
         <div>
-          <div className="text-lg font-bold">UMKMu — Admin Panel</div>
+          <div className="text-lg font-bold">UMKMu, Admin Panel</div>
           <div className="text-white/50 text-xs mt-0.5">Super Admin · {user.email}</div>
         </div>
         <div className="flex gap-6 text-sm">

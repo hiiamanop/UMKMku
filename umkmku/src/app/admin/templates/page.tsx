@@ -1,7 +1,7 @@
 import { createServiceClient } from '@/lib/supabase/server'
 import { AdminTemplatesClient } from './_client'
 
-export const metadata = { title: 'Template Submissions — Admin' }
+export const metadata = { title: 'Template Submissions, Admin' }
 
 export default async function AdminTemplatesPage() {
   const supabase = createServiceClient()

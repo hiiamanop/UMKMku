@@ -1,7 +1,7 @@
 import { FreelancerRegisterForm } from './_form'
 import { AlertCircle } from 'lucide-react'
 
-export const metadata = { title: 'Daftar Freelancer — UMKMu' }
+export const metadata = { title: 'Daftar Freelancer, UMKMu' }
 
 interface Props {
   searchParams: Promise<{ reason?: string }>

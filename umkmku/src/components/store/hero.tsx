@@ -10,7 +10,7 @@ interface Props {
 export function Hero({ tenant, products }: Props) {
   return (
     <section className="grid grid-cols-1 md:grid-cols-12 w-full min-h-[600px] md:min-h-[720px]">
-      {/* LEFT 7/12 — lifestyle / hero image */}
+      {/* LEFT 7/12, lifestyle / hero image */}
       <div
         className="md:col-span-7 relative overflow-hidden h-[400px] md:h-auto bg-[var(--color-accent)]"
         data-editable="hero_image_url"
@@ -68,7 +68,7 @@ export function Hero({ tenant, products }: Props) {
         </div>
       </div>
 
-      {/* RIGHT 5/12 — product carousel */}
+      {/* RIGHT 5/12, product carousel */}
       <div className="md:col-span-5 bg-[var(--color-secondary)] flex flex-col justify-center items-center px-8 md:px-12 py-16">
         {products.length > 0 ? (
           <HeroProductCarousel products={products} slug={tenant.slug} />

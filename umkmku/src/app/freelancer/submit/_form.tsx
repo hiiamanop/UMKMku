@@ -130,7 +130,7 @@ export function SubmitTemplateForm() {
       </div>
 
       <div>
-        <label className="block text-xs font-semibold mb-1.5" style={{ color: PRIMARY }}>URL Live Demo * <span className="font-normal text-gray-400">(wajib — untuk screenshot otomatis)</span></label>
+        <label className="block text-xs font-semibold mb-1.5" style={{ color: PRIMARY }}>URL Live Demo * <span className="font-normal text-gray-400">(wajib, untuk screenshot otomatis)</span></label>
         <input type="url" value={demoUrl} onChange={e => setDemoUrl(e.target.value)} placeholder="https://demo-template.vercel.app" required className={inputCls} style={inputStyle} onFocus={e => (e.target.style.borderColor = PRIMARY)} onBlur={e => (e.target.style.borderColor = BORDER)} />
       </div>
 

@@ -12,7 +12,7 @@ export function CtaBanner({ tenant }: Props) {
       className="w-full h-[500px] relative overflow-hidden"
       data-editable="cta_image_url"
       data-edit-type="image"
-      data-edit-label="CTA Banner — Background"
+      data-edit-label="CTA Banner, Background"
       data-edit-value={tenant.cta_image_url ?? tenant.hero_image_url ?? ''}
     >
       {/* Background */}

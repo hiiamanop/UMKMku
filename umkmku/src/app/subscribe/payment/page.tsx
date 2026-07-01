@@ -13,7 +13,7 @@ const PLAN_INFO: Record<string, { name: string; price: number; period: string }>
   enterprise: { name: 'Enterprise', price: 599000, period: 'bulan pertama' },
 }
 
-// ponytail: rekening statis — ganti dengan data dari DB/env saat payment gateway terintegrasi
+// ponytail: rekening statis, ganti dengan data dari DB/env saat payment gateway terintegrasi
 const BANK_ACCOUNTS = [
   { bank: 'BCA', account: '1234567890', name: 'PT UMKMku Digital Indonesia' },
   { bank: 'BRI', account: '0987654321', name: 'PT UMKMku Digital Indonesia' },

@@ -28,7 +28,7 @@ export async function notifyMerchantNewOrder({ merchantWa, brandName, customerNa
   merchantWa: string; brandName: string; customerName: string; totalAmount: number; orderId: string
 }) {
   const shortId = orderId.slice(-8).toUpperCase()
-  await send(merchantWa, `🛍️ *Pesanan Baru Masuk!* — ${brandName}
+  await send(merchantWa, `🛍️ *Pesanan Baru Masuk!*, ${brandName}
 
 Pelanggan: ${customerName || 'Anonim'}
 Total: ${fmtRp(totalAmount)}
@@ -41,7 +41,7 @@ export async function notifyMerchantPaymentSubmitted({ merchantWa, brandName, cu
   merchantWa: string; brandName: string; customerName: string; totalAmount: number; orderId: string
 }) {
   const shortId = orderId.slice(-8).toUpperCase()
-  await send(merchantWa, `📸 *Bukti Pembayaran Diterima!* — ${brandName}
+  await send(merchantWa, `📸 *Bukti Pembayaran Diterima!*, ${brandName}
 
 Pelanggan: ${customerName || 'Anonim'}
 Total: ${fmtRp(totalAmount)}
@@ -117,7 +117,7 @@ Jika ada pertanyaan, silakan hubungi kami. Terima kasih 🙏`)
 export async function notifyMerchantQuotaWarning({ merchantWa, brandName, remaining, limit }: {
   merchantWa: string; brandName: string; remaining: number; limit: number
 }) {
-  await send(merchantWa, `⚠️ *Kuota Pesanan Hampir Habis* — ${brandName}
+  await send(merchantWa, `⚠️ *Kuota Pesanan Hampir Habis*, ${brandName}
 
 Sisa kuota: *${remaining} dari ${limit} pesanan/bulan*
 

@@ -189,7 +189,7 @@ export async function PUT(
 
     const supabase = createServiceClient()
 
-    // Merchant ownership check — only tenant owner can update orders
+    // Merchant ownership check, only tenant owner can update orders
     const { data: orderForAuth } = await supabase.from('orders').select('tenant_id').eq('id', orderId).single()
     if (orderForAuth) {
       const { data: tenantForAuth } = await supabase.from('tenants').select('owner_id').eq('id', orderForAuth.tenant_id).single()

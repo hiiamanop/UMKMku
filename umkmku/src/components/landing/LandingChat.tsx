@@ -70,7 +70,7 @@ export function LandingChat() {
 
   return (
     <>
-      {/* Freelancer ad — muncul di atas tombol chat */}
+      {/* Freelancer ad, muncul di atas tombol chat */}
       {adVisible && !open && (
         <div
           className="fixed bottom-24 right-6 z-50 w-64 rounded-2xl shadow-xl overflow-hidden"

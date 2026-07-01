@@ -1,4 +1,4 @@
-# Payment Service — UMKMku.com
+# Payment Service, UMKMku.com
 
 Independent Node.js service for payment processing via Xendit QRIS. Handles invoice generation, webhook callbacks, and order status tracking.
 
@@ -14,12 +14,12 @@ payment-service (Node.js + Express)
 
 ## Features
 
-- **Xendit QRIS Integration** — Generate payment QR codes for orders
-- **Webhook Handling** — Verify and process Xendit payment callbacks
-- **Order Tracking** — Store orders in Supabase with payment status
-- **Multi-tenant Support** — Isolate orders by `tenant_slug`
-- **Signature Verification** — HMAC-SHA256 verification for webhook security
-- **Error Handling** — Comprehensive logging and graceful error responses
+- **Xendit QRIS Integration**, Generate payment QR codes for orders
+- **Webhook Handling**, Verify and process Xendit payment callbacks
+- **Order Tracking**, Store orders in Supabase with payment status
+- **Multi-tenant Support**, Isolate orders by `tenant_slug`
+- **Signature Verification**, HMAC-SHA256 verification for webhook security
+- **Error Handling**, Comprehensive logging and graceful error responses
 
 ## Setup
 

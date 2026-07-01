@@ -78,7 +78,7 @@ export default async function Page({ params, searchParams }: Props) {
         .filter((l): l is string => Boolean(l))
     )].sort()
 
-    // Build filtered query — Supabase doesn't support JSON filter directly,
+    // Build filtered query, Supabase doesn't support JSON filter directly,
     // so we fetch all and filter in JS for parfum_data fields
     let query = supabase
       .from('products')

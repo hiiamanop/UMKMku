@@ -30,7 +30,7 @@ export default async function OrderChatPage({ params }: Props) {
   if (!existing || existing.length === 0) {
     const totalFmt = 'Rp ' + order.total_amount.toLocaleString('id-ID')
     const itemList = (order.order_items ?? [])
-      .map((i: any) => `• ${i.product_name} (x${i.quantity}) — Rp ${(i.product_price * i.quantity).toLocaleString('id-ID')}`)
+      .map((i: any) => `• ${i.product_name} (x${i.quantity}), Rp ${(i.product_price * i.quantity).toLocaleString('id-ID')}`)
       .join('\n')
 
     const greeting = `Halo! 👋 Terima kasih telah berbelanja di **${tenant.brand_name}**.

@@ -52,8 +52,8 @@ const CATEGORIES: { value: CategoryType; label: string; desc: string; icon: stri
 ]
 
 const PLAN_LABELS: Record<string, string> = {
-  business: 'Business — Rp 399k/bln',
-  enterprise: 'Enterprise — Rp 599k/bln',
+  business: 'Business, Rp 399k/bln',
+  enterprise: 'Enterprise, Rp 599k/bln',
   free: 'Free Trial 7 Hari',
 }
 

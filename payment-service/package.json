@@ -1,7 +1,7 @@
 {
   "name": "umkmku-payment-service",
   "version": "0.1.0",
-  "description": "Payment processing service for UMKMku.com — Xendit QRIS, webhook handling, order status",
+  "description": "Payment processing service for UMKMku.com, Xendit QRIS, webhook handling, order status",
   "type": "module",
   "main": "dist/index.js",
   "scripts": {

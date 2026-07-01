@@ -60,7 +60,7 @@ export function RegisterClient({ authHeroImageUrl }: { authHeroImageUrl: string 
       return
     }
 
-    // Email confirmation required — simpan ke localStorage sementara, tampilkan pesan
+    // Email confirmation required, simpan ke localStorage sementara, tampilkan pesan
     if (data.user) {
       localStorage.setItem(`pending_profile_${data.user.id}`, JSON.stringify({
         full_name: form.full_name,
@@ -101,7 +101,7 @@ export function RegisterClient({ authHeroImageUrl }: { authHeroImageUrl: string 
 
   return (
     <div className="min-h-screen grid md:grid-cols-[42%_1fr]">
-      {/* Left — hero panel */}
+      {/* Left, hero panel */}
       <div className="hidden md:flex relative flex-col justify-end p-12 overflow-hidden"
         style={{ background: 'var(--color-secondary)' }}>
         <div className="absolute inset-0">
@@ -122,7 +122,7 @@ export function RegisterClient({ authHeroImageUrl }: { authHeroImageUrl: string 
         </div>
       </div>
 
-      {/* Right — form */}
+      {/* Right, form */}
       <div className="flex flex-col items-center justify-center px-8 md:px-16 py-16 bg-[#fafaf8]">
         <div className="w-full max-w-[400px]">
           {/* Brand */}

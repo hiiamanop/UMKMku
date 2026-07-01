@@ -75,7 +75,7 @@ export function CheckoutForm({ plan, pricing, slug }: Props) {
           <input type="tel" value={phone} onChange={e => setPhone(e.target.value)}
             placeholder="08xxxxxxxxxx" className={inputCls} style={inputStyle}
             onFocus={e => (e.target.style.borderColor = PRIMARY)} onBlur={e => (e.target.style.borderColor = BORDER)} />
-          <p className="text-xs mt-1" style={{ color: TEXT_SEC }}>Opsional — untuk notifikasi aktivasi via WA</p>
+          <p className="text-xs mt-1" style={{ color: TEXT_SEC }}>Opsional, untuk notifikasi aktivasi via WA</p>
         </div>
 
         {/* Metode Pembayaran */}
@@ -83,7 +83,7 @@ export function CheckoutForm({ plan, pricing, slug }: Props) {
           <label className="block text-xs font-semibold mb-2" style={{ color: PRIMARY }}>Metode Pembayaran</label>
           <div className="flex flex-col gap-2">
 
-            {/* QRIS Manual — aktif */}
+            {/* QRIS Manual, aktif */}
             <button
               type="button"
               onClick={() => setPaymentMethod('manual_qris')}
@@ -111,7 +111,7 @@ export function CheckoutForm({ plan, pricing, slug }: Props) {
               </div>
             </button>
 
-            {/* Payment Gateway — disabled */}
+            {/* Payment Gateway, disabled */}
             <div className="flex items-center gap-3 p-4 rounded-xl border text-left opacity-50 cursor-not-allowed"
               style={{ borderColor: BORDER }}>
               <div className="w-9 h-9 rounded-lg flex items-center justify-center shrink-0"
@@ -127,7 +127,7 @@ export function CheckoutForm({ plan, pricing, slug }: Props) {
                   </span>
                 </div>
                 <div className="text-xs mt-0.5" style={{ color: TEXT_SEC }}>
-                  VA, Kartu Kredit, e-wallet — segera hadir
+                  VA, Kartu Kredit, e-wallet, segera hadir
                 </div>
               </div>
             </div>

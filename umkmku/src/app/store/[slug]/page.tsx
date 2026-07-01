@@ -18,7 +18,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   if (!data) return { title: 'Toko tidak ditemukan' }
 
   const { tenant } = data
-  const title = `${tenant.brand_name} — Toko Online`
+  const title = `${tenant.brand_name}, Toko Online`
   const description = tenant.tagline || tenant.description?.slice(0, 160) || `Belanja produk ${tenant.brand_name} secara online.`
   const image = tenant.hero_image_url || tenant.logo_url
 

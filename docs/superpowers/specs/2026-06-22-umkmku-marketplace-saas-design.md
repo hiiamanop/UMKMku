@@ -1,4 +1,4 @@
-# UMKMku.com Marketplace SaaS — Product Design
+# UMKMku.com Marketplace SaaS, Product Design
 
 **Date:** June 22, 2026  
 **Status:** Design Phase Complete  
@@ -16,7 +16,7 @@ UMKMku.com is a multi-tenant SaaS platform enabling Indonesian UMKM retail merch
 - **Payment integration** (dynamic QRIS via Xendit)
 - **Unified merchant dashboard** (manage store, subscription, payments, metrics)
 
-**Subscription Model:** Fixed monthly tier (TBD price) — one tier for MVP.
+**Subscription Model:** Fixed monthly tier (TBD price), one tier for MVP.
 
 **Business Model:** Merchant pays subscription. Customer pays Xendit fee (2.5%) at checkout.
 
@@ -83,32 +83,32 @@ Merchant Dashboard:
 ### Routes
 
 **Marketing Hub (UMKMku.com)**
-- `/` — Landing page + company info
-- `/onboarding` — Merchant signup + category selection + AI flow
-- `/login` — Merchant auth
-- `/dashboard` — Subscription management + billing history
+- `/`, Landing page + company info
+- `/onboarding`, Merchant signup + category selection + AI flow
+- `/login`, Merchant auth
+- `/dashboard`, Subscription management + billing history
 
 **Merchant Store ([slug].umkmku.com)**
-- `/` — Landing page + hero section
-- `/shop` — Product listing (paginated, filterable by category)
-- `/product/[id]` — Product detail + reviews + AI recommendations
-- `/cart` — Shopping cart
-- `/checkout` — Cart review + QRIS generation + payment
-- `/order/[id]` — Order tracking
-- `/about` — Merchant info
-- `/contact` — WhatsApp + email
-- `/[merchant-dashboard]/*` — Unified dashboard (see "Dashboard Routes" below)
+- `/`, Landing page + hero section
+- `/shop`, Product listing (paginated, filterable by category)
+- `/product/[id]`, Product detail + reviews + AI recommendations
+- `/cart`, Shopping cart
+- `/checkout`, Cart review + QRIS generation + payment
+- `/order/[id]`, Order tracking
+- `/about`, Merchant info
+- `/contact`, WhatsApp + email
+- `/[merchant-dashboard]/*`, Unified dashboard (see "Dashboard Routes" below)
 
 **Dashboard Routes (Unified at [slug].umkmku.com/dashboard)**
-- `/overview` — Stats + recent orders
-- `/products` — CRUD products per category schema
-- `/orders` — Order management
-- `/customers` — Customer list + interaction history
-- `/appearance` — Colors + branding
-- `/chatbot-settings` — AI persona + behavior
-- `/payments` — Xendit credentials + settlement history
-- `/subscription` — Billing status + plan
-- `/analytics` — Revenue, customers, product performance
+- `/overview`, Stats + recent orders
+- `/products`, CRUD products per category schema
+- `/orders`, Order management
+- `/customers`, Customer list + interaction history
+- `/appearance`, Colors + branding
+- `/chatbot-settings`, AI persona + behavior
+- `/payments`, Xendit credentials + settlement history
+- `/subscription`, Billing status + plan
+- `/analytics`, Revenue, customers, product performance
 
 ### Category-Specific Schema
 
@@ -533,15 +533,15 @@ Invalidation: On dashboard product/config update, clear relevant keys
 
 ## Decisions Locked In
 
-1. ✅ **Three-service hybrid** (Core + Chatbot + Payment) — no monolith, no full microservices
-2. ✅ **Xendit only** (not Midtrans) — simpler, single vendor
-3. ✅ **Dynamic QRIS** (per-transaction, not per-product) — flexible for promo/discount
-4. ✅ **Xendit fee passed to customer** — merchant gets clean revenue
-5. ✅ **Category-aware from Day 1** (not generic template) — better UX + AI matching
-6. ✅ **Config-based rendering** (not code generation) — maintainable, no per-merchant deploys
-7. ✅ **Free tier MVP** (Vercel + Supabase free) — bootstrap without upfront cost
-8. ✅ **Unified merchant dashboard** (not separate areas) — single login, single interface
-9. ✅ **Multi-tenant routing via middleware** (not separate deployments) — one codebase serves all
+1. ✅ **Three-service hybrid** (Core + Chatbot + Payment), no monolith, no full microservices
+2. ✅ **Xendit only** (not Midtrans), simpler, single vendor
+3. ✅ **Dynamic QRIS** (per-transaction, not per-product), flexible for promo/discount
+4. ✅ **Xendit fee passed to customer**, merchant gets clean revenue
+5. ✅ **Category-aware from Day 1** (not generic template), better UX + AI matching
+6. ✅ **Config-based rendering** (not code generation), maintainable, no per-merchant deploys
+7. ✅ **Free tier MVP** (Vercel + Supabase free), bootstrap without upfront cost
+8. ✅ **Unified merchant dashboard** (not separate areas), single login, single interface
+9. ✅ **Multi-tenant routing via middleware** (not separate deployments), one codebase serves all
 
 ---
 

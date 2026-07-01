@@ -32,7 +32,7 @@ export async function POST(req: NextRequest) {
 
   if (!pkg) return NextResponse.json({ error: 'Package not found' }, { status: 404 })
 
-  // Buat top-up order (status pending — menunggu konfirmasi admin)
+  // Buat top-up order (status pending, menunggu konfirmasi admin)
   const { data: topUpOrder } = await service
     .from('top_up_orders')
     .insert({ tenant_id: tenantId, package_id: packageId, status: 'pending' })
@@ -52,7 +52,7 @@ export async function POST(req: NextRequest) {
         headers: { Authorization: token, 'Content-Type': 'application/json' },
         body: JSON.stringify({
           target: phone,
-          message: `🛒 *Permintaan Top-up Diterima* — ${tenant.brand_name}
+          message: `🛒 *Permintaan Top-up Diterima*, ${tenant.brand_name}
 
 Paket: ${pkg.name} (+${pkg.transaction_quota} pesanan)
 Harga: Rp ${pkg.price.toLocaleString('id-ID')}
