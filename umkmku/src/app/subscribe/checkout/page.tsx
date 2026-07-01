@@ -49,7 +49,8 @@ export default async function CheckoutPage({ searchParams }: Props) {
             <img src="/logo.png" alt="UMKMu" style={{ height: '32px', width: 'auto' }} />
           </Link>
           <div className="flex items-center gap-1.5 text-xs" style={{ color: TEXT_SEC }}>
-            <Shield size={13} style={{ color: GOLD }} /> Pembayaran aman via Xendit
+            <Shield size={13} style={{ color: GOLD }} />
+            <span className="hidden sm:inline">Pembayaran aman via payment gateway</span>
           </div>
         </div>
       </nav>

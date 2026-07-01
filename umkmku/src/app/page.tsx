@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'UMKMu — Buat Toko Online UMKM dalam 60 Detik',
     description: 'Platform toko online terbaik untuk UMKM Indonesia. Subdomain sendiri, AI chatbot penjualan, checkout QRIS, dan manajemen pesanan.',
-    url: 'https://umkmu.site',
+    url: 'https://www.umkmu.site',
     type: 'website',
   },
 }

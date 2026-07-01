@@ -18,6 +18,6 @@ export default function robots(): MetadataRoute.Robots {
         ],
       },
     ],
-    sitemap: 'https://umkmu.site/sitemap.xml',
+    sitemap: 'https://www.umkmu.site/sitemap.xml',
   }
 }
