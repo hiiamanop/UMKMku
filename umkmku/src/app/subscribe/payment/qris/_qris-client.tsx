@@ -277,23 +277,12 @@ export function QrisPaymentClient({ invoiceId, planName, fullName, email, amount
               <input ref={inputRef} type="file" accept="image/*" className="hidden"
                 onChange={e => e.target.files?.[0] && handleFile(e.target.files[0])} />
 
-              {preview ? (
-                <div className="flex flex-col items-center gap-4">
-                  <div
-                    className="relative w-full max-w-xs h-48 rounded-xl overflow-hidden cursor-zoom-in"
-                    style={{ border: `1px solid ${BORDER}` }}
-                    onClick={() => setZoomed(true)}
-                    title="Klik untuk zoom"
-                  >
-                    <Image src={preview} alt="Bukti bayar" fill className="object-contain" />
-                    <div className="absolute bottom-2 right-2 bg-black/40 text-white text-xs px-2 py-1 rounded-lg pointer-events-none">
-                      🔍 Zoom
-                    </div>
-                  </div>
-                  <button onClick={() => inputRef.current?.click()}
-                    className="text-xs underline" style={{ color: TEXT_SEC }}>
-                    Ganti foto
-                  </button>
+              {file && preview ? (
+                <div className="flex items-center gap-2 px-4 py-3 rounded-xl" style={{ border: `1px solid ${BORDER}`, background: SURFACE }}>
+                  <Upload size={14} style={{ color: TEXT_SEC }} className="shrink-0" />
+                  <span className="text-sm flex-1 truncate" style={{ color: TEXT_SEC }}>{file.name}</span>
+                  <button onClick={() => setZoomed(true)} className="text-sm font-semibold shrink-0" style={{ color: PRIMARY }}>Preview</button>
+                  <button onClick={() => { setFile(null); setPreview(null) }} className="text-sm shrink-0 hover:text-red-500" style={{ color: TEXT_SEC }}>Batal</button>
                 </div>
               ) : (
                 <button onClick={() => inputRef.current?.click()}

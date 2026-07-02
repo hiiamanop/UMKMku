@@ -80,7 +80,7 @@ export function IngredientsPageForm({ tenant }: { tenant: Tenant }) {
           ))}
         </div>
         <button type="button" onClick={addItem}
-          className="flex items-center gap-2 mt-3 text-label-caps text-[10px] text-[var(--color-primary)] hover:opacity-70 transition-opacity">
+          className="flex items-center gap-2 mt-3 text-label-caps text-[10px] text-gray-900 hover:opacity-70 transition-opacity">
           <Plus size={12} /> Tambah Bahan
         </button>
       </FormSection>
@@ -104,7 +104,7 @@ export function IngredientsPageForm({ tenant }: { tenant: Tenant }) {
 
       <div className="flex items-center gap-4 pt-2">
         <Button type="submit" disabled={pending}
-          className="bg-[var(--color-primary)] !text-white hover:bg-[var(--color-primary)] hover:opacity-90 transition-opacity rounded-none text-label-caps tracking-widest px-8 py-3 h-auto">
+          className="bg-[var(--color-primary)] !text-[var(--color-sidebar-text)] hover:bg-[var(--color-primary)] hover:opacity-90 transition-opacity rounded-none text-label-caps tracking-widest px-8 py-3 h-auto">
           {pending ? 'Menyimpan...' : 'Simpan Ingredients'}
         </Button>
         <StatusMessage state={state} />

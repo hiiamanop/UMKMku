@@ -21,7 +21,7 @@ export function AppearanceForm({ tenant }: { tenant: Tenant }) {
         <div className="grid grid-cols-3 gap-5 mb-5">
           {[
             { name: 'primary_color', label: 'Warna Utama', hint: 'Tombol, teks judul, aksen utama', val: tenant.primary_color ?? '#1a1a1a' },
-            { name: 'secondary_color', label: 'Warna Background', hint: 'Background section, card produk', val: tenant.secondary_color ?? '#f5f5f5' },
+            { name: 'secondary_color', label: 'Warna Sekondari', hint: 'Background section, card produk', val: tenant.secondary_color ?? '#f5f5f5' },
             { name: 'accent_color', label: 'Warna Aksen', hint: 'Detail, badge, elemen dekoratif', val: tenant.accent_color ?? '#d4a574' },
           ].map((c) => (
             <div key={c.name}>
@@ -46,41 +46,10 @@ export function AppearanceForm({ tenant }: { tenant: Tenant }) {
         </div>
       </FormSection>
 
-      <FormSection title="Gambar Halaman Utama" description="Gambar-gambar di landing page toko kamu.">
-        <div className="grid grid-cols-1 gap-7">
-          <ImageUploader
-            name="hero_image" label="Hero, Foto utama kiri halaman"
-            hint="Rekomendasi: 1920×1080px landscape. Maks 5MB."
-            currentUrl={tenant.hero_image_url} aspectClass="w-48 h-28"
-          />
-          <div className="grid grid-cols-2 gap-6">
-            <ImageUploader
-              name="about_image_1" label="About, Foto kiri"
-              hint="Portrait 3:4. Maks 5MB."
-              currentUrl={tenant.about_image_1_url} aspectClass="w-24 h-32"
-            />
-            <ImageUploader
-              name="about_image_2" label="About, Foto kanan"
-              hint="Portrait 3:4. Maks 5MB."
-              currentUrl={tenant.about_image_2_url} aspectClass="w-24 h-32"
-            />
-          </div>
-          <ImageUploader
-            name="cta_image" label="CTA Banner, Background banner 'Temukan Koleksi Kami'"
-            hint="Rekomendasi: 1920×500px landscape. Maks 5MB."
-            currentUrl={tenant.cta_image_url} aspectClass="w-48 h-20"
-          />
-          <ImageUploader
-            name="footer_image" label="Footer, Foto tengah footer"
-            hint="Rekomendasi: portrait atau square. Maks 5MB."
-            currentUrl={tenant.footer_image_url} aspectClass="w-48 h-28"
-          />
-        </div>
-      </FormSection>
 
       <div className="flex items-center gap-4 pt-2">
         <button type="submit" disabled={pending}
-          style={{ backgroundColor: 'var(--color-primary)', color: 'white' }}
+          style={{ backgroundColor: 'var(--color-primary)', color: 'var(--color-sidebar-text)' }}
           className="hover:opacity-90 transition-opacity rounded-none text-label-caps tracking-widest px-8 py-3 disabled:opacity-50 disabled:cursor-not-allowed">
           {pending ? 'Menyimpan...' : 'Simpan Tampilan'}
         </button>

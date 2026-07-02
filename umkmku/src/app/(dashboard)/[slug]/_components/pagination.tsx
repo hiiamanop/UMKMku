@@ -18,11 +18,11 @@ export function Pagination({ page, total, pageSize, basePath, searchParams = {} 
     return `${basePath}?${params}`
   }
 
-  const btnCls = 'flex items-center gap-1 px-3 py-1.5 text-[11px] font-medium border border-black/15 hover:bg-black/5 transition-colors disabled:opacity-40 disabled:pointer-events-none text-[var(--color-accent)]'
+  const btnCls = 'flex items-center gap-1 px-3 py-1.5 text-[11px] font-medium border border-black/15 hover:bg-black/5 transition-colors disabled:opacity-40 disabled:pointer-events-none text-gray-700'
 
   return (
     <div className="flex items-center justify-between pt-4 border-t border-black/8">
-      <p className="text-[11px] text-[var(--color-accent)]/40">
+      <p className="text-[11px] text-gray-400">
         {(page - 1) * pageSize + 1}–{Math.min(page * pageSize, total)} dari {total}
       </p>
       <div className="flex items-center gap-2">
@@ -30,7 +30,7 @@ export function Pagination({ page, total, pageSize, basePath, searchParams = {} 
           ? <Link href={href(page - 1)} className={btnCls}><ChevronLeft size={12} />Sebelumnya</Link>
           : <span className={`${btnCls} opacity-30 pointer-events-none`}><ChevronLeft size={12} />Sebelumnya</span>
         }
-        <span className="text-[11px] text-[var(--color-accent)]/50 px-1">{page} / {totalPages}</span>
+        <span className="text-[11px] text-gray-500 px-1">{page} / {totalPages}</span>
         {page < totalPages
           ? <Link href={href(page + 1)} className={btnCls}>Berikutnya<ChevronRight size={12} /></Link>
           : <span className={`${btnCls} opacity-30 pointer-events-none`}>Berikutnya<ChevronRight size={12} /></span>

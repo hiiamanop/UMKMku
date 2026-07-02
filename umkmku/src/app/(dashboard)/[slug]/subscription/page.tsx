@@ -1,8 +1,10 @@
 import { notFound } from 'next/navigation'
 import { createServiceClient } from '@/lib/supabase/server'
 import { getTenantBySlug } from '@/lib/tenant'
-import { Zap, ShoppingBag, TrendingUp, CheckCircle2, AlertTriangle, Clock } from 'lucide-react'
+import { TrendingUp, CheckCircle2, AlertTriangle, Clock } from 'lucide-react'
 import { TopUpButton } from './_topup-button'
+import { UsageCard } from './_usage-card'
+import { UsageChart } from './_usage-chart'
 import Link from 'next/link'
 
 const PLAN_LABELS: Record<string, string> = {
@@ -37,11 +39,12 @@ export default async function SubscriptionPage({ params }: Props) {
     .from('top_up_packages')
     .select('*')
     .eq('is_active', true)
+    .limit(1)
 
   if (!sub) {
     return (
       <div className="max-w-lg">
-        <h1 className="text-2xl font-bold mb-2" style={{ color: 'var(--color-primary)' }}>Langganan</h1>
+        <h1 className="text-2xl font-bold mb-2" style={{ color: '#1a1a1a' }}>Langganan</h1>
         <p className="text-sm text-gray-500">Belum ada data langganan. Hubungi tim UMKMku.</p>
       </div>
     )
@@ -71,18 +74,22 @@ export default async function SubscriptionPage({ params }: Props) {
   const isLimited = sub.status === 'suspended' || sub.status === 'expired'
 
   return (
-    <div className="max-w-2xl space-y-6">
+    <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold" style={{ color: 'var(--color-primary)' }}>Langganan</h1>
+        <h1 className="text-2xl font-bold" style={{ color: '#1a1a1a' }}>Langganan</h1>
         <p className="text-sm text-gray-500 mt-1">Status, penggunaan, dan kelola plan tokomu.</p>
       </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
+      {/* Kolom kiri: status, usage, top-up, upgrade */}
+      <div className="space-y-6">
 
       {/* Status card */}
       <div className="bg-white rounded-2xl p-6 border border-gray-100 space-y-5">
         <div className="flex items-start justify-between gap-4">
           <div>
             <div className="text-xs font-semibold text-gray-400 uppercase tracking-widest mb-1">Plan Aktif</div>
-            <div className="text-2xl font-bold" style={{ color: 'var(--color-primary)' }}>
+            <div className="text-2xl font-bold" style={{ color: '#1a1a1a' }}>
               {PLAN_LABELS[plan.id] ?? plan.name}
             </div>
             {plan.price_monthly > 0 && (
@@ -113,92 +120,21 @@ export default async function SubscriptionPage({ params }: Props) {
         )}
       </div>
 
-      {/* Usage */}
-      <div className="bg-white rounded-2xl p-6 border border-gray-100 space-y-5">
-        <div className="text-sm font-semibold" style={{ color: 'var(--color-primary)' }}>Penggunaan Bulan Ini</div>
-
-        {/* AI Token */}
-        <div className="space-y-2">
-          <div className="flex items-center justify-between text-sm">
-            <div className="flex items-center gap-1.5 text-gray-600 font-medium">
-              <Zap size={14} style={{ color: 'var(--color-accent)' }} />
-              AI Chatbot Token
-            </div>
-            <div className="text-xs text-gray-400">
-              {(sub.ai_tokens_used / 1000).toFixed(1)}k
-              {tokenLimit ? ` / ${(tokenLimit / 1000).toFixed(0)}k` : ' / ∞'}
-            </div>
-          </div>
-          {tokenLimit ? (
-            <div className="h-2 rounded-full bg-gray-100 overflow-hidden">
-              <div
-                className="h-full rounded-full transition-all"
-                style={{
-                  width: `${tokenPct}%`,
-                  background: tokenPct >= 90 ? '#ef4444' : tokenPct >= 70 ? '#f59e0b' : 'var(--color-primary)',
-                }}
-              />
-            </div>
-          ) : (
-            <div className="text-xs text-gray-400">Tidak terbatas (cap internal 50 juta)</div>
-          )}
-          {tokenPct >= 80 && tokenLimit && (
-            <p className="text-xs text-amber-600">
-              ⚠️ Token hampir habis, pertimbangkan upgrade plan.
-            </p>
-          )}
-        </div>
-
-        {/* Transactions */}
-        <div className="space-y-2">
-          <div className="flex items-center justify-between text-sm">
-            <div className="flex items-center gap-1.5 text-gray-600 font-medium">
-              <ShoppingBag size={14} style={{ color: 'var(--color-accent)' }} />
-              Pesanan
-            </div>
-            <div className="text-xs text-gray-400">
-              {sub.transactions_used}
-              {txLimit ? ` / ${txLimit}` : ' / ∞'}
-            </div>
-          </div>
-          {txLimit ? (
-            <div className="h-2 rounded-full bg-gray-100 overflow-hidden">
-              <div
-                className="h-full rounded-full transition-all"
-                style={{
-                  width: `${txPct}%`,
-                  background: txPct >= 90 ? '#ef4444' : txPct >= 70 ? '#f59e0b' : 'var(--color-primary)',
-                }}
-              />
-            </div>
-          ) : (
-            <div className="text-xs text-gray-400">Tidak terbatas</div>
-          )}
-          {txLimit && txPct >= 80 && (
-            <p className="text-xs text-amber-600">
-              ⚠️ Kuota pesanan tinggal {txLimit - sub.transactions_used}, segera top-up agar toko tidak terganggu.
-            </p>
-          )}
-        </div>
-
-        {/* Overage */}
-        {sub.overage_transactions > 0 && (
-          <div className="rounded-xl p-4 border border-orange-100 bg-orange-50 text-sm">
-            <div className="font-semibold text-orange-800">
-              Pesanan overage: {sub.overage_transactions} pesanan
-            </div>
-            <div className="text-orange-700 mt-0.5">
-              Biaya tambahan: Rp {(sub.overage_transactions * 1000).toLocaleString('id-ID')}, akan ditagih bulan depan.
-            </div>
-          </div>
-        )}
-      </div>
+      <UsageCard
+        tenantId={data.tenant.id}
+        initialTokensUsed={sub.ai_tokens_used}
+        initialTxUsed={sub.transactions_used}
+        tokenLimit={tokenLimit}
+        txLimit={txLimit}
+        overage={sub.overage_transactions}
+        initialAddon={(sub as any).transactions_addon ?? 0}
+      />
 
       {/* Top-up */}
       {txLimit && (
         <div className="bg-white rounded-2xl p-6 border border-gray-100 space-y-4">
           <div>
-            <div className="text-sm font-semibold" style={{ color: 'var(--color-primary)' }}>Top-up Kuota Pesanan</div>
+            <div className="text-sm font-semibold" style={{ color: '#1a1a1a' }}>Top-up Kuota Pesanan</div>
             <p className="text-xs text-gray-400 mt-0.5">Tambah kuota pesanan kapan saja, langsung aktif setelah dikonfirmasi.</p>
           </div>
           <div className="flex flex-col gap-3">
@@ -212,10 +148,10 @@ export default async function SubscriptionPage({ params }: Props) {
                   <div className="text-xs text-gray-400">+{pkg.transaction_quota} pesanan</div>
                 </div>
                 <div className="flex items-center gap-3">
-                  <div className="text-sm font-bold" style={{ color: 'var(--color-primary)' }}>
+                  <div className="text-sm font-bold" style={{ color: '#1a1a1a' }}>
                     Rp {pkg.price.toLocaleString('id-ID')}
                   </div>
-                  <TopUpButton packageId={pkg.id} tenantId={data.tenant.id} packageName={pkg.name} price={pkg.price} />
+                  <TopUpButton packageId={pkg.id} tenantId={data.tenant.id} packageName={pkg.name} price={pkg.price} transactionQuota={pkg.transaction_quota} />
                 </div>
               </div>
             ))}
@@ -230,12 +166,12 @@ export default async function SubscriptionPage({ params }: Props) {
           style={{ background: 'var(--color-primary)' }}
         >
           <div className="flex items-start gap-3">
-            <TrendingUp size={20} className="text-white/70 shrink-0 mt-0.5" />
+            <TrendingUp size={20} className="opacity-70 shrink-0 mt-0.5" style={{ color: 'var(--color-sidebar-text)' }} />
             <div>
-              <div className="text-white font-semibold">
+              <div className="font-semibold" style={{ color: 'var(--color-sidebar-text)' }}>
                 {plan.id === 'free' ? 'Upgrade ke Business atau Enterprise' : 'Upgrade ke Enterprise'}
               </div>
-              <p className="text-white/60 text-sm mt-1">
+              <p className="text-sm mt-1 opacity-60" style={{ color: 'var(--color-sidebar-text)' }}>
                 {plan.id === 'free'
                   ? 'Dapatkan 1 juta token AI, 1.000 pesanan/bulan, dan analitik penjualan.'
                   : 'Token AI 50 juta, pesanan tidak terbatas, dan priority support.'}
@@ -254,12 +190,13 @@ export default async function SubscriptionPage({ params }: Props) {
             )}
             <Link
               href={`/subscribe?from=dashboard&plan=enterprise&slug=${slug}`}
-              className="flex-1 py-3 rounded-xl text-center text-sm font-semibold border border-white/30 text-white transition-colors hover:bg-white/10"
+              className="flex-1 py-3 rounded-xl text-center text-sm font-semibold transition-colors hover:opacity-80 border"
+              style={{ borderColor: 'color-mix(in srgb, var(--color-sidebar-text) 30%, transparent)', color: 'var(--color-sidebar-text)' }}
             >
               Enterprise, Rp 599k/bln
             </Link>
           </div>
-          <p className="text-white/40 text-xs">
+          <p className="text-xs opacity-40" style={{ color: 'var(--color-sidebar-text)' }}>
             Klik untuk pilih plan → buat akun / login → instruksi pembayaran akan ditampilkan.
           </p>
         </div>
@@ -273,6 +210,15 @@ export default async function SubscriptionPage({ params }: Props) {
           </a>
         </div>
       )}
+
+      </div>{/* end kolom kiri */}
+
+      {/* Kolom kanan: chart */}
+      <div className="lg:sticky lg:top-6">
+        <UsageChart tenantId={data.tenant.id} hasAddon={((sub as any).transactions_addon ?? 0) > 0} />
+      </div>
+
+      </div>{/* end grid */}
     </div>
   )
 }

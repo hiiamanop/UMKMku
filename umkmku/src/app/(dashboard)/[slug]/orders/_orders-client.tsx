@@ -56,7 +56,7 @@ function PaymentHistory({ orderId, slug }: { orderId: string; slug: string }) {
   return (
     <>
       <button onClick={openModal}
-        className="flex items-center gap-1.5 text-label-caps text-[10px] border border-black/15 px-3 py-2 hover:bg-[var(--color-secondary)] transition-colors">
+        className="flex items-center gap-1.5 text-label-caps text-[10px] border border-black/15 px-3 py-2 hover:bg-gray-50 transition-colors">
         <History size={11} />RIWAYAT BUKTI
       </button>
 
@@ -66,20 +66,20 @@ function PaymentHistory({ orderId, slug }: { orderId: string; slug: string }) {
             {/* Header */}
             <div className="flex items-center justify-between px-6 py-4 border-b border-black/8 shrink-0">
               <p className="text-label-caps text-[11px] tracking-widest">RIWAYAT BUKTI BAYAR</p>
-              <button onClick={() => setOpen(false)} className="text-[var(--color-accent)]/40 hover:text-[var(--color-accent)] transition-colors">
+              <button onClick={() => setOpen(false)} className="text-gray-400 hover:text-gray-700 transition-colors">
                 <X size={18} />
               </button>
             </div>
 
             {/* Body */}
             <div className="overflow-y-auto px-6 py-5 space-y-5">
-              {loading && <p className="text-[12px] text-[var(--color-accent)]/40 text-center py-8">Memuat...</p>}
+              {loading && <p className="text-[12px] text-gray-400 text-center py-8">Memuat...</p>}
               {!loading && records.length === 0 && (
-                <p className="text-[12px] text-[var(--color-accent)]/40 italic text-center py-8">Belum ada bukti yang dikirim.</p>
+                <p className="text-[12px] text-gray-400 italic text-center py-8">Belum ada bukti yang dikirim.</p>
               )}
               {records.map((r, i) => (
                 <div key={i} className="flex gap-4 items-start pb-5 border-b border-black/5 last:border-0 last:pb-0">
-                  <span className="text-[10px] text-[var(--color-accent)]/30 font-mono pt-1 shrink-0 w-4">#{i + 1}</span>
+                  <span className="text-[10px] text-gray-300 font-mono pt-1 shrink-0 w-4">#{i + 1}</span>
                   <button onClick={() => setZoomSrc(r.proof.attachment_url)} className="relative shrink-0 cursor-zoom-in group">
                     <Image src={r.proof.attachment_url} alt={`Bukti ${i + 1}`} width={88} height={88}
                       className="rounded object-cover w-[88px] h-[88px] border border-black/10" />
@@ -88,13 +88,13 @@ function PaymentHistory({ orderId, slug }: { orderId: string; slug: string }) {
                     </div>
                   </button>
                   <div className="flex-1 min-w-0">
-                    <p className="text-[11px] text-[var(--color-accent)]/40 font-sans mb-2">
+                    <p className="text-[11px] text-gray-400 font-sans mb-2">
                       {new Date(r.proof.created_at).toLocaleString('id-ID', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}
                     </p>
                     {r.audit ? (
-                      <p className="text-[12px] leading-relaxed text-[var(--color-accent)]/70 whitespace-pre-line">{r.audit.content}</p>
+                      <p className="text-[12px] leading-relaxed text-gray-700 whitespace-pre-line">{r.audit.content}</p>
                     ) : (
-                      <p className="text-[11px] text-[var(--color-accent)]/30 italic">Penilaian AI tidak tersedia</p>
+                      <p className="text-[11px] text-gray-300 italic">Penilaian AI tidak tersedia</p>
                     )}
                   </div>
                 </div>
@@ -147,16 +147,16 @@ export function OrdersClient({ slug, orders }: Props) {
     })
   }
 
-  const labelCls = 'text-label-caps text-[10px] text-[var(--color-accent)]/40 block mb-2'
-  const inputCls = 'w-full bg-[var(--color-secondary)] border border-black/15 px-4 py-2.5 text-body-md text-sm focus:outline-none focus:border-[var(--color-primary)] transition-colors'
+  const labelCls = 'text-label-caps text-[10px] text-gray-400 block mb-2'
+  const inputCls = 'w-full bg-gray-50 border border-black/15 px-4 py-2.5 text-body-md text-sm focus:outline-none focus:border-[var(--color-primary)] transition-colors'
 
   if (localOrders.length === 0) {
     return (
       <div>
         <h1 className="text-display italic mb-10">Pesanan</h1>
         <div className="bg-white border border-black/8 rounded p-16 text-center">
-          <Package size={40} className="mx-auto text-[var(--color-accent)]/20 mb-4" />
-          <p className="text-headline-md italic text-[var(--color-accent)]/40">Belum ada pesanan masuk.</p>
+          <Package size={40} className="mx-auto text-gray-200 mb-4" />
+          <p className="text-headline-md italic text-gray-400">Belum ada pesanan masuk.</p>
         </div>
       </div>
     )
@@ -166,7 +166,7 @@ export function OrdersClient({ slug, orders }: Props) {
     <div>
       <div className="flex items-baseline justify-between mb-10">
         <h1 className="text-display italic">Pesanan</h1>
-        <p className="text-label-caps text-[10px] text-[var(--color-accent)]/40">{localOrders.length} TOTAL</p>
+        <p className="text-label-caps text-[10px] text-gray-400">{localOrders.length} TOTAL</p>
       </div>
 
       <div className="space-y-3">
@@ -183,17 +183,17 @@ export function OrdersClient({ slug, orders }: Props) {
                 onClick={() => toggleExpand(order.id)}>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-3 flex-wrap">
-                    <span className="font-mono text-xs text-[var(--color-primary)]">#{order.id.slice(-8).toUpperCase()}</span>
+                    <span className="font-mono text-xs text-gray-900">#{order.id.slice(-8).toUpperCase()}</span>
                     <span className={`text-label-caps text-[9px] border px-2 py-0.5 ${statusCls}`}>
                       {STATUS_LABEL[order.status] ?? order.status}
                     </span>
                   </div>
-                  <p className="text-[12px] text-[var(--color-accent)]/50 mt-0.5 font-sans">
+                  <p className="text-[12px] text-gray-500 mt-0.5 font-sans">
                     {order.customer_name ?? 'Pelanggan'} · {new Date(order.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })}
                   </p>
                 </div>
                 <p className="text-body-md font-medium shrink-0">{fmt(order.total_amount)}</p>
-                {isOpen ? <ChevronUp size={16} className="text-[var(--color-accent)]/30 shrink-0" /> : <ChevronDown size={16} className="text-[var(--color-accent)]/30 shrink-0" />}
+                {isOpen ? <ChevronUp size={16} className="text-gray-300 shrink-0" /> : <ChevronDown size={16} className="text-gray-300 shrink-0" />}
               </div>
 
               {/* Expanded detail */}
@@ -206,12 +206,12 @@ export function OrdersClient({ slug, orders }: Props) {
                       {(order.order_items ?? []).map((item: any) => (
                         <div key={item.id} className="flex items-center gap-3">
                           {item.image_url && (
-                            <div className="w-10 h-10 relative shrink-0 bg-[var(--color-secondary)]">
+                            <div className="w-10 h-10 relative shrink-0 bg-gray-50">
                               <Image src={item.image_url} alt={item.product_name} fill sizes="40px" className="object-cover" />
                             </div>
                           )}
                           <p className="text-body-md flex-1">{item.product_name}</p>
-                          <p className="text-body-md text-[var(--color-accent)]/60 shrink-0">
+                          <p className="text-body-md text-gray-600 shrink-0">
                             {item.quantity}x {item.product_price ? fmt(item.product_price) : ''}
                           </p>
                         </div>
@@ -224,7 +224,7 @@ export function OrdersClient({ slug, orders }: Props) {
                     <div>
                       <p className={labelCls}>PENERIMA</p>
                       <p className="text-body-md">{order.customer_name ?? '-'}</p>
-                      <p className="text-[var(--color-accent)]/60">{order.customer_whatsapp ?? ''}</p>
+                      <p className="text-gray-600">{order.customer_whatsapp ?? ''}</p>
                     </div>
                     <div>
                       <p className={labelCls}>ALAMAT</p>
@@ -234,7 +234,7 @@ export function OrdersClient({ slug, orders }: Props) {
                       <div>
                         <p className={labelCls}>KURIR / RESI</p>
                         <p className="text-body-md">{order.courier_name}</p>
-                        <p className="font-mono text-xs text-[var(--color-primary)]">{order.tracking_number}</p>
+                        <p className="font-mono text-xs text-gray-900">{order.tracking_number}</p>
                       </div>
                     )}
                   </div>
@@ -252,7 +252,7 @@ export function OrdersClient({ slug, orders }: Props) {
 
                     {/* Chat link */}
                     <Link href={`/${slug}/chats?order=${order.id}`}
-                      className="flex items-center gap-2 text-label-caps text-[10px] border border-black/15 px-4 py-2 hover:bg-[var(--color-secondary)] transition-colors">
+                      className="flex items-center gap-2 text-label-caps text-[10px] border border-black/15 px-4 py-2 hover:bg-gray-50 transition-colors">
                       <MessageSquare size={12} />LIHAT CHAT
                     </Link>
 
@@ -303,7 +303,7 @@ export function OrdersClient({ slug, orders }: Props) {
                     {/* Start shipping */}
                     {order.status === 'payment_verified' && !showShipping && (
                       <button onClick={() => setShippingForm(order.id)}
-                        className="flex items-center gap-2 text-label-caps text-[10px] bg-[var(--color-primary)] text-white px-4 py-2 hover:opacity-90 transition-opacity">
+                        className="flex items-center gap-2 text-label-caps text-[10px] bg-[var(--color-primary)] text-[var(--color-sidebar-text)] px-4 py-2 hover:opacity-90 transition-opacity">
                         <Truck size={12} />START SHIPPING
                       </button>
                     )}
@@ -317,7 +317,7 @@ export function OrdersClient({ slug, orders }: Props) {
                           setLocalOrders(prev => prev.map(o => o.id === order.id ? { ...o, status: 'cancelled' } : o))
                         })
                       }} disabled={isPending}
-                        className="text-label-caps text-[10px] text-[var(--color-accent)]/40 hover:text-red-500 transition-colors px-2 py-2 disabled:opacity-60">
+                        className="text-label-caps text-[10px] text-gray-400 hover:text-red-500 transition-colors px-2 py-2 disabled:opacity-60">
                         Batalkan
                       </button>
                     )}
@@ -336,7 +336,7 @@ export function OrdersClient({ slug, orders }: Props) {
                           setExpanded(order.id)
                         })
                       }}
-                      className="border border-black/8 rounded p-5 space-y-4 bg-[var(--color-secondary)]"
+                      className="border border-black/8 rounded p-5 space-y-4 bg-gray-50"
                     >
                       <p className="text-headline-md italic">Form Pengiriman</p>
                       <div className="grid grid-cols-2 gap-4">
@@ -355,7 +355,7 @@ export function OrdersClient({ slug, orders }: Props) {
                       </div>
                       <div className="flex gap-3">
                         <button type="submit" disabled={isPending}
-                          className="text-label-caps text-[10px] bg-[var(--color-primary)] text-white px-6 py-2.5 hover:opacity-90 transition-opacity disabled:opacity-60">
+                          className="text-label-caps text-[10px] bg-[var(--color-primary)] text-[var(--color-sidebar-text)] px-6 py-2.5 hover:opacity-90 transition-opacity disabled:opacity-60">
                           {isPending ? 'MENYIMPAN...' : 'SUBMIT PENGIRIMAN'}
                         </button>
                         <button type="button" onClick={() => setShippingForm(null)}

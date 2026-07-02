@@ -93,7 +93,7 @@ export function ProductForm({ slug, product, onSuccess }: Props) {
         <div>
           <FieldLabel hint="Upload baru untuk mengganti foto saat ini">Foto Produk</FieldLabel>
           <input name="image" type="file" accept="image/jpeg,image/png,image/webp"
-            className="block w-full text-xs text-[var(--color-accent)]/60 file:mr-3 file:py-2 file:px-3 file:border file:border-black/15 file:text-xs file:bg-white file:text-[var(--color-accent)] hover:file:bg-[var(--color-secondary)] file:cursor-pointer file:transition-colors" />
+            className="block w-full text-xs text-gray-600 file:mr-3 file:py-2 file:px-3 file:border file:border-black/15 file:text-xs file:bg-white file:text-gray-700 hover:file:bg-gray-50 file:cursor-pointer file:transition-colors" />
         </div>
       </div>
 
@@ -153,7 +153,7 @@ export function ProductForm({ slug, product, onSuccess }: Props) {
 
       <div className="flex items-center gap-4 pt-1">
         <Button type="submit" disabled={pending}
-          className="bg-[var(--color-primary)] !text-white hover:bg-[var(--color-primary)] hover:opacity-90 transition-opacity rounded-none text-label-caps tracking-widest px-6 py-2.5 h-auto text-[10px]">
+          className="bg-[var(--color-primary)] !text-[var(--color-sidebar-text)] hover:bg-[var(--color-primary)] hover:opacity-90 transition-opacity rounded-none text-label-caps tracking-widest px-6 py-2.5 h-auto text-[10px]">
           {pending ? 'Menyimpan...' : product ? 'Update Produk' : 'Tambah Produk'}
         </Button>
         <StatusMessage state={state} />

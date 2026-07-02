@@ -30,12 +30,14 @@ WAJIB (semua harus terpenuhi):
 2. Apakah nominal yang tertera adalah Rp ${amount.toLocaleString('id-ID')} (toleransi ±1000)?
 3. Apakah status transaksi BERHASIL/SUKSES?
 ${merchantCheck}
-4. CEK WAKTU TRANSAKSI:
-   - KONTEKS WAKTU: Invoice ini dibuat pada ${invoiceDate} pukul ${invoiceStart} WIB. Pembayaran valid jika dilakukan antara ${invoiceStart}–${invoiceEnd} WIB pada tanggal ${invoiceDate}. GUNAKAN HANYA informasi ini sebagai referensi waktu, JANGAN gunakan asumsi internal kamu tentang tahun atau tanggal saat ini.
-   - Konversi waktu struk ke format 24 jam (10:09 AM = 10:09, 2:30 PM = 14:30).
-   - Jika struk menampilkan JAM: bandingkan hanya jam:menit dengan rentang ${invoiceStart}–${invoiceEnd}. Dalam rentang → lolos. Di luar → valid = false.
-   - Jika struk hanya menampilkan TANGGAL: cocokkan dengan ${invoiceDate}. Sama → lolos. Berbeda → valid = false.
-   - Jika tidak terbaca sama sekali → abaikan, jangan tolak.
+4. BACA TANGGAL & JAM DARI STRUK lalu bandingkan dengan nilai berikut:
+   - Tanggal referensi: ${invoiceDate}
+   - Jam mulai: ${invoiceStart} WIB
+   - Jam batas: ${invoiceEnd} WIB
+   ATURAN PERBANDINGAN (lakukan secara literal, jangan gunakan pengetahuan internal tentang tanggal):
+   - Baca tanggal dari struk → apakah sama dengan "${invoiceDate}"? Jika berbeda → valid = false.
+   - Baca jam dari struk → konversi ke 24 jam (10:09 AM = 10:09, 2:30 PM = 14:30) → apakah berada di antara ${invoiceStart} dan ${invoiceEnd}? Jika di luar rentang → valid = false.
+   - Jika tanggal/jam tidak terbaca → abaikan poin ini, jangan tolak karena alasan ini.
 
 PENGUAT (opsional, tingkatkan keyakinan jika ada):
 - Apakah kode referensi "${refCode}" tertera di kolom catatan/berita transfer?
@@ -135,8 +137,8 @@ export async function POST(req: NextRequest) {
     reason = parsed.reason ?? reason
     transactionTime = parsed.transaction_time ?? null
   } catch (err) {
-    console.error('[verify-payment] vision error:', err)
-    if (useOllama) {
+    console.error('[verify-payment] primary vision error:', err)
+    if (useOllama && process.env.GEMINI_API_KEY) {
       try {
         const parsed = await checkWithGemini(base64, file.type, amount, ref, merchantName, invoiceCreatedAt)
         verified = parsed.valid === true
@@ -178,9 +180,8 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ verified: true })
   }
 
-  if (proofUrl) {
-    await db.from('subscription_invoices').update({ payment_proof_url: proofUrl }).eq('id', invoiceId)
-  }
+  // Tolak: hapus dari storage, jangan simpan bukti yang gagal
+  await db.storage.from('payment-proofs').remove([path])
 
   Promise.all([
     sendTelegramMessage(
