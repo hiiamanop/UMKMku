@@ -13,9 +13,9 @@ export default async function AuthPageSettingsPage({ params }: Props) {
   return (
     <div>
       <div className="mb-10">
-        <p className="text-label-caps text-[10px] text-[var(--color-accent)]/40 mb-1">HALAMAN</p>
+        <p className="text-label-caps text-[10px] text-gray-400 mb-1">HALAMAN</p>
         <h1 className="text-display italic">Login & Register</h1>
-        <p className="text-body-md text-[var(--color-accent)]/50 mt-2">
+        <p className="text-body-md text-gray-500 mt-2">
           Gambar yang tampil di panel kiri halaman login dan register toko kamu.
         </p>
       </div>

@@ -43,7 +43,7 @@ export function ChatbotForm({ tenant }: { tenant: Tenant }) {
 
       <div className="flex items-center gap-4 pt-2">
         <Button type="submit" disabled={pending}
-          className="bg-[var(--color-primary)] !text-white hover:bg-[var(--color-primary)] hover:opacity-90 transition-opacity rounded-none text-label-caps tracking-widest px-8 py-3 h-auto">
+          className="bg-[var(--color-primary)] !text-[var(--color-sidebar-text)] hover:bg-[var(--color-primary)] hover:opacity-90 transition-opacity rounded-none text-label-caps tracking-widest px-8 py-3 h-auto">
           {pending ? 'Menyimpan...' : 'Simpan Pengaturan'}
         </Button>
         <StatusMessage state={state} />

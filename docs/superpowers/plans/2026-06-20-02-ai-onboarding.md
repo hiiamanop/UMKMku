@@ -265,7 +265,7 @@ Tugasmu: ekstrak informasi bisnis dari cerita merchant dan kembalikan sebagai JS
 Aturan:
 - Jika warna tidak disebutkan, pilih warna yang cocok untuk brand skincare (soft, clean, premium)
 - primary_color: warna utama brand
-- secondary_color: warna background atau pelengkap
+- secondary_color: Warna Sekondari atau pelengkap
 - accent_color: warna highlight atau CTA
 - Semua warna dalam format hex (#rrggbb)
 - Jika harga tidak disebutkan, set null

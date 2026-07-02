@@ -141,8 +141,10 @@ export function ChatbotWidget({ tenant, products }: Props) {
             <ChatbotMessages messages={messages} products={products} slug={tenant.slug} />
             {isLoading && (
               <div className="flex justify-start">
-                <div className="bg-gray-100 rounded-2xl px-4 py-2 text-sm text-gray-500">
-                  Mengetik...
+                <div className="bg-gray-100 rounded-2xl px-4 py-2 flex items-center gap-1">
+                  <span className="w-1.5 h-1.5 rounded-full bg-gray-400 animate-bounce [animation-delay:0ms]" />
+                  <span className="w-1.5 h-1.5 rounded-full bg-gray-400 animate-bounce [animation-delay:150ms]" />
+                  <span className="w-1.5 h-1.5 rounded-full bg-gray-400 animate-bounce [animation-delay:300ms]" />
                 </div>
               </div>
             )}

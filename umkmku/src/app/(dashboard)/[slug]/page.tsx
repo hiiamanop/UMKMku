@@ -90,14 +90,14 @@ export default async function DashboardOverviewPage({ params }: Props) {
         <div className="bg-white border border-black/8 rounded p-6">
           <div className="flex items-start justify-between">
             <div>
-              <p className="text-label-caps text-[10px] text-[var(--color-accent)]/50 tracking-widest">PERLU TINDAKAN</p>
-              <p className="text-4xl font-serif italic mt-2 text-[var(--color-primary)]">{pendingCount}</p>
-              <p className="text-body-md text-[var(--color-accent)]/60 mt-1 text-sm">pesanan menunggu</p>
+              <p className="text-label-caps text-[10px] text-gray-500 tracking-widest">PERLU TINDAKAN</p>
+              <p className="text-4xl font-serif italic mt-2 text-gray-900">{pendingCount}</p>
+              <p className="text-body-md text-gray-600 mt-1 text-sm">pesanan menunggu</p>
             </div>
             <Clock size={20} className="text-amber-400 mt-1" />
           </div>
           {pendingCount > 0 && (
-            <Link href={`/${slug}/orders`} className="mt-4 block text-label-caps text-[10px] text-[var(--color-primary)] hover:opacity-70 transition-opacity">
+            <Link href={`/${slug}/orders`} className="mt-4 block text-label-caps text-[10px] text-gray-900 hover:opacity-70 transition-opacity">
               Lihat pesanan →
             </Link>
           )}
@@ -106,14 +106,14 @@ export default async function DashboardOverviewPage({ params }: Props) {
         <div className="bg-white border border-black/8 rounded p-6">
           <div className="flex items-start justify-between">
             <div>
-              <p className="text-label-caps text-[10px] text-[var(--color-accent)]/50 tracking-widest">REVENUE {month.toUpperCase()}</p>
+              <p className="text-label-caps text-[10px] text-gray-500 tracking-widest">REVENUE {month.toUpperCase()}</p>
               <p className="text-2xl font-serif italic mt-2">
                 {revenue > 0
                   ? `Rp ${revenue.toLocaleString('id-ID')}`
-                  : <span className="text-[var(--color-accent)]/30 text-xl">–</span>
+                  : <span className="text-gray-300 text-xl">–</span>
                 }
               </p>
-              <p className="text-body-md text-[var(--color-accent)]/60 mt-1 text-sm">dari pesanan terverifikasi</p>
+              <p className="text-body-md text-gray-600 mt-1 text-sm">dari pesanan terverifikasi</p>
             </div>
             <TrendingUp size={20} className="text-emerald-400 mt-1" />
           </div>
@@ -122,14 +122,14 @@ export default async function DashboardOverviewPage({ params }: Props) {
         <div className="bg-white border border-black/8 rounded p-6">
           <div className="flex items-start justify-between">
             <div>
-              <p className="text-label-caps text-[10px] text-[var(--color-accent)]/50 tracking-widest">STOK MENIPIS</p>
+              <p className="text-label-caps text-[10px] text-gray-500 tracking-widest">STOK MENIPIS</p>
               <p className="text-4xl font-serif italic mt-2 text-red-500">{lowStockProducts.length}</p>
-              <p className="text-body-md text-[var(--color-accent)]/60 mt-1 text-sm">produk ≤ 5 sisa</p>
+              <p className="text-body-md text-gray-600 mt-1 text-sm">produk ≤ 5 sisa</p>
             </div>
             <AlertTriangle size={20} className="text-red-400 mt-1" />
           </div>
           {lowStockProducts.length > 0 && (
-            <Link href={`/${slug}/products`} className="mt-4 block text-label-caps text-[10px] text-[var(--color-primary)] hover:opacity-70 transition-opacity">
+            <Link href={`/${slug}/products`} className="mt-4 block text-label-caps text-[10px] text-gray-900 hover:opacity-70 transition-opacity">
               Kelola stok →
             </Link>
           )}
@@ -140,13 +140,13 @@ export default async function DashboardOverviewPage({ params }: Props) {
         {/* Recent orders */}
         <div className="col-span-2 bg-white border border-black/8 rounded">
           <div className="px-6 py-4 border-b border-black/5 flex items-center justify-between">
-            <h2 className="text-label-caps text-[10px] tracking-widest text-[var(--color-accent)]/70">PESANAN TERBARU</h2>
-            <Link href={`/${slug}/orders`} className="text-label-caps text-[10px] text-[var(--color-primary)] hover:opacity-70 transition-opacity">
+            <h2 className="text-label-caps text-[10px] tracking-widest text-gray-700">PESANAN TERBARU</h2>
+            <Link href={`/${slug}/orders`} className="text-label-caps text-[10px] text-gray-900 hover:opacity-70 transition-opacity">
               Semua →
             </Link>
           </div>
           {recentOrders.length === 0 ? (
-            <div className="px-6 py-12 text-center text-body-md text-[var(--color-accent)]/40 text-sm">
+            <div className="px-6 py-12 text-center text-body-md text-gray-400 text-sm">
               Belum ada pesanan masuk.
             </div>
           ) : (
@@ -157,7 +157,7 @@ export default async function DashboardOverviewPage({ params }: Props) {
                     <p className="text-body-md font-medium text-sm truncate">
                       {order.customer_name ?? 'Anonim'}
                     </p>
-                    <p className="text-label-caps text-[10px] text-[var(--color-accent)]/40 mt-0.5">
+                    <p className="text-label-caps text-[10px] text-gray-400 mt-0.5">
                       {new Date(order.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}
                     </p>
                   </div>
@@ -176,11 +176,11 @@ export default async function DashboardOverviewPage({ params }: Props) {
         {/* Low stock */}
         <div className="bg-white border border-black/8 rounded">
           <div className="px-6 py-4 border-b border-black/5 flex items-center justify-between">
-            <h2 className="text-label-caps text-[10px] tracking-widest text-[var(--color-accent)]/70">STOK MENIPIS</h2>
-            <ShoppingBag size={14} className="text-[var(--color-accent)]/30" />
+            <h2 className="text-label-caps text-[10px] tracking-widest text-gray-700">STOK MENIPIS</h2>
+            <ShoppingBag size={14} className="text-gray-300" />
           </div>
           {lowStockProducts.length === 0 ? (
-            <div className="px-6 py-12 text-center text-body-md text-[var(--color-accent)]/40 text-sm">
+            <div className="px-6 py-12 text-center text-body-md text-gray-400 text-sm">
               Semua stok aman. 👍
             </div>
           ) : (

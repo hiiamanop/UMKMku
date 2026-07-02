@@ -47,7 +47,7 @@ OUTPUT JSON (wajib semua field):
   "tagline": "slogan singkat brand, atau null jika tidak ada",
   "description": "deskripsi brand 1-2 kalimat",
   "primary_color": "#rrggbb, warna utama brand",
-  "secondary_color": "#rrggbb, warna background/pelengkap",
+  "secondary_color": "#rrggbb, Warna Sekondari/pelengkap",
   "accent_color": "#rrggbb, warna highlight/CTA",
   "whatsapp_number": "nomor WA format 628xxx, atau null",
   "instagram_url": "URL Instagram, atau null",

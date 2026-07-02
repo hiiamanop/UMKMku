@@ -117,6 +117,14 @@ export async function POST(
     }
 
     await supabase.from('tenant_subscriptions').update(update).eq('id', sub.id)
+
+    // Catat ke daily usage history (increment)
+    const today = new Date().toISOString().slice(0, 10)
+    const { data: existing } = await supabase.from('tenant_usage_daily').select('tokens_used').eq('tenant_id', tenant.id).eq('date', today).maybeSingle()
+    await supabase.from('tenant_usage_daily').upsert(
+      { tenant_id: tenant.id, date: today, tokens_used: (existing?.tokens_used ?? 0) + tokensUsed, orders_used: 0, addon_used: 0 },
+      { onConflict: 'tenant_id,date' }
+    )
   }
 
   const inputTokens = estimateTokens(systemPrompt + messages.map(m => m.content).join(''))

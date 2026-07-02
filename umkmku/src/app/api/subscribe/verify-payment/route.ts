@@ -180,9 +180,8 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ verified: true })
   }
 
-  if (proofUrl) {
-    await db.from('subscription_invoices').update({ payment_proof_url: proofUrl }).eq('id', invoiceId)
-  }
+  // Tolak: hapus dari storage, jangan simpan bukti yang gagal
+  await db.storage.from('payment-proofs').remove([path])
 
   Promise.all([
     sendTelegramMessage(

@@ -146,8 +146,8 @@ export function ChatsClient({ slug, threads }: Props) {
       <div>
         <h1 className="text-display italic mb-10">Chat Pesanan</h1>
         <div className="bg-white border border-black/8 rounded p-16 text-center">
-          <MessageSquare size={40} className="mx-auto text-[var(--color-accent)]/20 mb-4" />
-          <p className="text-headline-md italic text-[var(--color-accent)]/40">Belum ada percakapan.</p>
+          <MessageSquare size={40} className="mx-auto text-gray-200 mb-4" />
+          <p className="text-headline-md italic text-gray-400">Belum ada percakapan.</p>
         </div>
       </div>
     )
@@ -174,8 +174,8 @@ export function ChatsClient({ slug, threads }: Props) {
                     {STATUS_LABEL[t.order.status] ?? t.order.status}
                   </span>
                 </div>
-                <p className="text-[11px] text-[var(--color-accent)]/50 font-sans truncate">{preview}</p>
-                <p className="text-[10px] text-[var(--color-accent)]/30 font-sans mt-1">{timeAgo(t.order.created_at)}</p>
+                <p className="text-[11px] text-gray-500 font-sans truncate">{preview}</p>
+                <p className="text-[10px] text-gray-300 font-sans mt-1">{timeAgo(t.order.created_at)}</p>
               </button>
             )
           })}
@@ -187,12 +187,12 @@ export function ChatsClient({ slug, threads }: Props) {
             <div className="px-6 py-4 border-b border-black/8 flex items-center justify-between shrink-0">
               <div>
                 <p className="text-body-md font-medium">{activeThread.order.customer_name ?? 'Pelanggan'}</p>
-                <p className="text-[11px] text-[var(--color-accent)]/40 font-sans">
+                <p className="text-[11px] text-gray-400 font-sans">
                   #{activeThread.order.id.slice(-8).toUpperCase()} · {fmt(activeThread.order.total_amount)}
                 </p>
               </div>
               <Link href={`/${slug}/orders?order=${selected}`}
-                className="flex items-center gap-1.5 text-label-caps text-[10px] border border-black/15 px-3 py-2 hover:bg-[var(--color-secondary)] transition-colors">
+                className="flex items-center gap-1.5 text-label-caps text-[10px] border border-black/15 px-3 py-2 hover:bg-gray-50 transition-colors">
                 <ExternalLink size={11} />PESANAN
               </Link>
             </div>
@@ -200,7 +200,7 @@ export function ChatsClient({ slug, threads }: Props) {
             <div className="flex-1 relative overflow-hidden">
               {!msgsReady && (
                 <div className="absolute inset-0 flex items-center justify-center z-10">
-                  <Loader2 size={20} className="animate-spin text-[var(--color-accent)]/30" />
+                  <Loader2 size={20} className="animate-spin text-gray-300" />
                 </div>
               )}
               <div ref={msgsRef} style={{ opacity: msgsReady ? 1 : 0 }}
@@ -214,15 +214,15 @@ export function ChatsClient({ slug, threads }: Props) {
                   <div key={msg.id} className={`flex ${isCustomer ? 'justify-end' : 'justify-start'}`}>
                     <div className={`max-w-[75%] rounded-2xl px-4 py-3 ${
                       isCustomer
-                        ? 'bg-[var(--color-primary)] text-white rounded-tr-sm'
+                        ? 'bg-[var(--color-primary)] text-[var(--color-sidebar-text)] rounded-tr-sm'
                         : isMerchant
                           ? 'bg-black text-white rounded-tl-sm'
-                          : 'bg-[var(--color-secondary)] text-[var(--color-accent)] rounded-tl-sm'
+                          : 'bg-gray-50 text-gray-700 rounded-tl-sm'
                     }`}>
                       {/* Label pengirim untuk pesan masuk */}
                       {!isCustomer && (
                         <p className={`text-[9px] tracking-widest uppercase font-sans mb-1.5 ${
-                          isMerchant ? 'text-white/50' : 'text-[var(--color-accent)]/40'
+                          isMerchant ? 'text-white/50' : 'text-gray-400'
                         }`}>
                           {isMerchant ? 'Kamu (Merchant)' : 'AI Assistant'}
                         </p>
@@ -236,7 +236,7 @@ export function ChatsClient({ slug, threads }: Props) {
                         </button>
                       )}
                       {msg.content && <MsgContent content={msg.content} />}
-                      <p className={`text-[10px] mt-1 ${isCustomer || isMerchant ? 'text-white/40' : 'text-[var(--color-accent)]/30'}`}>
+                      <p className={`text-[10px] mt-1 ${isCustomer || isMerchant ? 'text-white/40' : 'text-gray-300'}`}>
                         {timeAgo(msg.created_at)}
                       </p>
                     </div>
@@ -256,7 +256,7 @@ export function ChatsClient({ slug, threads }: Props) {
                   placeholder="Balas sebagai merchant... (Enter untuk kirim)"
                   rows={2}
                   disabled={sending}
-                  className="flex-1 bg-[var(--color-secondary)] border border-black/15 rounded-xl px-4 py-2.5 text-[13px] resize-none focus:outline-none focus:border-[var(--color-primary)] transition-colors disabled:opacity-50"
+                  className="flex-1 bg-gray-50 border border-black/15 rounded-xl px-4 py-2.5 text-[13px] resize-none focus:outline-none focus:border-[var(--color-primary)] transition-colors disabled:opacity-50"
                 />
                 <button
                   onClick={sendReply}
@@ -269,7 +269,7 @@ export function ChatsClient({ slug, threads }: Props) {
             </div>
           </div>
         ) : (
-          <div className="flex-1 flex items-center justify-center text-[var(--color-accent)]/30">
+          <div className="flex-1 flex items-center justify-center text-gray-300">
             <p className="text-body-md italic">Pilih percakapan</p>
           </div>
         )}

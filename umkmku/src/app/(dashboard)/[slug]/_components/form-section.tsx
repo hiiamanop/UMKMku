@@ -11,7 +11,7 @@ export function FormSection({
     <div className="border-b border-black/5 pb-10 mb-10 last:border-0 last:mb-0 last:pb-0">
       <div className="mb-6">
         <h2 className="text-headline-md italic">{title}</h2>
-        {description && <p className="text-body-md text-[var(--color-accent)]/50 mt-1">{description}</p>}
+        {description && <p className="text-body-md text-gray-500 mt-1">{description}</p>}
       </div>
       {children}
     </div>
@@ -21,8 +21,8 @@ export function FormSection({
 export function FieldLabel({ children, hint }: { children: React.ReactNode; hint?: string }) {
   return (
     <div className="mb-1.5">
-      <label className="text-label-caps text-[10px] text-[var(--color-accent)]/60">{children}</label>
-      {hint && <p className="text-xs text-[var(--color-accent)]/40 mt-0.5">{hint}</p>}
+      <label className="text-label-caps text-[10px] text-gray-600">{children}</label>
+      {hint && <p className="text-xs text-gray-400 mt-0.5">{hint}</p>}
     </div>
   )
 }

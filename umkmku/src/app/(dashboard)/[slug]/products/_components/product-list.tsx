@@ -23,7 +23,7 @@ function ProductRow({ slug, product }: { slug: string; product: Product }) {
         onClick={() => setOpen(!open)}
       >
         {/* Thumbnail */}
-        <div className="w-12 h-12 rounded bg-[var(--color-secondary)] relative overflow-hidden shrink-0">
+        <div className="w-12 h-12 rounded bg-gray-50 relative overflow-hidden shrink-0">
           {product.image_url ? (
             <Image src={product.image_url} alt={product.name} fill sizes="48px" className="object-cover" />
           ) : (
@@ -34,7 +34,7 @@ function ProductRow({ slug, product }: { slug: string; product: Product }) {
         {/* Info */}
         <div className="flex-1 min-w-0">
           <p className="text-body-md font-medium truncate">{product.name}</p>
-          <p className="text-label-caps text-[10px] text-[var(--color-accent)]/50 mt-0.5">
+          <p className="text-label-caps text-[10px] text-gray-500 mt-0.5">
             {product.price ? `IDR ${product.price.toLocaleString('id-ID')}` : 'Harga belum diset'}
             {product.usage_step && ` · ${product.usage_step}`}
           </p>
@@ -45,20 +45,20 @@ function ProductRow({ slug, product }: { slug: string; product: Product }) {
           {product.is_preorder ? (
             <span className="text-label-caps text-[9px] px-2 py-0.5 rounded-full bg-pink-100 text-pink-600">Pre-Order</span>
           ) : product.stock_quantity === null ? (
-            <span className="text-label-caps text-[9px] text-[var(--color-accent)]/30">∞</span>
+            <span className="text-label-caps text-[9px] text-gray-300">∞</span>
           ) : product.stock_quantity <= 0 ? (
             <span className="text-label-caps text-[9px] px-2 py-0.5 rounded-full bg-red-100 text-red-500">Habis</span>
           ) : product.stock_quantity <= 5 ? (
             <span className="text-label-caps text-[9px] px-2 py-0.5 rounded-full bg-amber-100 text-amber-600">{product.stock_quantity} sisa</span>
           ) : (
-            <span className="text-label-caps text-[9px] text-[var(--color-accent)]/40">{product.stock_quantity} stok</span>
+            <span className="text-label-caps text-[9px] text-gray-400">{product.stock_quantity} stok</span>
           )}
         </div>
 
         {/* Expand */}
         {open
-          ? <ChevronUp size={16} className="text-[var(--color-accent)]/40 shrink-0" />
-          : <ChevronDown size={16} className="text-[var(--color-accent)]/40 shrink-0" />
+          ? <ChevronUp size={16} className="text-gray-400 shrink-0" />
+          : <ChevronDown size={16} className="text-gray-400 shrink-0" />
         }
       </div>
 
@@ -92,13 +92,13 @@ export function ProductList({ slug, products: initialProducts }: Props) {
       <div className="flex items-baseline justify-between mb-8">
         <div>
           <h2 className="text-headline-lg italic">Produk</h2>
-          <p className="text-body-md text-[var(--color-accent)]/50 mt-1">
+          <p className="text-body-md text-gray-500 mt-1">
             {initialProducts.length} produk · Maksimal 6 tampil di toko
           </p>
         </div>
         <button
           onClick={() => setShowAdd(!showAdd)}
-          className="flex items-center gap-2 bg-[var(--color-primary)] text-white text-label-caps tracking-widest px-5 py-2.5 hover:opacity-90 transition-opacity text-[10px]"
+          className="flex items-center gap-2 bg-[var(--color-primary)] text-[var(--color-sidebar-text)] text-label-caps tracking-widest px-5 py-2.5 hover:opacity-90 transition-opacity text-[10px]"
         >
           <Plus size={12} />
           Tambah Produk
@@ -117,7 +117,7 @@ export function ProductList({ slug, products: initialProducts }: Props) {
       <div className="bg-white border border-black/8 rounded px-6">
         {initialProducts.length === 0 ? (
           <div className="py-16 text-center">
-            <p className="text-body-md text-[var(--color-accent)]/40">Belum ada produk. Tambahkan produk pertama kamu.</p>
+            <p className="text-body-md text-gray-400">Belum ada produk. Tambahkan produk pertama kamu.</p>
           </div>
         ) : (
           initialProducts.map((p) => (
