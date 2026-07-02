@@ -92,10 +92,10 @@ export function UsageChart({ tenantId, hasAddon }: { tenantId: string; hasAddon:
                 tickFormatter={v => Number.isInteger(v) ? String(v) : v.toFixed(1)} />
               <Tooltip
                 contentStyle={{ fontSize: 12, borderRadius: 10, border: '1px solid #E5EAF0', boxShadow: '0 4px 12px rgba(0,0,0,0.08)' }}
-                formatter={(val: number, name: string) => {
+                formatter={(val, name) => {
                   const m = METRICS.find(x => x.label === name)
-                  if (m?.key === 'tokens') return [`${val}k token`, name]
-                  return [`${val} pesanan`, name]
+                  if (m?.key === 'tokens') return [`${val ?? 0}k token`, name]
+                  return [`${val ?? 0} pesanan`, name]
                 }}
               />
               <Legend iconType="circle" iconSize={8} wrapperStyle={{ fontSize: 11, paddingTop: 8 }} />
